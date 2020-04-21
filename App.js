@@ -1,39 +1,24 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+// In App.js in a new project
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import loginScreen from './src/screen/loginScreen'
+import partyScreen from './src/screen/partyScreen'
 
-export default function App() {
+
+const Stack = createStackNavigator();
+
+export default function App(){
   return (
-    <View style={styles.container}>
-      <Image source={require('./assets/OnetableLogo.png')} style={styles.logoStyle} />
-      <Text style={styles.textStyle}>1인 식탁</Text>
-      <Image source={require('./assets/GoogleLogin.png')} style={styles.googleLoginStyle}/>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{
+            headerShown: false,
+          }}>
+        <Stack.Screen name="start" component={loginScreen} />
+        <Stack.Screen name="party" component={partyScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    // alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textStyle: {
-    marginLeft: 20,
-    marginTop: 10,
-    color: '#5B4141',
-    fontWeight: 'bold',
-    textAlign: 'left',
-    fontSize: 60,
-  },
-  logoStyle: {
-    marginLeft: 20,
-    height: 100,
-    width: 125,
-  },
-  googleLoginStyle: {
-    alignSelf : 'center', 
-    marginTop: 13,
-    width : 334,
-  },
-});
