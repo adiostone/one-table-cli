@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
-export default function partyScreen() {
+export default function partyScreen({navigation}) {
   return (
     <View style={styles.container}>
       <Text style={styles.textStyle}>1인 식탁</Text>

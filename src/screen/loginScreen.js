@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image ,TouchableOpacity} from 'react-native';
 
-export default function loginScreen() {
+export default function loginScreen({navigation}) {
   return (
     <View style={styles.container}>
       <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
       <Text style={styles.textStyle}>1인 식탁</Text>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('party')}>
         <Image source={require('../assets/GoogleLogin.png')} style={styles.googleLoginStyle}/>
       </TouchableOpacity>
     </View>
