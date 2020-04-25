@@ -5,7 +5,9 @@ import { AppProvider } from './src/context/AppContext'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import loginScreen from './src/screen/loginScreen'
-import partyScreen from './src/screen/partyScreen'
+import mainScreen from './src/screen/mainScreen'
+import mapScreen from './src/screen/mapScreen'
+
 import * as SecureStore from 'expo-secure-store';
 
 
@@ -18,8 +20,9 @@ export default function App(){
         <Stack.Navigator screenOptions={{
               headerShown: false,
             }}>
-          <Stack.Screen name="start" component={loginScreen} />
-          <Stack.Screen name="party" component={partyScreen} />
+          <Stack.Screen name="map" component={mapScreen} />
+          <Stack.Screen name="login" component={loginScreen} />
+          <Stack.Screen name="main" component={mainScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </AppProvider>
