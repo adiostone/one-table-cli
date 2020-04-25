@@ -26,11 +26,13 @@ export default function mapScreen({navigation}) {
   Geocoder.init("AIzaSyCGjXuFaep9n4er1lfv3LPJ0RZkkHjxahA",{language: "korean"})
 
   useEffect(() => {
-    (async () => {
-    
-
       if(locationIsSet===false){
-      let { status } = await Location.requestPermissionsAsync();
+        getlocation();
+    };
+  });
+
+  const getlocation = async () => {
+    let { status } = await Location.requestPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
       }
@@ -51,11 +53,8 @@ export default function mapScreen({navigation}) {
         })
         .catch(error => console.warn(error));
       setLocationIsSet(true);
-    }
+  };
 
-
-    })();
-  });
 
   let lat ='Waiting..';
   let long = "waiting.."
@@ -73,6 +72,7 @@ export default function mapScreen({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
+      {LocationIsSet ? (
         <Text>latitude : {lat}</Text>
         <Text>longitude : {long}</Text>
         <Text>주소 : {address}</Text>
@@ -82,7 +82,9 @@ export default function mapScreen({navigation}) {
         <Button title="세부주소 설정" onPress={() => setDetailLocation(textInput)}/>
       <MapView style={styles.mapStyle} region={mapRegion}>
         <Marker coordinate={coord}/>
-      </MapView> 
+      </MapView>
+      ) : (<Text> 로딩중입니다</Text>)
+      }
       <Button title="위치 재설정" onPress={() => setLocationIsSet(false)}/>
       <Button title="메인 화면 가기 " onPress={() => navigation.navigate('main')}/>
     </SafeAreaView>
