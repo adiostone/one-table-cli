@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions } from 'react-native';
+import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions,SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
@@ -17,7 +17,7 @@ export default function mapScreen({navigation}) {
 
   const [textInput, onChangeText] = useState('세부주소를 입력해주세요');
   const [location, setLocation] = useState();  
-  const [formattedAddress, setFormattedAddress] = useState();
+  const [formattedAddress, setFormattedAddress] = useState("");
   const [detailLocation, setDetailLocation] = useState("");
   const [locationIsSet, setLocationIsSet] = useState(false);
   const [mapRegion, setMapRegion] = useState();
@@ -72,7 +72,7 @@ export default function mapScreen({navigation}) {
    }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
         <Text>latitude : {lat}</Text>
         <Text>longitude : {long}</Text>
         <Text>주소 : {address}</Text>
@@ -84,7 +84,8 @@ export default function mapScreen({navigation}) {
         <Marker coordinate={coord}/>
       </MapView> 
       <Button title="위치 재설정" onPress={() => setLocationIsSet(false)}/>
-    </View>
+      <Button title="메인 화면 가기 " onPress={() => navigation.navigate('main')}/>
+    </SafeAreaView>
       
   );
 }

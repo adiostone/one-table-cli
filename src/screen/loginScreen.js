@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 
 // import axios from 'axios'
 import { Linking } from 'expo'
-import { StyleSheet, Text, View, Image ,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, Image ,TouchableOpacity,SafeAreaView} from 'react-native';
 
 export default function loginScreen({navigation}) {
 
@@ -32,13 +32,13 @@ export default function loginScreen({navigation}) {
 
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
       <Text style={styles.textStyle}>1인 식탁</Text>
       <TouchableOpacity onPress={() => navigation.navigate('main')}>
         <Image source={require('../assets/GoogleLogin.png')} style={styles.googleLoginStyle}/>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }
 

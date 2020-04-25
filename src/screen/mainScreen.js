@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,SafeAreaView} from 'react-native';
 import Constants from 'expo-constants';
-
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
-
+import restuarantFoodListScreen from './foodListScreen';
 
 export default function mainScreen({navigation}) {
 
 
   return (
-    <View style={styles.container}>
-    </View>
+    <SafeAreaView style={styles.container}>
+        <Button title="위치 설정" onPress={() => navigation.navigate('map')}/>
+        <Button title="파티 만들기" onPress={() => navigation.navigate('restaurantList')}/>
+    </SafeAreaView>
       
   );
 }

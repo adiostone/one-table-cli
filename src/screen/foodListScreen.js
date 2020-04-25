@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions } from 'react-native';
 
-export default function roomDetailSettingScreen({navigation}) {
+
+export default function foodListScreen({navigation}) {
 
 
     return (
