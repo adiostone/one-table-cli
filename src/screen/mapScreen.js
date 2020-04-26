@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions,SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View,Button,ScrollView ,Image,TextInput,TouchableOpacity,Dimensions,SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-
 import Geocoder from 'react-native-geocoding';
-
-
-
-
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-
 
 export default function mapScreen({navigation}) {
 
@@ -72,41 +66,108 @@ export default function mapScreen({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {LocationIsSet ? (
-        <Text>latitude : {lat}</Text>
-        <Text>longitude : {long}</Text>
-        <Text>주소 : {address}</Text>
-        <Text>세부 주소</Text>
-        <TextInput style={styles.textInputBox} onChangeText={text => onChangeText(text)}
-      value={textInput}/>
-        <Button title="세부주소 설정" onPress={() => setDetailLocation(textInput)}/>
-      <MapView style={styles.mapStyle} region={mapRegion}>
-        <Marker coordinate={coord}/>
-      </MapView>
-      ) : (<Text> 로딩중입니다</Text>)
-      }
-      <Button title="위치 재설정" onPress={() => setLocationIsSet(false)}/>
-      <Button title="메인 화면 가기 " onPress={() => navigation.navigate('main')}/>
+        <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
+        <ScrollView style={styles.mapContainer}>
+            <View style={styles.resetLocationBox}>
+              <Text style={styles.resetLocationBoxText}>주소</Text>
+            </View>        
+            <View style={styles.locationBox}>
+              <Text style={styles.locationBoxText}>{address}</Text>
+            </View>     
+            <View style={styles.locationBox}>
+              <TextInput style={styles.locationBoxText} onPress={(text) => onChangeText(text)}>{textInput}</TextInput>
+            </View>     
+            <TouchableOpacity style={styles.resetLocationBox} onPress={() => setDetailLocation(textInput)}>
+              <Text style={styles.resetLocationBoxText}>세부 주소 설정</Text>
+            </TouchableOpacity>
+            <MapView style={styles.mapStyle} region={mapRegion}>
+              <Marker coordinate={coord}/>
+            </MapView>
+            <TouchableOpacity style={styles.resetLocationBox} onPress={() => setLocationIsSet(false)}>
+            <Text style={styles.resetLocationBoxText}> 위치 재설정</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.backBox} onPress={() => navigation.navigate('main')}>
+              <Text style={styles.backBoxText}> 돌아가기</Text>
+            </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
       
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    display : "flex",
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    backgroundColor: '#fff',
   },
-  textInputBox:{
-    width : 300,
-    borderColor: 'gray',
-    borderWidth : 1,
+  mapContainer: {
+
+  },
+  locationBox: {
+    width: 335,
+    height: 39,
+    backgroundColor: "#FFF5F5",
+    borderRadius: 10,
+    marginBottom : 12, 
+    justifyContent: 'center', 
+    alignItems: 'center' ,
+    alignSelf: 'center',
+
+  },
+  locationBoxText:{
+    fontStyle: 'normal',
+    fontSize: 12,
+    textAlign: "center",
+  },
+
+  resetLocationBox:{
+    width: 335,
+    height: 39,
+    backgroundColor: "#FFBF75",
+    borderRadius: 10,
+    marginBottom : 12, 
+    justifyContent: 'center', 
+    alignItems: 'center' ,
+    alignSelf: 'center',
+
+  },
+  resetLocationBoxText:{
+    fontStyle: 'normal',
+    fontSize: 20,
+    textAlign: "center",
+    color: "#FFFFFF",
+  },
+  backBox:{
+    width: 335,
+    height: 39,
+    backgroundColor: "#FF8181",
+    borderRadius: 10,
+    marginBottom : 12, 
+    // alignSelf: 'center',
+    justifyContent: 'center', 
+    alignItems: 'center' ,
+    alignSelf: 'center',
+  },
+  backBoxText:{
+    fontStyle: 'normal',
+    fontSize: 20,
+    textAlign: "center",
+    color: "#FFFFFF",
+
   },
   mapStyle: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').width,
+    marginBottom : 12, 
+
+  },
+  logoStyle: {
+    width: 47,
+    height: 37.7,
+    marginLeft:20,
+    marginTop:20,
+    marginBottom:15,
   },
 });

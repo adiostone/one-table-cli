@@ -11,14 +11,15 @@ import restaurantListScreen from './src/screen/restaurantListScreen'
 import foodListScreen from './src/screen/foodListScreen'
 import roomDetailSettingScreen from './src/screen/roomDetailSetttingScreen'
 import shopplingBagScreen from './src/screen/shoppingBagScreen'
+import * as Font from 'expo-font';
 
 import * as SecureStore from 'expo-secure-store';
 import shoppingBagScreen from './src/screen/shoppingBagScreen';
 
-
 const Stack = createStackNavigator();
 
 export default function App(){
+
   return (
     <AppProvider>
       <NavigationContainer>

@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 
 // import axios from 'axios'
 import { Linking } from 'expo'
-import { StyleSheet, Text, View, Image ,TouchableOpacity,SafeAreaView} from 'react-native';
+import { StyleSheet, Text, View, Image, Alert,TouchableOpacity,SafeAreaView} from 'react-native';
 
 export default function loginScreen({navigation}) {
 
