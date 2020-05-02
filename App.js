@@ -1,5 +1,5 @@
 // In App.js in a new project
-import * as React from 'react';
+import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native';
 import { AppProvider } from './src/context/AppContext'
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,7 +18,17 @@ import shoppingBagScreen from './src/screen/shoppingBagScreen';
 
 const Stack = createStackNavigator();
 
+function clearTokens() {
+  SecureStore.deleteItemAsync('accessToken')
+  SecureStore.deleteItemAsync('refreshToken')
+}
+
 export default function App(){
+
+  // clearTokens()
+
+  // Check the tokens and load sign in screen if it's not authenticated
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   return (
     <AppProvider>
@@ -26,8 +36,8 @@ export default function App(){
         <Stack.Navigator screenOptions={{
               headerShown: false,
             }}>
-          <Stack.Screen name="login" component={loginScreen} />
           <Stack.Screen name="main" component={mainScreen} />
+          <Stack.Screen name="login" component={loginScreen} />
           <Stack.Screen name="map" component={mapScreen} />
           <Stack.Screen name="restaurantList" component={restaurantListScreen} />
           <Stack.Screen name="roomDetailSetting" component={roomDetailSettingScreen} />

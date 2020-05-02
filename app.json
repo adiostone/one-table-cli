@@ -1,7 +1,9 @@
 {
   "expo": {
+    "scheme": "onetable",
     "name": "Onetable-cli",
     "slug": "Onetable-cli",
+    "privacy": "public",
     "platforms": [
       "ios",
       "android",

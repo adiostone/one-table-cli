@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react'
 import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions } from 'react-native';
+import { AppContext } from '../context/AppContext'
 
 
 export default function foodListScreen({navigation}) {
