@@ -7,6 +7,8 @@ import Geocoder from 'react-native-geocoding';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
+import config from "../config/config"
+
 export default function mapScreen({navigation}) {
 
   const [textInput, onChangeText] = useState('세부주소를 입력해주세요');
@@ -17,7 +19,7 @@ export default function mapScreen({navigation}) {
   const [mapRegion, setMapRegion] = useState();
   const [errorMsg, setErrorMsg] = useState();
 
-  Geocoder.init("AIzaSyCGjXuFaep9n4er1lfv3LPJ0RZkkHjxahA",{language: "korean"})
+  Geocoder.init(config.googleAPIKey,{language: "korean"})
 
   useEffect(() => {
       if(locationIsSet===false){

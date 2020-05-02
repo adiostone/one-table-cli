@@ -35,8 +35,19 @@ export default function loginScreen({navigation}) {
     <SafeAreaView style={styles.container}>
       <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
       <Text style={styles.textStyle}>1인 식탁</Text>
-      <TouchableOpacity onPress={() => navigation.navigate('main')}>
-        <Image source={require('../assets/GoogleLogin.png')} style={styles.googleLoginStyle}/>
+      <TouchableOpacity  onPress={async () => {
+              const deepLink = Linking.makeUrl()
+              console.log('deepLink: ', +deepLink)
+              try {
+                const result = await WebBrowser.openBrowserAsync(
+                  'https://api.clowd.xyz/v1/auth/clowdee/login'
+                )
+              } catch (error) {
+                console.error(error)
+              }
+            }}
+            >
+          <Image source={require('../assets/GoogleLogin.png')} style={styles.googleLoginStyle}/>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -71,15 +82,9 @@ const styles = StyleSheet.create({
 
 
 
-// <TouchableOpacity  onPress={async () => {
-//               const deepLink = Linking.makeUrl()
-//               console.log('deepLink: ', +deepLink)
-//               try {
-//                 const result = await WebBrowser.openBrowserAsync(
-//                   'https://api.clowd.xyz/v1/auth/clowdee/login'
-//                 )
-//               } catch (error) {
-//                 console.error(error)
-//               }
-//             }}
-//             ></TouchableOpacity>
+
+
+
+{/* <TouchableOpacity onPress={() => navigation.navigate('main')}>
+        <Image source={require('../assets/GoogleLogin.png')} style={styles.googleLoginStyle}/>
+      </TouchableOpacity> */}
