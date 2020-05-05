@@ -29,8 +29,7 @@ export default function mainScreen({navigation}) {
           },
         })
           .then(res => {
-            console.log("check")
-            console.log(res)
+            console.log(res.data)   
           })
           .catch(err => {
             if (err && err.response) {
@@ -52,11 +51,17 @@ export default function mainScreen({navigation}) {
                     .then(res => {
                       console.log('tokens have been refreshed')
                       // Refresh the tokens and store to the machine again
-                      const { accessToken, refreshToken } = res.data
+                      const { access, refresh } = res.data
+                      console.log(access)
+                      console.log(refresh)
+                      const accessToken= access    
+                      const refreshToken  = refresh
                       SecureStore.setItemAsync('accessToken', accessToken)
                       SecureStore.setItemAsync('refreshToken', refreshToken)
                       appContext.setAccessToken(accessToken)
                       appContext.setRefreshToken(refreshToken)
+
+                      
                     })
                     .catch(err => {
                       console.log('should login again')
@@ -88,15 +93,33 @@ export default function mainScreen({navigation}) {
         //     )
         //   })
 
-        appContext.setAccessToken(accessToken)
+        //load user data from expo 
+        loadLocationData();
 
+        appContext.setAccessToken(accessToken)
         SecureStore.getItemAsync('refreshToken').then(refreshToken => {
-          console.log(refreshToken)
+          // console.log(refreshToken)
           appContext.setRefreshToken(refreshToken)
         })
       }
     })
   }, [])
+
+  async function loadLocationData(){
+    const locationIsSet = await SecureStore.getItemAsync('locationIsSet')
+    console.log("load location data")
+    if(locationIsSet==="true"){
+      console.log("you have location information")
+      appContext.setLocationIsSet(locationIsSet)
+      appContext.setLocation(JSON.parse(await SecureStore.getItemAsync('location')))
+      appContext.setMapRegion(JSON.parse(await SecureStore.getItemAsync('mapRegion')))
+      appContext.setFormattedAddress(await SecureStore.getItemAsync('formattedAddress'))
+      appContext.setDetailAddress(await SecureStore.getItemAsync('detailAddress'))
+    }
+    else{
+      console.log("you don't have location information")
+    }
+  }
 
 
   return (
