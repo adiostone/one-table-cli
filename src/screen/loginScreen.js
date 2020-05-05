@@ -27,10 +27,27 @@ export default function loginScreen({navigation}) {
       console.log('wrong tokens')
       Alert.alert('Sign Up Fails')
     } else {
+
+      // set the tokens and store to the machine
       await SecureStore.setItemAsync('accessToken', accessToken)
       await SecureStore.setItemAsync('refreshToken', refreshToken)
       appContext.setAccessToken(accessToken)
       appContext.setRefreshToken(refreshToken)
+
+      const locationIsSet = JSON.parse(await SecureStore.getItemAsync('locationIsSet'))    
+      console.log("Do you have Location Information?")
+      console.log(locationIsSet)
+      if(locationIsSet===true){
+        console.log("you have location information")
+        appContext.setlocationIsSet(locationIsSet)
+        appContext.setlocation(JSON.parse(await SecureStore.getItemAsync('location')))
+        appContext.setMapRegion(JSON.parse(await SecureStore.getItemAsync('mapRegion')))
+        appContext.setFormattedAddress(await SecureStore.getItemAsync('formattedAddress'))
+        appContext.setDetailAddress(await SecureStore.getItemAsync('detailAddress'))
+      }
+      else{
+        console.log("you don't have location information")
+      }
       navigation.navigate('main')
     }
   })
