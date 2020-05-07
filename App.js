@@ -10,6 +10,7 @@ import mapScreen from './src/screen/mapScreen'
 import restaurantListScreen from './src/screen/restaurantListScreen'
 import foodListScreen from './src/screen/foodListScreen'
 import roomDetailSettingScreen from './src/screen/roomDetailSetttingScreen'
+import roomScreen from './src/screen/roomScreen'
 import shopplingBagScreen from './src/screen/shoppingBagScreen'
 import * as Font from 'expo-font';
 
@@ -41,6 +42,7 @@ export default function App(){
           <Stack.Screen name="map" component={mapScreen} />
           <Stack.Screen name="restaurantList" component={restaurantListScreen} />
           <Stack.Screen name="roomDetailSetting" component={roomDetailSettingScreen} />
+          <Stack.Screen name="room" component={roomScreen}/>
           <Stack.Screen name="foodList" component={foodListScreen} />
           <Stack.Screen name="shoppingBag" component={shoppingBagScreen} />
         </Stack.Navigator>

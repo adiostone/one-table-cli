@@ -85,7 +85,9 @@ export default function mapScreen({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
+        <TouchableOpacity  onPress={() => navigation.navigate('main')}>
+          <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
+        </TouchableOpacity>
         <ScrollView style={styles.mapContainer}>
             {(locationIsSet==="true") ?
             //main page

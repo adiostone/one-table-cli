@@ -9,7 +9,6 @@ import axios from 'axios'
 
 export default function mainScreen({navigation}) {
 
-
   const appContext = useContext(AppContext)
 
   // Check if there exists an access token
@@ -134,17 +133,17 @@ export default function mainScreen({navigation}) {
           </TouchableOpacity>
         </View>
         <ScrollView style={styles.listContainer}>
-          <TouchableOpacity style={styles.listBox}>
+          <TouchableOpacity style={styles.listBox} onPress={() => navigation.navigate('room')}>
             <Text style={styles.listMainText}> 네네 치킨 중앙대점</Text>
             <Text style={styles.listLocationText}> 중앙대 309관 기숙사</Text>
             <Text style={styles.listRoomNameText}> 치즈 스노윙 치킨 순살 드실분!</Text>
           </TouchableOpacity>        
-          <TouchableOpacity style={styles.listBox}>
+          <TouchableOpacity style={styles.listBox} onPress={() => navigation.navigate('room')}>
             <Text style={styles.listMainText}> 미스터피자 중앙대점</Text>
             <Text style={styles.listLocationText}> 중앙대 308관 기숙사</Text>
             <Text style={styles.listRoomNameText}> 포테이토 피자 ㄱ?</Text>
           </TouchableOpacity>        
-          <TouchableOpacity style={styles.listBox}>
+          <TouchableOpacity style={styles.listBox} onPress={() => navigation.navigate('room')}>
             <Text style={styles.listMainText}> 엽기떡볶이 중앙대점</Text>
             <Text style={styles.listLocationText}> 중앙대 309관 기숙사</Text>
             <Text style={styles.listRoomNameText}> 엽떡먹어요</Text>

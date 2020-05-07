@@ -11,9 +11,8 @@ export default function loginScreen({navigation}) {
 
   const appContext = useContext(AppContext)
 
-  Linking.addEventListener('url', async e => {
+  async function login(url){
     console.log('redirected from Google OAuth')
-    const url = e.url
     console.log(url)
     let { path, queryParams } = Linking.parse(url)
     console.log(queryParams)
@@ -34,13 +33,13 @@ export default function loginScreen({navigation}) {
       appContext.setAccessToken(accessToken)
       appContext.setRefreshToken(refreshToken)
 
-      const locationIsSet = JSON.parse(await SecureStore.getItemAsync('locationIsSet'))    
+      const locationIsSet = await SecureStore.getItemAsync('locationIsSet')   
       console.log("Do you have Location Information?")
       console.log(locationIsSet)
-      if(locationIsSet===true){
+      if(locationIsSet==="true"){
         console.log("you have location information")
-        appContext.setlocationIsSet(locationIsSet)
-        appContext.setlocation(JSON.parse(await SecureStore.getItemAsync('location')))
+        appContext.setLocationIsSet(locationIsSet)
+        appContext.setLocation(JSON.parse(await SecureStore.getItemAsync('location')))
         appContext.setMapRegion(JSON.parse(await SecureStore.getItemAsync('mapRegion')))
         appContext.setFormattedAddress(await SecureStore.getItemAsync('formattedAddress'))
         appContext.setDetailAddress(await SecureStore.getItemAsync('detailAddress'))
@@ -50,7 +49,7 @@ export default function loginScreen({navigation}) {
       }
       navigation.navigate('main')
     }
-  })
+  }
 
 
   return (
@@ -61,9 +60,15 @@ export default function loginScreen({navigation}) {
               const deepLink = Linking.makeUrl()
               console.log('deepLink: ' + deepLink)
               try {
-                const result = await WebBrowser.openBrowserAsync(
+                const result = await WebBrowser.openAuthSessionAsync(                  
                   'https://api.onetable.xyz/v1/table/auth/signin'
-                )
+                , deepLink)
+                if(result.type == "success"){
+                  login(result.url)
+                }
+                else{
+                  console.log("login Failed")
+                }
               } catch (error) {
                 console.error(error)
               }
