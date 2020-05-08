@@ -126,7 +126,7 @@ export default function mainScreen({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
         <LogoButton/>
-        <View style={styles.pinContainer}>
+        <ScrollView style={styles.pinContainer}>
           <TouchableOpacity style={styles.locationBox} onPress={() => navigation.navigate('map')}>
             <Text style={styles.locationText}>위치 설정</Text>
           </TouchableOpacity>        
@@ -134,8 +134,7 @@ export default function mainScreen({navigation}) {
             <Text style={styles.createText}> 파티 만들기</Text>
           </TouchableOpacity>
           <PartyList/>
-        </View>
-
+        </ScrollView>
     </SafeAreaView>
       
   );
