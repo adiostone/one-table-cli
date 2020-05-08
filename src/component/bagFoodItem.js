@@ -23,15 +23,14 @@ export default function bagFoodItem(itemData) {
 
   return (
 
-          <View style={styles.listBox}>
-            <Text style={styles.foodNameText}> {foodName}</Text>
-            <Text style={styles.quantityText}>{quantity}</Text>
-            <Text style={styles.priceText}>{price}</Text>
-          </View>        
+      <View style={styles.listBox}>
+        <Text style={styles.foodNameText}> {foodName}</Text>
+        <Text style={styles.quantityText}>{quantity}</Text>
+        <Text style={styles.priceText}>{price}</Text>
+      </View>        
       
   );
 }
-
 
 const styles = StyleSheet.create({
 
