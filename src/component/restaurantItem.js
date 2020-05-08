@@ -23,12 +23,6 @@ export default function restaurantItem(itemData) {
 
 
 const styles = StyleSheet.create({
-  container: {
-    display:"flex",
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    backgroundColor: '#fff',
-  },
 
   restaurantButton: {
     padding : 12,

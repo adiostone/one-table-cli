@@ -1,32 +1,33 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions } from 'react-native';
-import { AppContext } from '../context/AppContext'
+import { StyleSheet, Text, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
+import FoodList from "../component/foodList"
 
 
 export default function foodListScreen({navigation}) {
 
-
     return (
-      <View style={styles.container}>
-      </View>
-        
+        <SafeAreaView style={styles.container}>
+          <TouchableOpacity  onPress={() => navigation.navigate('main')}>
+                  <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
+          </TouchableOpacity>            
+          <FoodList/>
+        </SafeAreaView>
+
     );
   }
-  
-  
+
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#ecf0f1',
-    },
-    paragraph: {
-      margin: 24,
-      fontSize: 18,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      color: '#34495e',
-    },
+        backgroundColor: '#fff',
+      },
+
+  logoStyle: {
+    width: 47,
+    height: 37.7,
+    marginLeft:20,
+    marginTop:20,
+    marginBottom:5,
+
+  },
   });
   

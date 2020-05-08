@@ -10,11 +10,10 @@ export default function restaurantList() {
 
     const [partyList, setPartyList] = useState({
         data: [
-            {name: "네네 치킨",address: 2000 ,roomName: 15000},
-            {name: "네네 치킨",address: 2000 ,roomName: 15000},
-            {name: "네네 치킨",address: 2000 ,roomName: 15000},
-            {name: "네네 치킨",address: 2000 ,roomName: 15000},
-            {name: "네네 치킨",address: 2000 ,roomName: 15000},
+
+            {name: "네네 치킨 중앙대점",address: "중앙대 309관" ,roomName: "치즈 스노윙먹어요"},
+            {name: "엽기 떡볶이 중앙대점",address: "중앙대 308관" ,roomName: "엽떡반띵하실분"},
+            {name: "교촌 치킨 중앙대점",address: "중앙대 309관" ,roomName: "교촌 ㄲㄲ"},
 
         ]
     });
