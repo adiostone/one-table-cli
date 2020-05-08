@@ -3,21 +3,19 @@ import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,T
 import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
-import RestaurantItem from './restaurantItem';
+import PartyItem from './partyItem';
 
 
 export default function restaurantList() {
 
-    const [restaurantList, setRestaurantList] = useState({
+    const [partyList, setPartyList] = useState({
         data: [
-            {name: "네네 치킨",deliveryFee: 2000 ,atLeastMoney: 15000},
-            {name: "비비큐", deliveryFee: 3000 ,atLeastMoney: 16000},
-            {name: "굽네 치킨", deliveryFee: 2000 ,atLeastMoney: 15000},
-            {name: "호식이 두마리", deliveryFee: 1000 ,atLeastMoney: 14000},
-            {name: "BHC",deliveryFee: 2000 ,atLeastMoney: 15000},
-            {name: "처갓집 양념치킨", deliveryFee: 3000 ,atLeastMoney: 16000},
-            {name: "교촌치킨", deliveryFee: 2000 ,atLeastMoney: 15000},
-            {name: "후라이드 참 잘하는 집", deliveryFee: 1000 ,atLeastMoney: 14000},
+            {name: "네네 치킨",address: 2000 ,roomName: 15000},
+            {name: "네네 치킨",address: 2000 ,roomName: 15000},
+            {name: "네네 치킨",address: 2000 ,roomName: 15000},
+            {name: "네네 치킨",address: 2000 ,roomName: 15000},
+            {name: "네네 치킨",address: 2000 ,roomName: 15000},
+
         ]
     });
 
@@ -27,7 +25,7 @@ export default function restaurantList() {
 
 
     // function addDummyItem(){
-    //     setRestaurantList({
+    //     setRestaurantListData({
     //         data: [
     //             {name: "네네 치킨",deliveryFee: 2000 ,atLeastMoney: 15000},
     //             {name: "비비큐", deliveryFee: 3000 ,atLeastMoney: 16000},
@@ -38,14 +36,13 @@ export default function restaurantList() {
     // }
 
   return (
-    <ScrollView style={styles.restaurantContainer}>
-        {restaurantList.data.map((data) => {
-        return (<RestaurantItem data={data}/>);
+    <ScrollView style={styles.listContainer}>
+    {partyList.data.map((data) => {
+        return (<PartyItem data={data}/>);
         })}
     </ScrollView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -55,10 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 
-  restaurantContainer: {
-    display : "flex",
-    flexDirection: "column",
-    alignContent : "stretch",
+  listContainer:{
+    alignSelf: 'center',
   },
-
 });
