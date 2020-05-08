@@ -4,11 +4,15 @@ import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
 
+import { useNavigation } from '@react-navigation/native';
 
 export default function foodItem(itemData) {
 
     const [foodName, setFoodName] = useState(itemData.data.name) 
     const [price, setPrice] = useState(itemData.data.price) 
+
+    const navigation = useNavigation();
+
 
   useEffect(()=>{
    
@@ -16,9 +20,9 @@ export default function foodItem(itemData) {
 
   return (
 
-          <TouchableOpacity style={styles.listBox}>
+          <TouchableOpacity style={styles.listBox} onPress={() => {navigation.navigate("foodDetail")}}>
             <Text style={styles.foodNameText}> {foodName}</Text>
-            <Text style={styles.priceText}>{price}</Text>
+            <Text style={styles.priceText}>-{price}</Text>
           </TouchableOpacity>        
       
   );

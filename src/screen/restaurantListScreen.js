@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { StyleSheet, Text, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
 import RestuarantList from "../component/restaurantList"
+import LogoButton from "../component/logoButton"
 
 
 export default function restuarantListScreen({navigation}) {
@@ -8,10 +9,8 @@ export default function restuarantListScreen({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-        <TouchableOpacity  onPress={() => navigation.navigate('main')}>
-                <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
-        </TouchableOpacity>            
-             <View style={styles.buttonContainer}>
+            <LogoButton/>
+            <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.tabButton}
                 >
@@ -70,14 +69,5 @@ export default function restuarantListScreen({navigation}) {
         fontSize : 22,
         fontWeight : "bold",
     },
-
-  logoStyle: {
-    width: 47,
-    height: 37.7,
-    marginLeft:20,
-    marginTop:20,
-    marginBottom:5,
-
-  },
   });
   

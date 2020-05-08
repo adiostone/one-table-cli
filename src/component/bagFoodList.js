@@ -3,23 +3,15 @@ import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,T
 import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
-import FoodItem from './foodItem';
+import BagFoodItem from './bagFoodItem';
 
 
-export default function restaurantList() {
+export default function bagFoodList() {
 
-    const [foodList, setFoodList] = useState({
+    const [bagFoodList, setBagFoodList] = useState({
         data: [
-            {name: "후라이드 치킨",price : 15000},
-            {name: "후라이드 치킨 순살",price : 18000},
-            {name: "양념 치킨", price : 16000},
-            {name: "양념 치킨 순살",price : 19000},
-            {name: "스노윙 치킨", price : 16000},
-            {name: "스노윙 치킨 순살",price : 19000},
-            {name: "파닭", price : 16000},
-            {name: "파닭 순살",price : 19000},
-            {name: "후라이드 반 양념 반", price : 16000},
-            {name: "후라이드 반 양념 반 순살",price : 19000},
+            {name: "후라이드 치킨",price : 5000, quantity : 1/3 , isPublicMenu : true},
+            {name: "감자튀김",price : 3000, quantity : 1 , isPublicMenu : false},
 
         ]
     });
@@ -41,9 +33,9 @@ export default function restaurantList() {
     // }
 
   return (
-    <ScrollView style={styles.foodContainer}>
-        {foodList.data.map((data) => {
-        return (<FoodItem data={data}/>);
+    <ScrollView style={styles.bagFoodContainer}>
+        {bagFoodList.data.map((data) => {
+        return (<bagFoodItem data={data}/>);
         })}
     </ScrollView>
   );
@@ -51,7 +43,7 @@ export default function restaurantList() {
 
 const styles = StyleSheet.create({
 
-  foodContainer: {
+  bagFoodContainer: {
     display : "flex",
     flexDirection: "column",
     alignContent : "stretch",

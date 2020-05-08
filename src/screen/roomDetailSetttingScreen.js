@@ -1,39 +1,38 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { StyleSheet, Text,SafeAreaView , TouchableOpacity,View,Button, Image,TextInput,Dimensions } from 'react-native';
+import LogoButton from "../component/logoButton"
 
 export default function roomDetailSettingScreen({navigation}) {
 
     return (
       <SafeAreaView style={styles.container}>
-        <TouchableOpacity  onPress={() => navigation.navigate('main')}>
-            <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
-        </TouchableOpacity>    
-            <View style={styles.roomDetailContainer}>
-                <View style={styles.restaurantNameBox}>
-                  <Text style={styles.restaurantNameText}>네네치킨 중앙대점</Text>
-                </View>
-                <View style={styles.detailSettingBox}>
-                  <Text style={styles.detailSettingText}>방제목</Text>                  
-                </View>
-                <View style={styles.detailSettingInputBox}>
-                    <TextInput style={styles.detailSettingInputText}></TextInput>
-                </View>
-                <View style={styles.detailSettingBox}>
-                  <Text style={styles.detailSettingText}>최대인원</Text>                  
-                </View>
-                <View style={styles.detailSettingInputBox}>
-                    <TextInput style={styles.detailSettingInputText}></TextInput>
-                </View>
-                <View style={styles.detailSettingBox}>
-                  <Text style={styles.detailSettingText}>만나는 위치</Text>                  
-                </View>
-                <View style={styles.detailSettingInputBox}>
-                    <TextInput style={styles.detailSettingInputText}></TextInput>
-                </View>
-                <TouchableOpacity style={styles.buttonBox} onPress={() => navigation.navigate('room')}>
-                  <Text style={styles.buttonText}>파티 만들기</Text>
-                </TouchableOpacity>
-            </View>
+          <LogoButton/>
+          <View style={styles.roomDetailContainer}>
+              <View style={styles.restaurantNameBox}>
+                <Text style={styles.restaurantNameText}>네네치킨 중앙대점</Text>
+              </View>
+              <View style={styles.detailSettingBox}>
+                <Text style={styles.detailSettingText}>방제목</Text>                  
+              </View>
+              <View style={styles.detailSettingInputBox}>
+                  <TextInput style={styles.detailSettingInputText}></TextInput>
+              </View>
+              <View style={styles.detailSettingBox}>
+                <Text style={styles.detailSettingText}>최대인원</Text>                  
+              </View>
+              <View style={styles.detailSettingInputBox}>
+                  <TextInput style={styles.detailSettingInputText}></TextInput>
+              </View>
+              <View style={styles.detailSettingBox}>
+                <Text style={styles.detailSettingText}>만나는 위치</Text>                  
+              </View>
+              <View style={styles.detailSettingInputBox}>
+                  <TextInput style={styles.detailSettingInputText}></TextInput>
+              </View>
+              <TouchableOpacity style={styles.buttonBox} onPress={() => navigation.navigate('room')}>
+                <Text style={styles.buttonText}>파티 만들기</Text>
+              </TouchableOpacity>
+          </View>
         </SafeAreaView>
         
     );
@@ -123,15 +122,6 @@ export default function roomDetailSettingScreen({navigation}) {
       textAlign: "center",
       color: "#FFFFFF",
   
-    },
-
-    logoStyle: {
-      width: 47,
-      height: 37.7,
-      marginLeft:20,
-      marginTop:20,
-      marginBottom:5,
-
     },
   });
   

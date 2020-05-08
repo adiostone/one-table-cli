@@ -4,6 +4,9 @@ import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
 
+import { useNavigation } from '@react-navigation/native';
+
+
 
 export default function restaurantItem(itemData) {
 
@@ -11,9 +14,12 @@ export default function restaurantItem(itemData) {
     const [deliveryFee, setDeliveryFee] = useState(itemData.data.deliveryFee) 
     const [atLeastMoney, setAtLeastMoney] = useState(itemData.data.atLeastMoney) 
 
+    const navigation = useNavigation();
+
+
   return (
 
-        <TouchableOpacity style={styles.restaurantButton}>
+        <TouchableOpacity style={styles.restaurantButton}  onPress={() => {navigation.navigate("roomDetailSetting")}}>
         <Text style={styles.restaurantNameText}>{restaurantName}</Text>
         <Text style={styles.restaurantDetailText}>배달팁{deliveryFee} 최소주문금액 {atLeastMoney}원</Text>
         </TouchableOpacity>

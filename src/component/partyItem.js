@@ -4,12 +4,16 @@ import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
 
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function partyItem(itemData) {
 
     const [restaurantName, setRestaurantName] = useState(itemData.data.name) 
     const [address, setAddress] = useState(itemData.data.address) 
     const [roomName, setRoomName] = useState(itemData.data.roomName) 
+
+    const navigation = useNavigation();
 
 
   useEffect(()=>{
@@ -19,7 +23,7 @@ export default function partyItem(itemData) {
 
   return (
 
-          <TouchableOpacity style={styles.listBox}>
+          <TouchableOpacity style={styles.listBox} onPress={() => {navigation.navigate("room")}}>
             <Text style={styles.restaurantNameText}> {restaurantName}</Text>
             <Text style={styles.addressText}>{address}</Text>
             <Text style={styles.roomNameText}> {roomName}</Text>

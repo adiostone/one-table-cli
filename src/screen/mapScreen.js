@@ -10,7 +10,7 @@ import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 
 
-
+import LogoButton from "../component/logoButton"
 import config from "../config/config"
 
 export default function mapScreen({navigation}) {
@@ -85,9 +85,7 @@ export default function mapScreen({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <TouchableOpacity  onPress={() => navigation.navigate('main')}>
-          <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
-        </TouchableOpacity>
+        <LogoButton/>
         <ScrollView style={styles.mapContainer}>
             {(locationIsSet==="true") ?
             //main page

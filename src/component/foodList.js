@@ -6,7 +6,7 @@ import axios from 'axios'
 import FoodItem from './foodItem';
 
 
-export default function restaurantList() {
+export default function foodList() {
 
     const [foodList, setFoodList] = useState({
         data: [

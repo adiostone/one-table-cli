@@ -6,6 +6,7 @@ import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import PartyList from "../component/partyList"
 import axios from 'axios'
+import LogoButton from "../component/logoButton"
 
 
 export default function mainScreen({navigation}) {
@@ -124,7 +125,7 @@ export default function mainScreen({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
+        <LogoButton/>
         <View style={styles.pinContainer}>
           <TouchableOpacity style={styles.locationBox} onPress={() => navigation.navigate('map')}>
             <Text style={styles.locationText}>위치 설정</Text>
@@ -184,11 +185,5 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
 
   },
-  logoStyle: {
-    width: 47,
-    height: 37.7,
-    marginLeft:20,
-    marginTop:20,
-    marginBottom:15,
-  },
+
 });

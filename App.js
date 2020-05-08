@@ -8,14 +8,15 @@ import loginScreen from './src/screen/loginScreen'
 import mainScreen from './src/screen/mainScreen'
 import mapScreen from './src/screen/mapScreen'
 import restaurantListScreen from './src/screen/restaurantListScreen'
-import foodListScreen from './src/screen/foodListScreen'
 import roomDetailSettingScreen from './src/screen/roomDetailSetttingScreen'
 import roomScreen from './src/screen/roomScreen'
-import shopplingBagScreen from './src/screen/shoppingBagScreen'
+import foodListScreen from './src/screen/foodListScreen'
+import foodDetailScreen from './src/screen/foodDetailScreen'
+import shoppingBagScreen from './src/screen/shoppingBagScreen';
+
 import * as Font from 'expo-font';
 
 import * as SecureStore from 'expo-secure-store';
-import shoppingBagScreen from './src/screen/shoppingBagScreen';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,7 @@ export default function App(){
           <Stack.Screen name="roomDetailSetting" component={roomDetailSettingScreen} />
           <Stack.Screen name="room" component={roomScreen}/>
           <Stack.Screen name="foodList" component={foodListScreen} />
+          <Stack.Screen name="foodDetail" component={foodDetailScreen} />
           <Stack.Screen name="shoppingBag" component={shoppingBagScreen} />
         </Stack.Navigator>
       </NavigationContainer>

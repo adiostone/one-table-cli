@@ -6,7 +6,7 @@ import axios from 'axios'
 import PartyItem from './partyItem';
 
 
-export default function restaurantList() {
+export default function partyList() {
 
     const [partyList, setPartyList] = useState({
         data: [
