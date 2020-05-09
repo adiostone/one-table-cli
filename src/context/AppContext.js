@@ -9,6 +9,9 @@ export const AppProvider =({children}) =>{
     const [accessToken, setAccessToken] = useState('')
     const [refreshToken, setRefreshToken] = useState('')
 
+    //userData
+    const [nickname, setNickname] = useState("")
+
     //LocationInformation
     const [locationIsSet, setLocationIsSet] = useState("false");
     const [location, setLocation] = useState();  
@@ -25,6 +28,10 @@ export const AppProvider =({children}) =>{
           setAccessToken,
           refreshToken,
           setRefreshToken,
+
+          nickname,
+          setNickname,
+
           locationIsSet,
           setLocationIsSet,
           location,

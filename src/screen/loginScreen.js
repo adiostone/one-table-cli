@@ -11,28 +11,28 @@ export default function loginScreen({navigation}) {
 
   const appContext = useContext(AppContext)
 
-  async function login(url){
-    console.log('redirected from Google OAuth')
-    console.log(url)
-    let { path, queryParams } = Linking.parse(url)
-    console.log(queryParams)
-    const { access, refresh } = queryParams
-    const accessToken= access    
-    const refreshToken  = refresh
-    console.log(`accessToken: ${accessToken}`)
-    console.log(`refreshToken: ${refreshToken}`)
-    WebBrowser.dismissBrowser()
-    if (!accessToken || !refreshToken) {
-      console.log('wrong tokens')
-      Alert.alert('Sign Up Fails')
-    } else {
+  async function loadNickname(accessToken){
+    console.log("load nickname")
+    const res = await axios.get('https://api.onetable.xyz/v1/table/me/profile',
+        { headers: { Authorization: `Bearer ${accessToken}` }
+    })
 
-      // set the tokens and store to the machine
-      await SecureStore.setItemAsync('accessToken', accessToken)
-      await SecureStore.setItemAsync('refreshToken', refreshToken)
-      appContext.setAccessToken(accessToken)
-      appContext.setRefreshToken(refreshToken)
+    console.log(res.data.nickname)
+    const nickname =res.data.nickname
 
+    //for welcome user
+    Alert.alert(nickname + "님 환영합니다!")
+
+
+    //set nickname
+    await SecureStore.setItemAsync('nickname', nickname)
+    appContext.setNickname(nickname)
+
+  }
+
+  async function loadLocationInfo(){
+
+      //load location info
       const locationIsSet = await SecureStore.getItemAsync('locationIsSet')   
       console.log("Do you have Location Information?")
       console.log(locationIsSet)
@@ -47,6 +47,35 @@ export default function loginScreen({navigation}) {
       else{
         console.log("you don't have location information")
       }
+
+  }
+
+  async function login(url){
+    console.log('redirected from Google OAuth')
+    console.log(url)
+    let { path, queryParams } = Linking.parse(url)
+    console.log(queryParams)
+    const { access, refresh } = queryParams
+    const accessToken= access    
+    const refreshToken  = refresh
+    console.log(`accessToken: ${accessToken}`)
+    console.log(`refreshToken: ${refreshToken}`)
+    WebBrowser.dismissBrowser()
+
+    if (!accessToken || !refreshToken) {
+      console.log('wrong tokens')
+      Alert.alert('Sign Up Fails')
+    } else {
+
+      // set the tokens and store to the machine
+      await SecureStore.setItemAsync('accessToken', accessToken)
+      await SecureStore.setItemAsync('refreshToken', refreshToken)
+      appContext.setAccessToken(accessToken)
+      appContext.setRefreshToken(refreshToken)
+
+      await loadNickname(accessToken)
+      await loadLocationInfo()
+
       navigation.navigate('main')
     }
   }

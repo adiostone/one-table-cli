@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
+import { StyleSheet, Text, Alert,View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import Constants from 'expo-constants';
 import restuarantFoodListScreen from './foodListScreen';
 import { AppContext } from '../context/AppContext'
@@ -24,13 +24,17 @@ export default function mainScreen({navigation}) {
         // Check if the token valid
         // if not, refresh tokens
         axios({
-          url: 'https://api.onetable.xyz/v1/table/test',
+          url: 'https://api.onetable.xyz/v1/table/me/profile',
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         })
           .then(res => {
-            console.log(res.data)   
+            console.log(res.data.nickname)
+            //set nickname
+            const nickname =res.data.nickname      
+            SecureStore.setItemAsync('nickname', nickname)
+            appContext.setNickname(nickname)    
           })
           .catch(err => {
             if (err && err.response) {
