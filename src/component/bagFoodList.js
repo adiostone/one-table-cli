@@ -34,8 +34,8 @@ export default function bagFoodList() {
 
   return (
     <ScrollView style={styles.bagFoodContainer}>
-        {bagFoodList.data.map((data) => {
-        return (<BagFoodItem data={data}/>);
+        {bagFoodList.data.map((data,i) => {
+        return (<BagFoodItem key={i} data={data}/>);
         })}
     </ScrollView>
   );

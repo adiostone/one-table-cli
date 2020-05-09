@@ -42,8 +42,8 @@ export default function foodList() {
 
   return (
     <ScrollView style={styles.foodContainer}>
-        {foodList.data.map((data) => {
-        return (<FoodItem data={data}/>);
+        {foodList.data.map((data,i) => {
+        return (<FoodItem key={i} data={data}/>);
         })}
     </ScrollView>
   );

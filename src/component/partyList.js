@@ -36,8 +36,8 @@ export default function partyList() {
 
   return (
     <ScrollView style={styles.listContainer}>
-    {partyList.data.map((data) => {
-        return (<PartyItem data={data}/>);
+    {partyList.data.map((data, i) => {
+        return (<PartyItem key={i} data={data}/>);
         })}
     </ScrollView>
   );

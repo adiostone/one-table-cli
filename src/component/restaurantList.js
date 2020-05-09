@@ -39,8 +39,8 @@ export default function restaurantList() {
 
   return (
     <ScrollView style={styles.restaurantContainer}>
-        {restaurantList.data.map((data) => {
-        return (<RestaurantItem data={data}/>);
+        {restaurantList.data.map((data,i) => {
+        return (<RestaurantItem key={i} data={data}/>);
         })}
     </ScrollView>
   );
