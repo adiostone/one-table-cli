@@ -4,10 +4,13 @@ import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
 
-export default function userItem(itemData) {
+export default function userItem(props) {
 
-  const [userID, setUserID] = useState(itemData.data.userID) 
-  const [nickname, setNickname] = useState(itemData.data.nickname) 
+  const userID = props.data.userID
+  const nickname =props.data.nickname
+  const isMaster =props.data.isMaster 
+  const isReady = props.data.isReady 
+
 
   useEffect(()=>{
    
@@ -16,7 +19,7 @@ export default function userItem(itemData) {
   return (
 
           <View style={styles.listBox}>
-            <Text style={styles.foodNameText}> {nickname}</Text>
+            <Text style={styles.foodNameText}>{nickname}</Text>
           </View>        
       
   );

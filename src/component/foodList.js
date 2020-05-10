@@ -6,10 +6,9 @@ import axios from 'axios'
 import FoodItem from './foodItem';
 
 
-export default function foodList() {
+export default function foodList(props) {
 
-    const [foodList, setFoodList] = useState({
-        data: [
+    const foodList=[
             {name: "후라이드 치킨",price : 15000},
             {name: "후라이드 치킨 순살",price : 18000},
             {name: "양념 치킨", price : 16000},
@@ -22,7 +21,6 @@ export default function foodList() {
             {name: "후라이드 반 양념 반 순살",price : 19000},
 
         ]
-    });
 
     useEffect(() => {
         // addDummyItem()
@@ -42,7 +40,7 @@ export default function foodList() {
 
   return (
     <ScrollView style={styles.foodContainer}>
-        {foodList.data.map((data,i) => {
+        {foodList.map((data,i) => {
         return (<FoodItem key={i} data={data}/>);
         })}
     </ScrollView>

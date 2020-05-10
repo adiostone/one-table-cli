@@ -9,7 +9,7 @@ import * as Permissions from 'expo-permissions';
 import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 
-
+import axios from 'axios'
 import LogoButton from "../component/logoButton"
 import config from "../config/config"
 
@@ -35,10 +35,26 @@ export default function mapScreen({navigation}) {
   function setDetailLocation(e) {
     setDetailAddress(textInput)
     appContext.setDetailAddress(textInput)
-    SecureStore.setItemAsync('detailAddress',textInput).then(res => {
-      console.log("setDetailAddress")
-    }
-    )
+    SecureStore.setItemAsync('detailAddress',textInput)
+    axios({
+        method: 'patch',
+        url: "https://api.onetable.xyz/v1/table/me/place",
+        headers: {
+          Authorization: `Bearer ${appContext.accessToken}`,
+        },
+        data : {
+          "address2": textInput
+        },
+    })   
+    .then(res =>{
+        console.log("send detail Location info to server")
+        console.log(res)
+
+    })
+    .catch(err =>{
+        console.log("failed send detail Location info to server")
+        console.log(err)
+    })
   }
 
   const getNewlocation = async () => {
@@ -74,8 +90,32 @@ export default function mapScreen({navigation}) {
             setFormattedAddress(modifiedString);
             appContext.setFormattedAddress(modifiedString);
             SecureStore.setItemAsync('formattedAddress',modifiedString)
+
+            axios({
+                method: 'patch',
+                url: "https://api.onetable.xyz/v1/table/me/place",
+                headers: {
+                  Authorization: `Bearer ${appContext.accessToken}`,
+                },
+                data : {
+                  "latitude": location.latitude,
+                  "longitude": location.longitude,
+                  "address1": modifiedString,
+                },
+            })   
+            .then(res =>{
+                console.log("send Location info to server")
+                console.log(res)
+
+            })
+            .catch(err =>{
+                console.log("send Location info to server")
+                console.log(err)
+            })
         })
         .catch(error => console.warn(error));
+
+
       appContext.setLocationIsSet("true");
       setLocationIsSet("true");
       appContext.setDetailAddress("세부정보를 입력해주세요");

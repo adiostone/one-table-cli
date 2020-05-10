@@ -8,15 +8,15 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-export default function restaurantItem(itemData) {
+export default function restaurantItem(props) {
 
-    const [restaurantID, setRestaurantID] = useState(itemData.data.ID) 
-    const [restaurantName, setRestaurantName] = useState(itemData.data.name) 
-    const [deliveryFee, setDeliveryFee] = useState(itemData.data.deliveryFee) 
-    const [atLeastMoney, setAtLeastMoney] = useState(itemData.data.atLeastMoney) 
+    const restaurantID =props.data.id 
+    const category =props.data.category 
+    const restaurantName = props.data.name 
+    const deliveryFee =props.data.deliveryFee 
+    const minOrderPrice =props.data.minOrderPrice 
 
     const navigation = useNavigation();
-
 
   return (
 
@@ -25,7 +25,7 @@ export default function restaurantItem(itemData) {
           restaurantName: restaurantName,
         })}}>
         <Text style={styles.restaurantNameText}>{restaurantName}</Text>
-        <Text style={styles.restaurantDetailText}>배달팁{deliveryFee} 최소주문금액 {atLeastMoney}원</Text>
+        <Text style={styles.restaurantDetailText}>최소주문금액 {minOrderPrice}원</Text>
         </TouchableOpacity>
       
   );

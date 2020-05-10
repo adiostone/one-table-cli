@@ -6,17 +6,16 @@ import axios from 'axios'
 import PartyItem from './partyItem';
 
 
-export default function partyList() {
+export default function partyList(props) {
 
-    const [partyList, setPartyList] = useState({
-        data: [
+    const partyList = [
 
             {name: "네네 치킨 중앙대점",address: "중앙대 309관" ,partyName: "치즈 스노윙먹어요"},
             {name: "엽기 떡볶이 중앙대점",address: "중앙대 308관" ,partyName: "엽떡반띵하실분"},
             {name: "교촌 치킨 중앙대점",address: "중앙대 309관" ,partyName: "교촌 ㄲㄲ"},
 
         ]
-    });
+
 
     useEffect(() => {
         // addDummyItem()
@@ -36,7 +35,7 @@ export default function partyList() {
 
   return (
     <ScrollView style={styles.listContainer}>
-    {partyList.data.map((data, i) => {
+    {partyList.map((data, i) => {
         return (<PartyItem key={i} data={data}/>);
         })}
     </ScrollView>

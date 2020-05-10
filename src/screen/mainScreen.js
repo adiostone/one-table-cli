@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext,useRef } from 'react'
 import { StyleSheet, Text, Alert,View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import Constants from 'expo-constants';
-import restuarantFoodListScreen from './foodListScreen';
 import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import PartyList from "../component/partyList"
@@ -14,7 +13,7 @@ export default function mainScreen({navigation}) {
 
   const appContext = useContext(AppContext)
 
-  const [partyList, setPartyList]= useState([]) 
+  const [partyList, setPartyList]= useState() 
 
   const ws = useRef(null);
 
@@ -28,15 +27,11 @@ export default function mainScreen({navigation}) {
       })
 
       ws.current.onopen = () => {
-        const message = { operation: 'test', body: 'hello body' }
+        const message = { operation: 'getPartyList', body: 'hello body' }
         ws.current.send(JSON.stringify(message))
       };
       
-      // ws.current.onmessage('ping', () => {
-      //   ws.current.send("pong")
-      // })
-      
-  },);
+  },[]);
 
     useEffect(() => {
       if (!ws.current) return;
@@ -44,8 +39,18 @@ export default function mainScreen({navigation}) {
       ws.current.onmessage = e => {
           const message = JSON.parse(e.data);
           console.log(message);
+          if(message.operation==="loadParty"){
+
+            
+          }
+          if(message.operation==="insertParty"){
+            
+          }
+          if(message.operation==="deleteParty"){
+            
+          }
       };
-  }, [partyList]);
+  },);
 
   
 
@@ -188,7 +193,7 @@ export default function mainScreen({navigation}) {
           <TouchableOpacity style={styles.createBox} onPress={() => navigation.navigate('restaurantList')}>
             <Text style={styles.createText}> 파티 만들기</Text>
           </TouchableOpacity>
-          <PartyList/>
+          <PartyList data={partyList}/>
         </ScrollView>
     </SafeAreaView>
       

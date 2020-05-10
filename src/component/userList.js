@@ -6,15 +6,12 @@ import axios from 'axios'
 import UserItem from './userItem';
 
 
-export default function userList() {
+export default function userList(props) {
 
-    const [userList, setUserList] = useState({
-        data: [
+    const userList =[
             {nickname: "bose1021"},
             {nickname: "dntmdmwl24024"},
-
         ]
-    });
 
     useEffect(() => {
         // addDummyItem()
@@ -34,7 +31,7 @@ export default function userList() {
 
   return (
     <ScrollView style={styles.foodContainer}>
-        {userList.data.map((data,i) => {
+        {userList.map((data,i) => {
         return (<UserItem key={i} data={data}/>);
         })}
     </ScrollView>
