@@ -4,12 +4,12 @@ import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
 
-export default function userItem(itemData) {
+export default function userItem(props) {
 
-  const [userID, setUserID] = useState(itemData.data.userID) 
-  const [nickname, setNickname] = useState(itemData.data.nickname) 
-  const [isMaster, setIsMaster] = useState(itemData.data.isMaster) 
-  const [isReady, setIsReady] = useState(itemData.data.isReady) 
+  const userID = props.data.userID
+  const nickname =props.data.nickname
+  const isMaster =props.data.isMaster 
+  const isReady = props.data.isReady 
 
 
   useEffect(()=>{

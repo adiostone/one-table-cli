@@ -6,11 +6,11 @@ import axios from 'axios'
 
 import { useNavigation } from '@react-navigation/native';
 
-export default function foodItem(itemData) {
+export default function foodItem(props) {
 
-    const [foodID, setFoodID] = useState(itemData.data.ID) 
-    const [foodName, setFoodName] = useState(itemData.data.name) 
-    const [price, setPrice] = useState(itemData.data.price) 
+    const foodID =props.data.id
+    const foodName =props.data.name 
+    const price =props.data.price 
 
     const navigation = useNavigation();
 
@@ -25,7 +25,6 @@ export default function foodItem(itemData) {
             foodID: foodID,
             foodName: foodName,
             foodPrice: price,
-
           })}}>
             <Text style={styles.foodNameText}>{foodName}</Text>
             <Text style={styles.priceText}>{price}원</Text>

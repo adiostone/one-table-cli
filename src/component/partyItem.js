@@ -7,15 +7,15 @@ import axios from 'axios'
 import { useNavigation } from '@react-navigation/native';
 
 
-export default function partyItem(itemData) {
+export default function partyItem(props) {
 
-    const [partyID, setPartyID] = useState(itemData.data.ID) 
+    const partyID = props.data.id 
 
-    const [restaurantName, setRestaurantName] = useState(itemData.data.name) 
-    const [address, setAddress] = useState(itemData.data.address) 
-    const [capacity, setCapacity] = useState(itemData.data.capacity);
-    const [curPeopleNum, setCurPeopleNum] = useState(itemData.data.curPeopleNum);
-    const [partyName, setPartyName] = useState(itemData.data.partyName) 
+    const restaurantName = props.data.name 
+    const address = props.data.address 
+    const capacity = props.data.capacity
+    const curPeopleNum = props.data.curPeopleNum
+    const partyName =props.data.partyName 
 
     const navigation = useNavigation();
 

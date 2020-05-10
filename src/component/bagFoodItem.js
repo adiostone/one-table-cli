@@ -7,14 +7,14 @@ import axios from 'axios'
 import { useNavigation } from '@react-navigation/native';
 
 
-export default function bagFoodItem(itemData) {
+export default function bagFoodItem(props) {
 
-    const [foodID, setFoodID] = useState(itemData.data.foodID) 
-    const [foodName, setFoodName] = useState(itemData.data.name) 
-    const [foodPrice, setFoodPrice] = useState(itemData.data.foodPrice) 
-    const [totalPrice, setTotalPrice] = useState(itemData.data.totalPrice) 
-    const [quantity, setQuantity] = useState(itemData.data.quantity) 
-    const [isPublicMenu, setIsPublicMenu] = useState(itemData.data.isPublicMenu) 
+    const foodID = props.data.foodID 
+    const foodName = props.data.name
+    const foodPrice = props.data.foodPrice
+    const totalPrice = props.data.totalPrice 
+    const quantity = props.data.quantity
+    const isPublicMenu = props.data.isPublicMenu
 
     const navigation = useNavigation();
 
@@ -25,12 +25,14 @@ export default function bagFoodItem(itemData) {
   return (
 
       <View style={styles.listBox}>
-        <Text style={styles.foodNameText}>{foodName}</Text>
+        <View> 
+          <Text style={styles.foodNameText}>{foodName}</Text>
+        </View>
         <Text style={styles.foodPriceText}>{foodPrice}원</Text>
         <Text style={styles.quantityText}>수량 : {quantity}</Text>
         {(isPublicMenu===true) ? 
-        (<Text style={styles.blueText}>총 {totalPrice}원</Text>) :
-        (<Text style={styles.redText}>총 {totalPrice}원</Text>)
+        (<Text style={styles.blueText}>{totalPrice}원</Text>) :
+        (<Text style={styles.redText}>{totalPrice}원</Text>)
         }
       </View>        
       
