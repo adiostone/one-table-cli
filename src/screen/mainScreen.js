@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext,useRef } from 'react'
 import { StyleSheet, Text, Alert,View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import Constants from 'expo-constants';
 import restuarantFoodListScreen from './foodListScreen';
@@ -8,10 +8,47 @@ import PartyList from "../component/partyList"
 import axios from 'axios'
 import LogoButton from "../component/logoButton"
 
+const ws = new WebSocket('ws://localhost:3000/ws')
 
 export default function mainScreen({navigation}) {
 
   const appContext = useContext(AppContext)
+
+  const [partyList, setPartyList]= useState([]) 
+
+  const ws = useRef(null);
+
+
+
+  useEffect(() => {
+      ws.current = new WebSocket('wss://api.onetable.xyz/v1/table/party', {
+        headers: {
+          Authorization: 'Bearer ' +appContext.accessToken
+        }
+      })
+
+      ws.current.onopen = () => {
+        const message = { operation: 'test', body: 'hello body' }
+        ws.current.send(JSON.stringify(message))
+      };
+      
+      // ws.current.onmessage('ping', () => {
+      //   ws.current.send("pong")
+      // })
+      
+  },);
+
+    useEffect(() => {
+      if (!ws.current) return;
+
+      ws.current.onmessage = e => {
+          const message = JSON.parse(e.data);
+          console.log(message);
+      };
+  }, [partyList]);
+
+  
+
 
   // Check if there exists an access token
   // If not, navigate to Google sign in screen
@@ -30,11 +67,12 @@ export default function mainScreen({navigation}) {
           },
         })
           .then(res => {
+            console.log("load nickname")
             console.log(res.data.nickname)
             //set nickname
             const nickname =res.data.nickname      
-            SecureStore.setItemAsync('nickname', nickname)
-            appContext.setNickname(nickname)    
+            appContext.setNickname(nickname)   
+            loadLocationData(); 
           })
           .catch(err => {
             if (err && err.response) {
@@ -56,16 +94,29 @@ export default function mainScreen({navigation}) {
                     .then(res => {
                       console.log('tokens have been refreshed')
                       // Refresh the tokens and store to the machine again
-                      const { access, refresh } = res.data
+                      const { access } = res.data
                       console.log(access)
-                      console.log(refresh)
                       const accessToken= access    
-                      const refreshToken  = refresh
                       SecureStore.setItemAsync('accessToken', accessToken)
-                      SecureStore.setItemAsync('refreshToken', refreshToken)
                       appContext.setAccessToken(accessToken)
-                      appContext.setRefreshToken(refreshToken)
 
+                      axios({
+                        url: 'https://api.onetable.xyz/v1/table/me/profile',
+                        headers: {
+                          Authorization: `Bearer ${accessToken}`,
+                        },
+                      })
+                        .then(res => {
+                          console.log("load nickname")
+                          console.log(res.data.nickname)
+                          //set nickname
+                          const nickname =res.data.nickname      
+                          appContext.setNickname(nickname)   
+                          loadLocationData(); 
+                        })
+                        .catch(err =>{
+                          console.log(err)
+                        })
                       
                     })
                     .catch(err => {
@@ -98,8 +149,8 @@ export default function mainScreen({navigation}) {
         //     )
         //   })
 
+
         //load user data from expo 
-        loadLocationData();
 
         appContext.setAccessToken(accessToken)
         SecureStore.getItemAsync('refreshToken').then(refreshToken => {
