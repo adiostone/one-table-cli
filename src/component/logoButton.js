@@ -22,7 +22,7 @@ export default function logoButton() {
     height: 37.7,
     marginLeft:20,
     marginTop:20,
-    marginBottom:10,
+    marginBottom:13,
 
   },
   });

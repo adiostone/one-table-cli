@@ -3,15 +3,15 @@ import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,T
 import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
-import BagFoodItem from './bagFoodItem';
+import UserItem from './userItem';
 
 
-export default function bagFoodList() {
+export default function userList() {
 
-    const [bagFoodList, setBagFoodList] = useState({
+    const [userList, setUserList] = useState({
         data: [
-            {name: "후라이드 치킨",foodPrice : 15000, quantity : 1/3 ,totalPrice: 5000, isPublicMenu : true},
-            {name: "감자튀김",foodPrice : 3000, quantity : 1 ,totalPrice: 3000, isPublicMenu : false},
+            {nickname: "bose1021"},
+            {nickname: "dntmdmwl24024"},
 
         ]
     });
@@ -33,9 +33,9 @@ export default function bagFoodList() {
     // }
 
   return (
-    <ScrollView style={styles.bagFoodContainer}>
-        {bagFoodList.data.map((data,i) => {
-        return (<BagFoodItem key={i} data={data}/>);
+    <ScrollView style={styles.foodContainer}>
+        {userList.data.map((data,i) => {
+        return (<UserItem key={i} data={data}/>);
         })}
     </ScrollView>
   );
@@ -43,7 +43,7 @@ export default function bagFoodList() {
 
 const styles = StyleSheet.create({
 
-  bagFoodContainer: {
+  foodContainer: {
     display : "flex",
     flexDirection: "column",
     alignContent : "stretch",

@@ -60,7 +60,9 @@ export default function restuarantListScreen({navigation}) {
       alignContent : "stretch",
     },
     tabButton: {
-        padding : 12,
+        paddingLeft : 12,
+        paddingRight : 12,
+        paddingBottom : 10,
         borderBottomWidth: 1,
         borderColor: '#888888',
 
