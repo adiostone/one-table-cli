@@ -23,9 +23,7 @@ export default function loginScreen({navigation}) {
     //for welcome user
     Alert.alert(nickname + "님 환영합니다!")
 
-
     //set nickname
-    await SecureStore.setItemAsync('nickname', nickname)
     appContext.setNickname(nickname)
 
   }
