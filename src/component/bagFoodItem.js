@@ -9,13 +9,14 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function bagFoodItem(itemData) {
 
+    const [foodID, setFoodID] = useState(itemData.data.foodID) 
     const [foodName, setFoodName] = useState(itemData.data.name) 
-    const [price, setPrice] = useState(itemData.data.price) 
+    const [foodPrice, setFoodPrice] = useState(itemData.data.foodPrice) 
+    const [totalPrice, setTotalPrice] = useState(itemData.data.totalPrice) 
     const [quantity, setQuantity] = useState(itemData.data.quantity) 
     const [isPublicMenu, setIsPublicMenu] = useState(itemData.data.isPublicMenu) 
 
     const navigation = useNavigation();
-
 
   useEffect(()=>{
    
@@ -25,8 +26,9 @@ export default function bagFoodItem(itemData) {
 
       <View style={styles.listBox}>
         <Text style={styles.foodNameText}> {foodName}</Text>
-        <Text style={styles.quantityText}>{quantity}</Text>
-        <Text style={styles.priceText}>{price}</Text>
+        <Text style={styles.foodPriceText}>음식 가격 :{foodPrice}</Text>
+        <Text style={styles.quantityText}>수량 : {quantity}</Text>
+        <Text style={styles.totalPriceText}>총 가격 : {totalPrice}</Text>
       </View>        
       
   );
@@ -47,7 +49,11 @@ quantityText:{
   fontSize : 20,
   fontWeight : "bold",
 },
-priceText:{
+foodPriceText:{
+  fontSize : 20,
+  fontWeight : "bold",
+},
+totalPriceText:{
   fontSize : 20,
   fontWeight : "bold",
 },

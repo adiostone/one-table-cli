@@ -10,8 +10,8 @@ export default function bagFoodList() {
 
     const [bagFoodList, setBagFoodList] = useState({
         data: [
-            {name: "후라이드 치킨",price : 5000, quantity : 1/3 , isPublicMenu : true},
-            {name: "감자튀김",price : 3000, quantity : 1 , isPublicMenu : false},
+            {name: "후라이드 치킨",foodPrice : 15000, quantity : 1/3 ,totalPrice: 5000, isPublicMenu : true},
+            {name: "감자튀김",foodPrice : 3000, quantity : 1 ,totalPrice: 3000, isPublicMenu : false},
 
         ]
     });
