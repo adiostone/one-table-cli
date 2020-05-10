@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function restaurantItem(itemData) {
 
+    const [restaurantID, setRestaurantID] = useState(itemData.data.ID) 
     const [restaurantName, setRestaurantName] = useState(itemData.data.name) 
     const [deliveryFee, setDeliveryFee] = useState(itemData.data.deliveryFee) 
     const [atLeastMoney, setAtLeastMoney] = useState(itemData.data.atLeastMoney) 
@@ -19,7 +20,10 @@ export default function restaurantItem(itemData) {
 
   return (
 
-        <TouchableOpacity style={styles.restaurantButton}  onPress={() => {navigation.navigate("roomDetailSetting")}}>
+        <TouchableOpacity style={styles.restaurantButton}  onPress={() => {navigation.navigate("roomDetailSetting",{
+          restaurantID: restaurantID,
+          restaurantName: restaurantName,
+        })}}>
         <Text style={styles.restaurantNameText}>{restaurantName}</Text>
         <Text style={styles.restaurantDetailText}>배달팁{deliveryFee} 최소주문금액 {atLeastMoney}원</Text>
         </TouchableOpacity>

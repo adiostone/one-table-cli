@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function foodItem(itemData) {
 
+    const [foodID, setFoodID] = useState(itemData.data.ID) 
     const [foodName, setFoodName] = useState(itemData.data.name) 
     const [price, setPrice] = useState(itemData.data.price) 
 
@@ -20,9 +21,14 @@ export default function foodItem(itemData) {
 
   return (
 
-          <TouchableOpacity style={styles.listBox} onPress={() => {navigation.navigate("foodDetail")}}>
+          <TouchableOpacity style={styles.listBox} onPress={() => {navigation.navigate("foodDetail",{
+            foodID: foodID,
+            foodName: foodName,
+            foodPrice: price,
+
+          })}}>
             <Text style={styles.foodNameText}> {foodName}</Text>
-            <Text style={styles.priceText}>-{price}</Text>
+            <Text style={styles.priceText}>가격 : {price}</Text>
           </TouchableOpacity>        
       
   );
