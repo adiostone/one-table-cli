@@ -27,8 +27,8 @@ export default function foodItem(itemData) {
             foodPrice: price,
 
           })}}>
-            <Text style={styles.foodNameText}> {foodName}</Text>
-            <Text style={styles.priceText}>가격 : {price}</Text>
+            <Text style={styles.foodNameText}>{foodName}</Text>
+            <Text style={styles.priceText}>{price}원</Text>
           </TouchableOpacity>        
       
   );
@@ -47,8 +47,7 @@ foodNameText:{
     fontWeight : "bold",
 },
 priceText:{
-  fontSize : 20,
-  fontWeight : "bold",
+  fontSize : 18,
 },
 
 

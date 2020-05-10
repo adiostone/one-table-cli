@@ -8,6 +8,9 @@ export default function userItem(itemData) {
 
   const [userID, setUserID] = useState(itemData.data.userID) 
   const [nickname, setNickname] = useState(itemData.data.nickname) 
+  const [isMaster, setIsMaster] = useState(itemData.data.isMaster) 
+  const [isReady, setIsReady] = useState(itemData.data.isReady) 
+
 
   useEffect(()=>{
    
@@ -16,7 +19,7 @@ export default function userItem(itemData) {
   return (
 
           <View style={styles.listBox}>
-            <Text style={styles.foodNameText}> {nickname}</Text>
+            <Text style={styles.foodNameText}>{nickname}</Text>
           </View>        
       
   );

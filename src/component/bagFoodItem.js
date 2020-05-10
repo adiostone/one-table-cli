@@ -25,10 +25,13 @@ export default function bagFoodItem(itemData) {
   return (
 
       <View style={styles.listBox}>
-        <Text style={styles.foodNameText}> {foodName}</Text>
-        <Text style={styles.foodPriceText}>음식 가격 :{foodPrice}</Text>
+        <Text style={styles.foodNameText}>{foodName}</Text>
+        <Text style={styles.foodPriceText}>{foodPrice}원</Text>
         <Text style={styles.quantityText}>수량 : {quantity}</Text>
-        <Text style={styles.totalPriceText}>총 가격 : {totalPrice}</Text>
+        {(isPublicMenu===true) ? 
+        (<Text style={styles.blueText}>총 {totalPrice}원</Text>) :
+        (<Text style={styles.redText}>총 {totalPrice}원</Text>)
+        }
       </View>        
       
   );
@@ -46,16 +49,19 @@ foodNameText:{
     fontWeight : "bold",
 },
 quantityText:{
-  fontSize : 20,
-  fontWeight : "bold",
+  fontSize : 14,
 },
 foodPriceText:{
-  fontSize : 20,
-  fontWeight : "bold",
+  fontSize : 14
 },
-totalPriceText:{
-  fontSize : 20,
-  fontWeight : "bold",
+blueText:{
+  fontSize : 14,
+  color : "blue"
+},
+redText:{
+  fontSize : 14,
+  color : "red"
+
 },
 
 
