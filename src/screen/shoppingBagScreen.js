@@ -12,13 +12,15 @@ export default function shoppingBagScreen({route,navigation}) {
     return (
         <SafeAreaView style={styles.container}>
           <LogoButton/>
-          <View style={styles.shoppingBagBox}>
-              <Text style={styles.shoppingBagText}>장바구니</Text>
-          </View>
-          <BagFoodList/>
-          <TouchableOpacity style={styles.shoppingBagBox}>
-              <Text style={styles.shoppingBagText}>주문하기</Text>
-          </TouchableOpacity>
+          <ScrollView style={styles.scrollBox}>
+            <View style={styles.shoppingBagBox}>
+                <Text style={styles.shoppingBagText}>장바구니</Text>
+            </View>
+            <BagFoodList/>
+            <TouchableOpacity style={styles.shoppingBagBox}>
+                <Text style={styles.shoppingBagText}>주문하기</Text>
+            </TouchableOpacity>
+          </ScrollView>
         </SafeAreaView>
 
     );
@@ -28,6 +30,25 @@ export default function shoppingBagScreen({route,navigation}) {
     container: {
         backgroundColor: '#fff',
       },
+      shoppingBagBox:{
+        width: 335,
+        height: 39,
+        backgroundColor: "#FF8181",
+        borderRadius: 10,
+        marginBottom : 12, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        alignSelf:"center"
+    
+      },
+      shoppingBagText:{
+        fontStyle: 'normal',
+        fontSize: 20,
+        textAlign: "center",
+        color: "#FFFFFF",
+    
+      },
+  
 
   });
   
