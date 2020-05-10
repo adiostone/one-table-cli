@@ -18,10 +18,11 @@ export default function mapScreen({navigation}) {
   const appContext = useContext(AppContext)
 
   const [textInput, setTextInput] = useState(appContext.detailAddress);
+
+  const [locationIsSet, setLocationIsSet] = useState(appContext.locationIsSet);
   const [location, setLocation] = useState(appContext.location);  
   const [formattedAddress, setFormattedAddress] = useState(appContext.formattedAddress);
   const [detailAddress, setDetailAddress] = useState(appContext.detailAddress);
-  const [locationIsSet, setLocationIsSet] = useState(appContext.locationIsSet);
   const [mapRegion, setMapRegion] = useState(appContext.mapRegion);
 
   useEffect(() => {
@@ -99,9 +100,7 @@ export default function mapScreen({navigation}) {
             <View style={styles.locationBox}>
               <Text style={styles.locationBoxText}>{formattedAddress}</Text>
             </View>     
-            <View style={styles.locationBox}>
-              <TextInput style={styles.locationBoxText} onChangeText={(text) => setTextInput(text)}>{textInput}</TextInput>
-            </View>     
+            <TextInput style={styles.locationBox} onChangeText={(text) => setTextInput(text)}>{textInput}</TextInput>
             <TouchableOpacity style={styles.resetLocationBox} onPress={setDetailLocation}>
               <Text style={styles.resetLocationBoxText}>세부 주소 설정</Text>
             </TouchableOpacity>
@@ -147,12 +146,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center' ,
     alignSelf: 'center',
-
-  },
-  locationBoxText:{
     fontStyle: 'normal',
-    fontSize: 12,
+    fontSize: 14,
     textAlign: "center",
+
   },
 
   resetLocationBox:{
