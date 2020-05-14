@@ -18,6 +18,13 @@ export const AppProvider =({children}) =>{
     const [mapRegion, setMapRegion] = useState();
     const [formattedAddress, setFormattedAddress] = useState("");
     const [detailAddress, setDetailAddress] = useState("세부주소를 입력해주세요");
+
+    //partyInformation
+    const [partyID, setPartyID] = useState() 
+    const [restaurantID, setRestaurantID] = useState() 
+    const [restaurantName, setRestaurantName] = useState() 
+
+
   
     return (
       <AppContext.Provider
@@ -42,6 +49,11 @@ export const AppProvider =({children}) =>{
           setFormattedAddress,
           detailAddress,
           setDetailAddress,
+
+
+          partyID, setPartyID, 
+          restaurantID, setRestaurantID,
+          restaurantName, setRestaurantName,
           
         }}
       >

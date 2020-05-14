@@ -25,6 +25,9 @@ export default function mapScreen({navigation}) {
   const [detailAddress, setDetailAddress] = useState(appContext.detailAddress);
   const [mapRegion, setMapRegion] = useState(appContext.mapRegion);
 
+  Geocoder.init(config.googleAPIKey,{language: "korean"})
+
+
   useEffect(() => {
       if(locationIsSet==="false"){
         console.log("getLocation")
@@ -38,7 +41,7 @@ export default function mapScreen({navigation}) {
     SecureStore.setItemAsync('detailAddress',textInput)
     axios({
         method: 'patch',
-        url: "https://api.onetable.xyz/v1/table/me/place",
+        url: "https://dev.api.onetable.xyz/v1/table/me/place",
         headers: {
           Authorization: `Bearer ${appContext.accessToken}`,
         },
@@ -59,7 +62,6 @@ export default function mapScreen({navigation}) {
 
   const getNewlocation = async () => {
 
-      Geocoder.init(config.googleAPIKey,{language: "korean"})
       let { status } = await Location.requestPermissionsAsync();
       if (status !== 'granted') {
         console.log('Permission to access location was denied');
@@ -93,7 +95,7 @@ export default function mapScreen({navigation}) {
 
             axios({
                 method: 'patch',
-                url: "https://api.onetable.xyz/v1/table/me/place",
+                url: "https://dev.api.onetable.xyz/v1/table/me/place",
                 headers: {
                   Authorization: `Bearer ${appContext.accessToken}`,
                 },

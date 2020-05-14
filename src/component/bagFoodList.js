@@ -9,8 +9,8 @@ import BagFoodItem from './bagFoodItem';
 export default function bagFoodList(props) {
 
     const bagFoodList = [
-            {name: "후라이드 치킨",foodPrice : 15000, quantity : 1/3 ,totalPrice: 5000, isPublicMenu : true},
-            {name: "감자튀김",foodPrice : 3000, quantity : 1 ,totalPrice: 3000, isPublicMenu : false},
+            {name: "후라이드 치킨",foodPrice : 15000, quantity : 1 ,totalPrice: 5000,peopleNum : 3 ,isPublicMenu : true},
+            {name: "감자튀김",foodPrice : 3000, quantity : 1 ,totalPrice: 3000, peopleNum : 1 ,isPublicMenu : false},
 
         ]
 

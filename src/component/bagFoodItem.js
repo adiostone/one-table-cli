@@ -12,9 +12,10 @@ export default function bagFoodItem(props) {
     const foodID = props.data.foodID 
     const foodName = props.data.name
     const foodPrice = props.data.foodPrice
-    const totalPrice = props.data.totalPrice 
-    const quantity = props.data.quantity
+    const peopleNum = props.data.peopleNum
     const isPublicMenu = props.data.isPublicMenu
+    const quantity =props.data.quantity 
+    const totalPrice=props.data.totalPrice 
 
     const navigation = useNavigation();
 
@@ -22,18 +23,79 @@ export default function bagFoodItem(props) {
    
   })
 
+
+  function clickPlus(){
+    const newQuantity = quantity + 1
+    props.data.quantity =newQuantity
+    if(isPublicMenu===true){
+        props.data.totalPrice = newQuantity*foodPrice/peopleNum
+    }
+    else{
+      props.data.totalPrice = newQuantity*foodPrice
+    }
+  } 
+
+  function clickMinus(){
+    if(quantity>1){
+      const newQuantity = quantity - 1
+      props.data.quantity =newQuantity
+      if(isPublicMenu===true){
+        props.data.totalPrice = newQuantity*foodPrice/peopleNum
+      }
+      else{
+        props.data.totalPrice = newQuantity*foodPrice
+      }
+    }
+    
+  } 
+
   return (
 
       <View style={styles.listBox}>
-        <View> 
+        <View style={styles.foodNameBox}> 
           <Text style={styles.foodNameText}>{foodName}</Text>
-        </View>
-        <Text style={styles.foodPriceText}>{foodPrice}원</Text>
-        <Text style={styles.quantityText}>수량 : {quantity}</Text>
-        {(isPublicMenu===true) ? 
-        (<Text style={styles.blueText}>{totalPrice}원</Text>) :
-        (<Text style={styles.redText}>{totalPrice}원</Text>)
-        }
+        </View> 
+        {(isPublicMenu===true) ?(
+        <View style={styles.bottomBox}> 
+          <View style={styles.bottomLeftBox}>
+            <TouchableOpacity style={styles.plusMinusBox} onPress={clickMinus}>
+                  <Text style={styles.plusMinusText}>-</Text>
+            </TouchableOpacity>
+            <View style={styles.quantityBox}>
+              <Text style={styles.quantityText}>{quantity}</Text>
+            </View>
+            <TouchableOpacity style={styles.plusMinusBox} onPress={clickPlus}>
+              <Text style={styles.plusMinusText}>+</Text>
+            </TouchableOpacity>
+            <View style={styles.colorBox}>
+              <Text style={styles.redText}>{peopleNum}</Text>
+            </View>
+            </View>         
+          <View style={styles.bottomRightBox}> 
+            <Text style={styles.redText}>{totalPrice}</Text>
+          </View> 
+          
+        </View>) : 
+        (<View style={styles.bottomBox}> 
+          <View style={styles.bottomLeftBox}>
+            <TouchableOpacity style={styles.plusMinusBox} onPress={clickMinus}>
+                  <Text style={styles.plusMinusText}>-</Text>
+            </TouchableOpacity>
+            <View style={styles.quantityBox}>
+              <Text style={styles.quantityText}>{quantity}</Text>
+            </View>
+            <TouchableOpacity style={styles.plusMinusBox} onPress={clickPlus}>
+              <Text style={styles.plusMinusText}>+</Text>
+            </TouchableOpacity>
+            <View style={styles.colorBox}>
+              <Text style={styles.blueText}>{peopleNum}</Text>
+            </View>
+            </View>         
+          <View style={styles.bottomRightBox}> 
+            <Text style={styles.blueText}>{totalPrice}</Text>
+          </View>
+        </View>)
+        } 
       </View>        
       
   );
@@ -46,22 +108,71 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#DFDFDF',
 },
+foodNameBox:{
+  marginLeft : 20
+},
 foodNameText:{
     fontSize : 20,
     fontWeight : "bold",
 },
+
+bottomBox: {
+
+  display : "flex",
+  flexDirection : "row",
+  height : 40 ,
+  alignItems : "center"
+},
+bottomLeftBox: {
+
+marginLeft :20,
+marginRight :150,
+display : "flex",
+flexDirection : "row",
+alignSelf : "center",
+alignItems : "center",
+
+},
+bottomRightBox: {
+
+},
+quantityBox:{
+  width : 25,
+  height : 25 ,
+  alignItems: 'center' ,
+},
 quantityText:{
-  fontSize : 14,
+  fontSize : 20,
+  fontWeight : "bold",
+},
+plusMinusBox:{
+  width : 20,
+  height : 20 ,
+  borderRadius : 5,
+  borderWidth : 2,
+  alignItems: 'center' ,
+},
+plusMinusText:{
+  fontSize : 12,
+  fontWeight : "bold",
+  alignSelf: 'center' ,
+
 },
 foodPriceText:{
   fontSize : 14
 },
+colorBox:{
+  marginLeft : 5,
+  width : 25,
+  height : 25 ,
+  alignItems: 'center' ,
+},
 blueText:{
-  fontSize : 14,
+  fontSize : 19,
   color : "blue"
 },
 redText:{
-  fontSize : 14,
+  fontSize : 19,
   color : "red"
 
 },

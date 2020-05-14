@@ -8,10 +8,7 @@ import UserItem from './userItem';
 
 export default function userList(props) {
 
-    const userList =[
-            {nickname: "bose1021"},
-            {nickname: "dntmdmwl24024"},
-        ]
+    const userList = props.data
 
     useEffect(() => {
         // addDummyItem()
@@ -31,8 +28,10 @@ export default function userList(props) {
 
   return (
     <ScrollView style={styles.foodContainer}>
-        {userList.map((data,i) => {
-        return (<UserItem key={i} data={data}/>);
+        {
+          userList.map((data,i) => {
+            console.log(data)
+          return (<UserItem key={i} data={data}/>);
         })}
     </ScrollView>
   );

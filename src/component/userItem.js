@@ -6,11 +6,12 @@ import axios from 'axios'
 
 export default function userItem(props) {
 
-  const userID = props.data.userID
-  const nickname =props.data.nickname
-  const isMaster =props.data.isMaster 
-  const isReady = props.data.isReady 
+  // const userID = props.data.userID
+  // const nickname =props.data.nickname
+  // const isMaster =props.data.isMaster 
+  // const isReady = props.data.isReady 
 
+  const appContext = useContext(AppContext)
 
   useEffect(()=>{
    
@@ -19,7 +20,9 @@ export default function userItem(props) {
   return (
 
           <View style={styles.listBox}>
-            <Text style={styles.foodNameText}>{nickname}</Text>
+            {(appContext.nickname === props.data) ?
+            <Text style={styles.meText}>{props.data}</Text> : <Text style={styles.foodNameText}>{props.data}</Text> 
+            }
           </View>        
       
   );
@@ -39,7 +42,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
 
 },
-foodNameText:{
+meText:{
+
+  fontStyle: 'normal',
+  fontSize: 14,
+  fontWeight : "bold",
+  textAlign: "center",
+
+},
+nicknameText:{
 
   fontStyle: 'normal',
   fontSize: 14,

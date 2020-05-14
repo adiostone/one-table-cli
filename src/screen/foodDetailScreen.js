@@ -11,10 +11,11 @@ export default function foodDetailScreen({route, navigation}) {
   const [foodID, setFoodID] = useState(route.params.foodID) 
   const [foodName, setFoodName] = useState(route.params.foodName) 
   const [foodPrice, setFoodPrice] = useState(route.params.foodPrice) 
-  const [totalPrice, setTotalPrice] = useState(route.params.foodPrice) 
   const [quantity, setQuantity] = useState(1) 
   const [isPublicMenu, setIsPublicMenu] = useState(false) 
-  const [peopleNum, setPeopleNum] = useState(1) 
+  const [peopleNum, setPeopleNum] = useState(route.params.peopleNum) 
+  const [totalPrice, setTotalPrice] = useState(route.params.foodPrice * quantity) 
+
 
 
   function clickCheckBox(){

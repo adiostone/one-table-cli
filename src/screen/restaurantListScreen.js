@@ -20,7 +20,7 @@ export default function restuarantListScreen({navigation}) {
 
         axios({
             method: 'get',
-            url: `https://api.onetable.xyz/v1/table/restaurants?category=${category}`,
+            url: `https://dev.api.onetable.xyz/v1/table/restaurants?category=${category}`,
             headers: {
               Authorization: `Bearer ${appContext.accessToken}`,
         }
