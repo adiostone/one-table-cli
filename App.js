@@ -23,6 +23,11 @@ const Stack = createStackNavigator();
 function clearTokens() {
   SecureStore.deleteItemAsync('accessToken')
   SecureStore.deleteItemAsync('refreshToken')
+  SecureStore.deleteItemAsync('location')
+  SecureStore.deleteItemAsync('mapRegion')
+  SecureStore.deleteItemAsync('formattedAddress')
+  SecureStore.deleteItemAsync('detailAddress')
+  SecureStore.deleteItemAsync('locationIsSet')
 }
 
 export default function App(){
