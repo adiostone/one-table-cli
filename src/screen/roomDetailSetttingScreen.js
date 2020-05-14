@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext,useRef ,} from 'react'
 import { StyleSheet, Text,SafeAreaView , TouchableOpacity,View,Button, Image,TextInput,Dimensions } from 'react-native';
 import LogoButton from "../component/logoButton"
 import { AppContext } from '../context/AppContext'
@@ -8,6 +8,8 @@ export default function roomDetailSettingScreen({route, navigation}) {
 
   const appContext = useContext(AppContext)
 
+  const ws = useRef(null);
+
   const [restaurantID, setRestaurantID] = useState(route.params.restaurantID);
   const [restaurantName, setRestaurantName] = useState(route.params.restaurantName);
 
@@ -16,6 +18,40 @@ export default function roomDetailSettingScreen({route, navigation}) {
 
   const [formattedAddress, setFormattedAddress] = useState(appContext.formattedAddress);
   const [detailAddress, setDetailAddress] = useState(appContext.detailAddress);
+
+  useEffect(() => {
+
+    const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+    ws.current = new WebSocket(wsURL)
+
+    ws.current.onopen = () => {
+    };
+    
+});
+
+  useEffect(() => {
+    if (!ws.current) return;
+
+    ws.current.onmessage = e => {
+        const message = JSON.parse(e.data);
+        console.log(message);
+        // if(message.operation==="ping"){
+        //   const sendMessage = { operation: 'pong'}
+        //   ws.current.send(JSON.stringify(sendMessage))
+        // }
+    };
+  });
+
+  function createParty(){
+    if (!ws.current) return;
+
+    const message = { operation: 'createParty', body: {restaurantID: restaurantID ,title : roomName , capacity : capacity , address : formattedAddress+" "+detailAddress } }
+    ws.current.send(JSON.stringify(message))
+    message.body["restaurantName"] = restaurantName
+    message.body["members"] = [appContext.nickname]
+    console.log(message.body)
+    navigation.navigate("room",message.body)
+  }
 
     return (
       <SafeAreaView style={styles.container}>
@@ -37,7 +73,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
               </View>
               <TextInput style={styles.detailSettingInputBox} onChangeText={(text) => setFormattedAddress(text)}>{formattedAddress}</TextInput>
               <TextInput style={styles.detailSettingInputBox} onChangeText={(text) => setDetailAddress(text)}>{detailAddress}</TextInput>
-              <TouchableOpacity style={styles.buttonBox} onPress={() => navigation.navigate('room')}>
+              <TouchableOpacity style={styles.buttonBox} onPress={createParty}>
                 <Text style={styles.buttonText}>파티 만들기</Text>
               </TouchableOpacity>
           </View>

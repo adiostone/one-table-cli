@@ -7,31 +7,25 @@ import PartyList from "../component/partyList"
 import axios from 'axios'
 import LogoButton from "../component/logoButton"
 
-const ws = new WebSocket('ws://localhost:3000/ws')
-
 export default function mainScreen({navigation}) {
 
   const appContext = useContext(AppContext)
 
-  const [partyList, setPartyList]= useState() 
+  const [partyList, setPartyList]= useState([]) 
 
   const ws = useRef(null);
 
-
-
   useEffect(() => {
-      ws.current = new WebSocket('wss://api.onetable.xyz/v1/table/party', {
-        headers: {
-          Authorization: 'Bearer ' +appContext.accessToken
-        }
-      })
+
+      // console.log(appContext.accessToken)
+      const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+      ws.current = new WebSocket(wsURL)
 
       ws.current.onopen = () => {
-        const message = { operation: 'getPartyList', body: 'hello body' }
-        ws.current.send(JSON.stringify(message))
+
       };
       
-  },[]);
+  });
 
     useEffect(() => {
       if (!ws.current) return;
@@ -39,18 +33,30 @@ export default function mainScreen({navigation}) {
       ws.current.onmessage = e => {
           const message = JSON.parse(e.data);
           console.log(message);
-          if(message.operation==="loadParty"){
+          if(message.operation==="loadParties"){
+            setPartyList(message.body)
+          }
+          if(message.operation==="notifyNewParty"){
+            // setPartyList(partyList.append(message.body))
+            setPartyList([message.body].concat(partyList))
+          }
+          if(message.operation==="notifyChangedPartySize"){
+            for (const value of partyList){
+              if(value.id===message.body.id){
+                value.size = message.body.size
+              } 
+            } 
+          }
+          if(message.operation==="updateParty"){
+            
+          }
+          // if(message.operation==="ping"){
+          //   const sendMessage = { operation: 'pong'}
+          //   ws.current.send(JSON.stringify(sendMessage))
+          // }
 
-            
-          }
-          if(message.operation==="insertParty"){
-            
-          }
-          if(message.operation==="deleteParty"){
-            
-          }
       };
-  },);
+  });
 
   
 
@@ -66,7 +72,7 @@ export default function mainScreen({navigation}) {
         // Check if the token valid
         // if not, refresh tokens
         axios({
-          url: 'https://api.onetable.xyz/v1/table/me/profile',
+          url: 'https://dev.api.onetable.xyz/v1/table/me/profile',
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -90,7 +96,7 @@ export default function mainScreen({navigation}) {
                 console.log('invalid tokens -> refreshing tokens')
                 SecureStore.getItemAsync('refreshToken').then(refreshToken => {
                   axios({
-                    url: 'https://api.onetable.xyz/v1/table/auth/refresh',
+                    url: 'https://dev.api.onetable.xyz/v1/table/auth/refresh',
                     method: 'get',
                     headers: {
                       Authorization: `Bearer ${refreshToken}`,
@@ -106,7 +112,7 @@ export default function mainScreen({navigation}) {
                       appContext.setAccessToken(accessToken)
 
                       axios({
-                        url: 'https://api.onetable.xyz/v1/table/me/profile',
+                        url: 'https://dev.api.onetable.xyz/v1/table/me/profile',
                         headers: {
                           Authorization: `Bearer ${accessToken}`,
                         },

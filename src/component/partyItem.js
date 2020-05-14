@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext , useRef} from 'react'
 import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
@@ -9,27 +9,61 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function partyItem(props) {
 
-    const partyID = props.data.id 
+  const appContext = useContext(AppContext)
 
-    const restaurantName = props.data.name 
-    const address = props.data.address 
-    const capacity = props.data.capacity
-    const curPeopleNum = props.data.curPeopleNum
-    const partyName =props.data.partyName 
+  const ws = useRef(null);
 
-    const navigation = useNavigation();
+  const partyID = props.data.id 
+  const restaurantName = props.data.restaurantName 
+  const address = props.data.address 
+  const capacity = props.data.capacity
+  const curPeopleNum = props.data.curPeopleNum
+  const partyName =props.data.title
 
-  useEffect(()=>{
-   
+  const navigation = useNavigation();
 
-  })
+  useEffect(() => {
+
+    const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+    ws.current = new WebSocket(wsURL)
+
+    ws.current.onopen = () => {
+    };
+    
+  });
+
+  useEffect(() => {
+    if (!ws.current) return;
+
+    ws.current.onmessage = e => {
+        const message = JSON.parse(e.data);
+        console.log(message);
+        if(message.operation==="notifySuccessJoin"){
+          appContext.setPartyID(partyID)
+          appContext.setRestaurantID(message.body.restaurantID)
+          appContext.setRestaurantName(restaurantName)
+          message.body["partyID"] = partyID
+          message.body["restaurantName"] = restaurantName
+          console.log(message.body)
+          navigation.navigate("room",message.body)
+        }
+    };
+  });
+
+  function joinParty(){
+    if (!ws.current) return;
+
+    const message = { operation: 'joinParty', body: {id : partyID } }
+    ws.current.send(JSON.stringify(message))
+  }
 
   return (
 
-          <TouchableOpacity style={styles.listBox} onPress={() => {navigation.navigate("room")}}>
+          <TouchableOpacity style={styles.listBox} onPress={joinParty}>
             <Text style={styles.restaurantNameText}> {restaurantName}</Text>
             <Text style={styles.addressText}>{address}</Text>
             <Text style={styles.partyNameText}>{partyName}</Text>
+            <Text style={styles.peopleNumberText}>{capacity}</Text>
             {/* <Text style={styles.peopleNumberText}> {curPeopleNum}/{capacity}</Text> */}
           </TouchableOpacity>        
       
