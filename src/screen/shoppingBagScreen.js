@@ -9,6 +9,8 @@ export default function shoppingBagScreen({route,navigation}) {
 
   const appContext = useContext(AppContext)
 
+  const [bagFoodList , setBagFoodList] = useState()
+
     return (
         <SafeAreaView style={styles.container}>
           <LogoButton/>
@@ -16,7 +18,7 @@ export default function shoppingBagScreen({route,navigation}) {
             <View style={styles.shoppingBagBox}>
                 <Text style={styles.shoppingBagText}>장바구니</Text>
             </View>
-            <BagFoodList/>
+            <BagFoodList data={bagFoodList}/>
             <TouchableOpacity style={styles.shoppingBagBox}>
                 <Text style={styles.shoppingBagText}>주문하기</Text>
             </TouchableOpacity>
