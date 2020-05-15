@@ -11,7 +11,7 @@ export default function partyItem(props) {
 
   const appContext = useContext(AppContext)
 
-  const ws = useRef(null);
+  const ws = props.ws;
 
   const partyID = props.data.id 
   const restaurantName = props.data.restaurantName 
@@ -23,12 +23,6 @@ export default function partyItem(props) {
   const navigation = useNavigation();
 
   useEffect(() => {
-
-    const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
-    ws.current = new WebSocket(wsURL)
-
-    ws.current.onopen = () => {
-    };
     
   });
 

@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext,useRef } from 'react'
 import { StyleSheet, Text, Alert,View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import Constants from 'expo-constants';
 import { AppContext } from '../context/AppContext'
+import { SocketContext } from '../context/SocketContext'
+
 import * as SecureStore from 'expo-secure-store';
 import PartyList from "../component/partyList"
 import axios from 'axios'
@@ -11,24 +13,69 @@ export default function mainScreen({navigation}) {
 
   const appContext = useContext(AppContext)
 
+  const socketContext = useContext(SocketContext)
+
   const [partyList, setPartyList]= useState([]) 
 
-  const ws = useRef(null);
+  const ws = useRef(socketContext.ws)
 
   useEffect(() => {
+    
+      if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
+        console.log("reconnect websocket")
+        console.log(appContext.accessToken)
+        const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+        try {
+          const newws = new WebSocket(wsURL)
+          socketContext.setws(newws)
+          ws.current = newws
+          const message = {operation : "getParties" , body : null}    
+          ws.current.send(JSON.stringify(message))
+        }
+        catch(err){
+          if (err && err.response) {
+            console.log(err)
+            const status = err.response.status
+            if (status === 404) {
+              // Valid
+              console.log('valid tokens')
+            }
+            else{
+              console.log('invalid tokens -> refreshing tokens')
+              axios({
+                url: 'https://api.onetable.xyz/v1/table/auth/refresh',
+                method: 'get',
+                headers: {
+                  Authorization: `Bearer ${appContext.refreshToken}`,
+                },
+              })
+              .then(res => {
+                console.log('tokens have been refreshed')
+                // Refresh the tokens and store to the machine again
+                const { access } = res.data
+                console.log(access)
+                const accessToken= access    
+                SecureStore.setItemAsync('accessToken', accessToken)
+                appContext.setAccessToken(accessToken)
+                const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+                const newws = new WebSocket(wsURL)
+                socketContext.setws(newws)
+                ws.current = newws
+                const message = {operation : "getParties" , body : null}    
+                ws.current.send(JSON.stringify(message))
+              })
+              .catch(err =>{
+                console.log("could't refresh token")
+              })
+            }
+          }
+        }
 
-      // console.log(appContext.accessToken)
-      const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
-      ws.current = new WebSocket(wsURL)
-
-      ws.current.onopen = () => {
-
-      };
-      
+      }
   });
 
     useEffect(() => {
-      if (!ws.current) return;
+      if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
 
       ws.current.onmessage = e => {
           const message = JSON.parse(e.data);
@@ -50,15 +97,13 @@ export default function mainScreen({navigation}) {
           if(message.operation==="updateParty"){
             
           }
-          // if(message.operation==="ping"){
-          //   const sendMessage = { operation: 'pong'}
-          //   ws.current.send(JSON.stringify(sendMessage))
-          // }
+          if(message.operation==="ping"){
+            const sendMessage = { operation: 'pong'}
+            ws.current.send(JSON.stringify(sendMessage))
+          }
 
       };
   });
-
-  
 
 
   // Check if there exists an access token
@@ -72,7 +117,7 @@ export default function mainScreen({navigation}) {
         // Check if the token valid
         // if not, refresh tokens
         axios({
-          url: 'https://dev.api.onetable.xyz/v1/table/me/profile',
+          url: 'https://api.onetable.xyz/v1/table/me/profile',
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -96,7 +141,7 @@ export default function mainScreen({navigation}) {
                 console.log('invalid tokens -> refreshing tokens')
                 SecureStore.getItemAsync('refreshToken').then(refreshToken => {
                   axios({
-                    url: 'https://dev.api.onetable.xyz/v1/table/auth/refresh',
+                    url: 'https://api.onetable.xyz/v1/table/auth/refresh',
                     method: 'get',
                     headers: {
                       Authorization: `Bearer ${refreshToken}`,
@@ -112,7 +157,7 @@ export default function mainScreen({navigation}) {
                       appContext.setAccessToken(accessToken)
 
                       axios({
-                        url: 'https://dev.api.onetable.xyz/v1/table/me/profile',
+                        url: 'https://api.onetable.xyz/v1/table/me/profile',
                         headers: {
                           Authorization: `Bearer ${accessToken}`,
                         },
@@ -138,28 +183,6 @@ export default function mainScreen({navigation}) {
               }
             }
           })
-
-        // TODO
-        // Fetch file info from server
-        // axios
-        //   .get('https://clowd.xyz/v1/client/dir', {
-        //     headers: {
-        //       Authorization: `Bearer ${accessToken}`,
-        //     },
-        //   })
-        //   .then(res => {
-        //     const fileList = res.data
-        //     // appContext.setFileInfo(sampleFileInfo)
-        //     appContext.setFileInfo(
-        //       fileList.map(file => {
-        //         return {
-        //           path: file.name,
-        //           size: parseFloat((file.size / 1024 / 1024).toFixed(2)),
-        //         }
-        //       })
-        //     )
-        //   })
-
 
         //load user data from expo 
 
@@ -199,7 +222,7 @@ export default function mainScreen({navigation}) {
           <TouchableOpacity style={styles.createBox} onPress={() => navigation.navigate('restaurantList')}>
             <Text style={styles.createText}> 파티 만들기</Text>
           </TouchableOpacity>
-          <PartyList data={partyList}/>
+          <PartyList data={partyList} ws={ws}/>
         </ScrollView>
     </SafeAreaView>
       

@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext , useRef } from 'react'
 import { StyleSheet, Text, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
 import { AppContext } from '../context/AppContext'
+import { SocketContext } from '../context/SocketContext'
+
 import LogoButton from "../component/logoButton"
 import UserList from "../component/userList"
 import axios from 'axios'
@@ -9,6 +11,9 @@ import axios from 'axios'
 export default function roomScreen({route, navigation}) {
 
   const appContext = useContext(AppContext)
+
+  const socketContext = useContext(SocketContext)
+
 
   // const [partyID, setPartyID] = useState(route.params.partyID) 
   const [restaurantID, setRestaurantID] = useState(route.params.restaurantID) 
@@ -20,48 +25,77 @@ export default function roomScreen({route, navigation}) {
 
   const [userList, setUserList] = useState(route.params.members) 
 
-  const ws = useRef(null);
-
+  const ws = useRef(socketContext.ws)
 
   useEffect(() => {
-
-    const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
-    ws.current = new WebSocket(wsURL)
-
-    ws.current.onopen = () => {
-      // const message = { operation: 'getPartyList', body:{} }
-      // ws.current.send(JSON.stringify(message))
-    };
     
-});
+      if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
+        console.log("reconnect websocket")
+        console.log(appContext.accessToken)
+        const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+        try {
+          const newws = new WebSocket(wsURL)
+          socketContext.setws(newws)
+          ws.current = newws
+        }
+        catch(err){
+          if (err && err.response) {
+            console.log(err)
+            const status = err.response.status
+            if (status === 404) {
+              // Valid
+              console.log('valid tokens')
+            }
+            else{
+              console.log('invalid tokens -> refreshing tokens')
+              axios({
+                url: 'https://api.onetable.xyz/v1/table/auth/refresh',
+                method: 'get',
+                headers: {
+                  Authorization: `Bearer ${appContext.refreshToken}`,
+                },
+              })
+              .then(res => {
+                console.log('tokens have been refreshed')
+                // Refresh the tokens and store to the machine again
+                const { access } = res.data
+                console.log(access)
+                const accessToken= access    
+                SecureStore.setItemAsync('accessToken', accessToken)
+                appContext.setAccessToken(accessToken)
+                const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+                const newws = new WebSocket(wsURL)
+                socketContext.setws(newws)
+                ws.current = newws
+              })
+              .catch(err =>{
+                console.log("could't refresh token")
+              })
+            }
+          }
+        }
+      }
+    
+      
+  });
 
 
 useEffect(() => {
-  if (!ws.current) return;
+  if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
 
   ws.current.onmessage = e => {
       const message = JSON.parse(e.data);
       console.log(message);
-      // if(message.operation==="loadParties"){
-      //   setPartyList(message.body)
-      // }
-      // if(message.operation==="notifyNewParty"){
-      //   // setPartyList(partyList.append(message.body))
-      //   setPartyList([message.body].concat(partyList))
-      // }
-      // if(message.operation==="deleteParty"){
-        
-      // }
       if(message.operation==="notifyNewMember"){
         console.log(message.body)
         userList.push(message.body)
         setUserList(userList)
         // setCurPeopleNum(message.body.size)
       }
-      // if(message.operation==="ping"){
-      //   const sendMessage = { operation: 'pong'}
-      //   ws.current.send(JSON.stringify(sendMessage))
-      // }
+      if(message.operation==="ping"){
+        const sendMessage = { operation: 'pong'}
+        ws.current.send(JSON.stringify(sendMessage))
+      }
 
   };
   });
@@ -82,6 +116,9 @@ useEffect(() => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.addMenuBox} onPress={() => navigation.navigate('foodList')}>
               <Text style={styles.addMenuText}>메뉴 추가</Text>
+            </TouchableOpacity>   
+            <TouchableOpacity style={styles.chatBox} onPress={() => navigation.navigate('chat')}>
+              <Text style={styles.chatText}>채팅방</Text>
             </TouchableOpacity>   
             <UserList data={userList}/>     
           </ScrollView>
@@ -143,6 +180,21 @@ useEffect(() => {
       alignItems: 'center' 
     },
     addMenuText:{
+      fontStyle: 'normal',
+      fontSize: 20,
+      textAlign: "center",
+      color: "#FFFFFF",
+    },
+    chatBox:{
+      width: 335,
+      height: 39,
+      backgroundColor: "#FFC530",
+      borderRadius: 10,
+      marginBottom : 12, 
+      justifyContent: 'center', 
+      alignItems: 'center' 
+    },
+    chatText:{
       fontStyle: 'normal',
       fontSize: 20,
       textAlign: "center",

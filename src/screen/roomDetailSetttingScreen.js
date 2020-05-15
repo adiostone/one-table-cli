@@ -2,13 +2,16 @@ import React, { useEffect, useState, useContext,useRef ,} from 'react'
 import { StyleSheet, Text,SafeAreaView , TouchableOpacity,View,Button, Image,TextInput,Dimensions } from 'react-native';
 import LogoButton from "../component/logoButton"
 import { AppContext } from '../context/AppContext'
+import { SocketContext } from '../context/SocketContext'
 
 
 export default function roomDetailSettingScreen({route, navigation}) {
 
   const appContext = useContext(AppContext)
 
-  const ws = useRef(null);
+  const socketContext = useContext(SocketContext)
+
+  const ws = useRef(socketContext.ws)
 
   const [restaurantID, setRestaurantID] = useState(route.params.restaurantID);
   const [restaurantName, setRestaurantName] = useState(route.params.restaurantName);
@@ -20,25 +23,68 @@ export default function roomDetailSettingScreen({route, navigation}) {
   const [detailAddress, setDetailAddress] = useState(appContext.detailAddress);
 
   useEffect(() => {
-
-    const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
-    ws.current = new WebSocket(wsURL)
-
-    ws.current.onopen = () => {
-    };
     
-});
+      if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
+        console.log("reconnect websocket")
+        console.log(appContext.accessToken)
+        const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+        try {
+          const newws = new WebSocket(wsURL)
+          socketContext.setws(newws)
+          ws.current = newws
+        }
+        catch(err){
+          if (err && err.response) {
+            console.log(err)
+            const status = err.response.status
+            if (status === 404) {
+              // Valid
+              console.log('valid tokens')
+            }
+            else{
+              console.log('invalid tokens -> refreshing tokens')
+              axios({
+                url: 'https://api.onetable.xyz/v1/table/auth/refresh',
+                method: 'get',
+                headers: {
+                  Authorization: `Bearer ${appContext.refreshToken}`,
+                },
+              })
+              .then(res => {
+                console.log('tokens have been refreshed')
+                // Refresh the tokens and store to the machine again
+                const { access } = res.data
+                console.log(access)
+                const accessToken= access    
+                SecureStore.setItemAsync('accessToken', accessToken)
+                appContext.setAccessToken(accessToken)
+                const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+                const newws = new WebSocket(wsURL)
+                socketContext.setws(newws)
+                ws.current = newws
+              })
+              .catch(err =>{
+                console.log("could't refresh token")
+              })
+            }
+          }
+        }
+
+      }
+    
+      
+  });
 
   useEffect(() => {
-    if (!ws.current) return;
+    if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
 
     ws.current.onmessage = e => {
         const message = JSON.parse(e.data);
         console.log(message);
-        // if(message.operation==="ping"){
-        //   const sendMessage = { operation: 'pong'}
-        //   ws.current.send(JSON.stringify(sendMessage))
-        // }
+        if(message.operation==="ping"){
+          const sendMessage = { operation: 'pong'}
+          ws.current.send(JSON.stringify(sendMessage))
+        }
     };
   });
 

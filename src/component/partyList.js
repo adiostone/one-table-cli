@@ -9,6 +9,7 @@ import PartyItem from './partyItem';
 export default function partyList(props) {
 
     const partyList = props.data
+    const ws = props.ws
 
 
     useEffect(() => {
@@ -30,7 +31,7 @@ export default function partyList(props) {
   return (
     <ScrollView style={styles.listContainer}>
     {partyList.map((data, i) => {
-        return (<PartyItem key={i} data={data}/>);
+        return (<PartyItem key={i} data={data} ws={ws}/>);
         })}
     </ScrollView>
   );

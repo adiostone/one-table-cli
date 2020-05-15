@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native';
 import { AppProvider } from './src/context/AppContext'
+import { SocketProvider } from './src/context/SocketContext'
+
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import loginScreen from './src/screen/loginScreen'
@@ -13,6 +16,8 @@ import roomScreen from './src/screen/roomScreen'
 import foodListScreen from './src/screen/foodListScreen'
 import foodDetailScreen from './src/screen/foodDetailScreen'
 import shoppingBagScreen from './src/screen/shoppingBagScreen';
+import chatScreen from './src/screen/chatScreen';
+
 
 import * as Font from 'expo-font';
 
@@ -39,21 +44,24 @@ export default function App(){
 
   return (
     <AppProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{
-              headerShown: false,
-            }}>
-          <Stack.Screen name="main" component={mainScreen} />
-          <Stack.Screen name="login" component={loginScreen} />
-          <Stack.Screen name="map" component={mapScreen} />
-          <Stack.Screen name="restaurantList" component={restaurantListScreen} />
-          <Stack.Screen name="roomDetailSetting" component={roomDetailSettingScreen} />
-          <Stack.Screen name="room" component={roomScreen}/>
-          <Stack.Screen name="foodList" component={foodListScreen} />
-          <Stack.Screen name="foodDetail" component={foodDetailScreen} />
-          <Stack.Screen name="shoppingBag" component={shoppingBagScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <SocketProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{
+                headerShown: false,
+              }}>
+            <Stack.Screen name="main" component={mainScreen} />
+            <Stack.Screen name="login" component={loginScreen} />
+            <Stack.Screen name="map" component={mapScreen} />
+            <Stack.Screen name="restaurantList" component={restaurantListScreen} />
+            <Stack.Screen name="roomDetailSetting" component={roomDetailSettingScreen} />
+            <Stack.Screen name="room" component={roomScreen}/>
+            <Stack.Screen name="foodList" component={foodListScreen} />
+            <Stack.Screen name="foodDetail" component={foodDetailScreen} />
+            <Stack.Screen name="shoppingBag" component={shoppingBagScreen} />
+            <Stack.Screen name="chat" component={chatScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SocketProvider>
     </AppProvider>
   );
 }
