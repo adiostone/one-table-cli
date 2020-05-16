@@ -33,8 +33,50 @@ export default function restuarantListScreen({navigation}) {
 
         })
         .catch(err =>{
-            console.log("failed load restaurant list")
-            console.log(err)
+            if (err && err.response) {
+                console.log("failed load restaurant list")
+                console.log(err)
+                const status = err.response.status
+                if (status === 404) {
+                  // Valid
+                  console.log('valid tokens')
+                }
+                else{
+                  console.log('invalid tokens -> refreshing tokens')
+                  axios({
+                    url: 'https://api.onetable.xyz/v1/table/auth/refresh',
+                    method: 'get',
+                    headers: {
+                      Authorization: `Bearer ${appContext.refreshToken}`,
+                    },
+                  })
+                  .then(res => {
+                    console.log('tokens have been refreshed')
+                    // Refresh the tokens and store to the machine again
+                    const { access } = res.data
+                    console.log(access)
+                    const accessToken= access    
+                    SecureStore.setItemAsync('accessToken', accessToken)
+                    appContext.setAccessToken(accessToken)
+                    axios({
+                        method: 'get',
+                        url: `https://api.onetable.xyz/v1/table/restaurants?category=${category}`,
+                        headers: {
+                          Authorization: `Bearer ${accessToken}`,
+                    }
+                    })   
+                    .then(res =>{
+                        console.log("load restaurant list")
+                        console.log(res.data)
+                        //set restaurant list
+                        setRestaurantList(res.data.restaurants)   
+                    })
+                  })
+                  .catch(err =>{
+                    console.log("could't refresh token")
+                  })
+                }
+              }
         })
 
     },[category]);
