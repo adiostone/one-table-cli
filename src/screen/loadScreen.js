@@ -17,10 +17,12 @@ export default function loadScreen({navigation}) {
   const socketContext = useContext(SocketContext)
 
   const [everyThingIsGood, SetEveryThingIsGood] = useState(false)
+  const [error, SetError] = useState(false)
+
 
   useEffect(()=>{
 
-    if(everyThingIsGood ===true){
+    if(everyThingIsGood ===true && error===false){
         navigation.navigate("main")
     }
 
