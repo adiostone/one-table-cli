@@ -13,8 +13,8 @@ export default function roomDetailSettingScreen({route, navigation}) {
 
   const ws = useRef(socketContext.ws)
 
-  const [restaurantID, setRestaurantID] = useState(route.params.restaurantID);
-  const [restaurantName, setRestaurantName] = useState(route.params.restaurantName);
+  const [id, setid] = useState(route.params.id);
+  const [name, setName] = useState(route.params.name);
 
   const [title, setTitle] = useState("같이 먹어요");
   const [capacity, setCapacity] = useState(3);
@@ -80,7 +80,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
 
     ws.current.onmessage = e => {
         const message = JSON.parse(e.data);
-        console.log("listenRoomDetail")
+        console.log("RoomDetail listen")
         console.log(message);
         if(message.operation==="replyCreateParty"){
           console.log(message.body)
@@ -102,11 +102,8 @@ export default function roomDetailSettingScreen({route, navigation}) {
   function createParty(){
     if (!ws.current) return;
 
-    const message = { operation: 'createParty', body: {restaurantID: restaurantID ,title : title , capacity : capacity , address : formattedAddress+" "+detailAddress } }
+    const message = { operation: 'createParty', body: {restaurantID: id ,title : title , capacity : capacity , address : formattedAddress+" "+detailAddress } }
     ws.current.send(JSON.stringify(message))
-    message.body["restaurantName"] = restaurantName
-    console.log(message.body)
-    navigation.navigate("room",message.body)
   }
 
     return (
@@ -114,7 +111,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
           <BaseTab/>
           <View style={styles.roomDetailContainer}>
               <View style={styles.restaurantNameBox}>
-              <Text style={styles.restaurantNameText}>{restaurantName}</Text>
+              <Text style={styles.restaurantNameText}>{name}</Text>
               </View>
               <View style={styles.detailSettingBox}>
                 <Text style={styles.detailSettingText}>방제목</Text>                  
