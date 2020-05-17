@@ -3,8 +3,7 @@ import { StyleSheet, Text, View,Button, Image,TextInput,TouchableOpacity,Dimensi
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
 
-import LogoButton from "../component/logoButton"
-import BackButton from "../component/backButton"
+import BaseTab from "../component/baseTab"
 import ChatList from "../component/chatList"
 import axios from 'axios'
 
@@ -28,11 +27,20 @@ export default function chatScreen({route, navigation}) {
   const ws = useRef(socketContext.ws)
 
   useEffect(() => {
+    if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
+
+    console.log("getChats")
+    const message = { operation: 'getChats', body: {partyID:appContext.partyID} }
+    ws.current.send(JSON.stringify(message))
+
+},[]);
+
+  useEffect(() => {
     
     if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
       console.log("reconnect websocket")
       console.log(appContext.accessToken)
-      const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+      const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
       try {
         const newws = new WebSocket(wsURL)
         socketContext.setws(newws)
@@ -49,7 +57,7 @@ export default function chatScreen({route, navigation}) {
           else{
             console.log('invalid tokens -> refreshing tokens')
             axios({
-              url: 'https://api.onetable.xyz/v1/table/auth/refresh',
+              url: 'https://dev.api.onetable.xyz/v1/table/auth/refresh',
               method: 'get',
               headers: {
                 Authorization: `Bearer ${appContext.refreshToken}`,
@@ -63,7 +71,7 @@ export default function chatScreen({route, navigation}) {
               const accessToken= access    
               SecureStore.setItemAsync('accessToken', accessToken)
               appContext.setAccessToken(accessToken)
-              const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+              const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${accessToken}`
               const newws = new WebSocket(wsURL)
               socketContext.setws(newws)
               ws.current = newws
@@ -85,11 +93,14 @@ useEffect(() => {
   if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
 
   ws.current.onmessage = e => {
+
       const message = JSON.parse(e.data);
       console.log(message);
       if(message.operation==="loadChats"){
         setChatList(message.body)
-        // setCurPeopleNum(message.body.size)
+      }
+      if(message.operation==="addChat"){
+
       }
       if(message.operation==="ping"){
         const sendMessage = { operation: 'pong'}
@@ -100,15 +111,23 @@ useEffect(() => {
   });
 
 
+  function sendChat(){
+    if (!ws.current) return;
+
+    const message = { operation: 'addChat', body: {partyID:appContext.partyID ,userID:appContext.userID  ,nickname : appContext.nickname , chat: textInput } }
+    ws.current.send(JSON.stringify(message))
+    setTextInput("")
+  }
+
+
     return (
         <SafeAreaView style={styles.container}>
-          <LogoButton/>
-          <BackButton backLocation={"room"} information={"돌아가기"}/>
+          <BaseTab/>
           <ScrollView style={styles.pinContainer}>
             <ChatList data={chatList}/>     
             <View style={styles.submitBox}>
                 <TextInput style={styles.textInputBox} onChangeText={(text) => setTextInput(text)}>{textInput}</TextInput>
-                <TouchableOpacity style={styles.submitButton}/>
+                <TouchableOpacity style={styles.submitButton} onPress={sendChat}/>
             </View>
           </ScrollView>
         </SafeAreaView>

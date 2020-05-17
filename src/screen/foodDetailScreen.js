@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { StyleSheet, Text,CheckBox, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
-import LogoButton from "../component/logoButton"
+import BaseTab from "../component/baseTab"
 import { AppContext } from '../context/AppContext'
 
 
@@ -56,7 +56,7 @@ export default function foodDetailScreen({route, navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-          <LogoButton/>
+          <BaseTab/>
           <View style={styles.topBox}>
             <Text style={styles.foodNameText}>{foodName}</Text>
           </View>

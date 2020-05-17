@@ -10,8 +10,8 @@ import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 
 import axios from 'axios'
-import LogoButton from "../component/logoButton"
 import config from "../config/config"
+import BaseTab from '../component/baseTab';
 
 export default function mapScreen({navigation}) {
 
@@ -41,7 +41,7 @@ export default function mapScreen({navigation}) {
     SecureStore.setItemAsync('detailAddress',textInput)
     axios({
         method: 'patch',
-        url: "https://api.onetable.xyz/v1/table/me/place",
+        url: "https://dev.api.onetable.xyz/v1/table/me/place",
         headers: {
           Authorization: `Bearer ${appContext.accessToken}`,
         },
@@ -95,7 +95,7 @@ export default function mapScreen({navigation}) {
 
             axios({
                 method: 'patch',
-                url: "https://api.onetable.xyz/v1/table/me/place",
+                url: "https://dev.api.onetable.xyz/v1/table/me/place",
                 headers: {
                   Authorization: `Bearer ${appContext.accessToken}`,
                 },
@@ -131,7 +131,7 @@ export default function mapScreen({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <LogoButton/>
+        <BaseTab/>
         <ScrollView style={styles.mapContainer}>
             {(locationIsSet==="true") ?
             //main page
@@ -151,9 +151,6 @@ export default function mapScreen({navigation}) {
             </MapView>
             <TouchableOpacity style={styles.resetLocationBox} onPress={() => setLocationIsSet("false")}>
             <Text style={styles.resetLocationBoxText}> 위치 재설정</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.backBox} onPress={() => navigation.navigate('main')}>
-              <Text style={styles.backBoxText}> 돌아가기</Text>
             </TouchableOpacity>
             </View>) : 
             //loading page
@@ -211,36 +208,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#FFFFFF",
   },
-  backBox:{
-    width: 335,
-    height: 39,
-    backgroundColor: "#FF8181",
-    borderRadius: 10,
-    marginBottom : 12, 
-    // alignSelf: 'center',
-    justifyContent: 'center', 
-    alignItems: 'center' ,
-    alignSelf: 'center',
-  },
-  backBoxText:{
-    fontStyle: 'normal',
-    fontSize: 20,
-    textAlign: "center",
-    color: "#FFFFFF",
-
-  },
   mapStyle: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').width,
     marginBottom : 12, 
 
-  },
-  logoStyle: {
-    width: 47,
-    height: 37.7,
-    marginLeft:20,
-    marginTop:20,
-    marginBottom:15,
   },
   loadingContainer:{
     height :  650,
