@@ -8,7 +8,7 @@ import ChatList from "../component/chatList"
 import axios from 'axios'
 
 
-export default function chatScreen({route, navigation}) {
+export default function chatScreen( {navigation}) {
 
   const appContext = useContext(AppContext)
 
@@ -20,7 +20,7 @@ export default function chatScreen({route, navigation}) {
 //   const [restaurantName, setRestaurantName] = useState(route.params.restaurantName) 
 //   const [partyName, setPartyName] = useState(route.params.title) 
 
-  const [chatList, setChatList] = useState() 
+  const [chatList, setChatList] = useState([]) 
 
   const [textInput, setTextInput] = useState("");
 
@@ -29,8 +29,8 @@ export default function chatScreen({route, navigation}) {
   useEffect(() => {
     if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
 
-    console.log("getChats")
-    const message = { operation: 'getChats', body: {partyID:appContext.partyID} }
+    console.log("getMyPartyChats")
+    const message = { operation: 'getMyPartyChats', body: {} }
     ws.current.send(JSON.stringify(message))
 
 },[]);
@@ -95,12 +95,13 @@ useEffect(() => {
   ws.current.onmessage = e => {
 
       const message = JSON.parse(e.data);
+      console.log("chat listen");
       console.log(message);
-      if(message.operation==="loadChats"){
+      if(message.operation==="replyGetPartyChats"){
         setChatList(message.body)
       }
-      if(message.operation==="addChat"){
-
+      if(message.operation==="notifyNewChat"){
+        setChatList([message.body].concat(chatList))
       }
       if(message.operation==="ping"){
         const sendMessage = { operation: 'pong'}
@@ -114,7 +115,7 @@ useEffect(() => {
   function sendChat(){
     if (!ws.current) return;
 
-    const message = { operation: 'addChat', body: {partyID:appContext.partyID ,userID:appContext.userID  ,nickname : appContext.nickname , chat: textInput } }
+    const message = { operation: 'sendChat', body: {chat: textInput } }
     ws.current.send(JSON.stringify(message))
     setTextInput("")
   }
