@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function bagFoodItem(props) {
 
-    const foodID = props.data.foodID 
+    const id = props.data.id 
     const foodName = props.data.name
     const foodPrice = props.data.foodPrice
     const peopleNum = props.data.peopleNum

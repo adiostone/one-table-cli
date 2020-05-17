@@ -8,12 +8,7 @@ import ChatItem from './chatItem';
 
 export default function foodList(props) {
 
-    const chatList=[
-                    {nickname: "bose1021",chat: "ㅎㅇ" , time:"12:12"},
-                    {nickname: "dntmdwls4398",chat: "ㅎㅇ" , time:"12:12"},
-                    {nickname: "bose1021",chat: "뭐먹" , time:"12:13"},
-                    {nickname: "dntmdwls4398",chat: "암거나" , time:"12:13"},
-                ]
+    const chatList=props.data
 
     useEffect(() => {
         // addDummyItem()
@@ -33,7 +28,7 @@ export default function foodList(props) {
 
   return (
     <ScrollView style={styles.chatContainer}>
-        {chatList.map((data,i) => {
+        {chatList.slice(0).reverse().map((data,i) => {
         return (<ChatItem key={i} data={data}/>);
         })}
     </ScrollView>

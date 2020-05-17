@@ -9,11 +9,11 @@ export default function chatItem(props) {
 
     const appContext = useContext(AppContext)
 
-    const chatID =props.data.chatID
+    const id =props.data.chatID
     const userID =props.data.userID 
     const nickname =props.data.nickname 
     const chat =props.data.chat 
-    const time = props.data.time
+    // const time = props.data.time
 
   useEffect(()=>{
    
@@ -28,10 +28,10 @@ export default function chatItem(props) {
                     <View style={styles.chatBox}>
                     <Text style={styles.chatText}>{chat}</Text>
                     </View>
-                    <Text style={styles.timeText}>{time}</Text>
+                    {/* <Text style={styles.timeText}>{time}</Text> */}
                 </View>) :
             (<View style={styles.rightBox}>
-                <Text style={styles.timeText}>{time}</Text>
+                {/* <Text style={styles.timeText}>{time}</Text> */}
                 <View style={styles.chatBox}>
                     <Text style={styles.chatText}>{chat}</Text>
                 </View>

@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function foodItem(props) {
 
-    const foodID =props.data.id
+    const id =props.data.id
     const foodName =props.data.name 
     const price =props.data.price 
 
