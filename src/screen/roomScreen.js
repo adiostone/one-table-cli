@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext , useRef } from 'react'
-import { StyleSheet, Text, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View,Button, Image,Alert,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
 
@@ -8,7 +8,7 @@ import UserList from "../component/userList"
 import axios from 'axios'
 
 
-export default function roomScreen({route, navigation}) {
+export default function roomScreen({navigation}) {
 
   const appContext = useContext(AppContext)
 
@@ -22,6 +22,7 @@ export default function roomScreen({route, navigation}) {
   const [capacity, setCapacity] = useState();
   const [size, setSize] = useState();
   const [title, setTitle] = useState() 
+  const [image, setImage] = useState()
 
   const [userList, setUserList] = useState([]) 
 
@@ -113,7 +114,7 @@ useEffect(() => {
 
   ws.current.onmessage = e => {
       const message = JSON.parse(e.data);
-      console.log("roomListen");
+      console.log("room listen");
       console.log(message);
       if(message.operation==="replyGetMyPartyMetadata"){
         setAddress(message.body.address)
@@ -121,18 +122,41 @@ useEffect(() => {
         setRestaurantName(message.body.restaurant.name)
         setSize(message.body.size)
         setTitle(message.body.title)
-
+        setImage(message.body.restaurant.icon)
       }
       if(message.operation==="replyGetMyPartyMemberList"){
         setUserList(message.body)
+      }
+      if(message.operation==="replyLeaveParty"){
+        if(message.body.isSuccess===true){
+          console.log("leave Success")
+          navigation.navigate("main")
+        }
+        else{
+          console.log("leave failed")
+        }      
       }
       if(message.operation==="notifyNewMember"){
         setUserList([message.body.user].concat(userList))
         setSize(message.body.size)
       }
-      if(message.operation==="notifyMemberOut"){
-
+      if(message.operation==="notifyOutMember"){
+        for (let i=0 ; i <userList.length; i++){
+          if(userList[i].id===message.body.user.id){
+            userList.splice(i,1)
+            setUserList([...userList])
+          } 
+        } 
+        setSize(message.body.size)
       }
+      if(message.operation==="notifyKickedOutParty"){
+        //party is exploded
+        // Alert.alert("방장이 파티에 나가 파티가 없어졌습니다.")        
+        navigation.navigate("main")
+      }
+
+
+
       if(message.operation==="notifyUpdateMemberStatus"){
 
       }
@@ -156,17 +180,33 @@ useEffect(() => {
   };
   });
 
+  function leaveParty(){
+    if (!ws.current) return;
+
+      const message = { operation: 'leaveParty', body: {}}
+      ws.current.send(JSON.stringify(message))
+      navigation.navigate("main",message.body)
+  
+  }
+
 
     return (
         <SafeAreaView style={styles.container}>
           <BaseTab/>
           <ScrollView style={styles.pinContainer}>
             <View style={styles.listBox}>
-              <Text style={styles.restaurantNameText}> {restaurantName}</Text>
-              <Text style={styles.addressText}>{address}</Text>
-              <Text style={styles.partyNameText}>{title}</Text>
-              <Text style={styles.peopleNumberText}> {size}/{capacity}</Text>
-            </View>        
+              <View style={styles.leftBox}>
+                <Image source={{uri:image}} style={styles.imageStyle}/>
+              </View>
+              <View style={styles.rightBox}>
+                <Text style={styles.restaurantNameText}> {restaurantName}</Text>
+                <Text style={styles.addressText}>{address}</Text>
+                <View style={styles.rightBottomBox}>
+                  <Text style={styles.partyNameText}>{title}</Text>
+                  <Text style={styles.peopleNumberText}> {size}/{capacity}</Text>
+                </View>
+              </View>
+            </View>    
             <TouchableOpacity style={styles.shoppingBagBox} onPress={() => navigation.navigate('shoppingBag')}>
               <Text style={styles.shoppingBagText}>장바구니</Text>
             </TouchableOpacity>
@@ -175,6 +215,9 @@ useEffect(() => {
             </TouchableOpacity>   
             <TouchableOpacity style={styles.chatBox} onPress={() => navigation.navigate('chat')}>
               <Text style={styles.chatText}>채팅방</Text>
+            </TouchableOpacity>   
+            <TouchableOpacity style={styles.outBox} onPress={leaveParty}>
+              <Text style={styles.outText}>파티 나가기</Text>
             </TouchableOpacity>   
             <UserList data={userList}/>     
           </ScrollView>
@@ -194,36 +237,64 @@ useEffect(() => {
       alignSelf: 'center',
   
     },
+    imageStyle:{
+
+      width: 100,
+      height :100,
+      alignSelf : "center"
+
+    },
     listBox:{
       width: 335,
-      height: 80,
+      height: 100,
   
       backgroundColor: "#CB661D",
       borderRadius: 10,
       marginBottom : 12, 
-      justifyContent: 'center', 
-      alignItems: 'center' 
+      display : "flex",
+      flexDirection : "row",
+      shadowColor : '#4d4d4d',
+      shadowOffset: { width: 8, height: 8, },
+      shadowOpacity: 0.3, 
+      shadowRadius: 4,
+    },
+    leftBox:{ 
+      flex : 1,
+      backgroundColor: '#fff',
+      alignContent : "center",
+      alignItems : 'center',
+    },
+    rightBox:{
+      flex : 2,
+      padding : 8,
   
+    },
+    rightBottomBox:{
+      display : "flex", 
+      flexDirection : "row"
     },
     restaurantNameText:{
       fontStyle: 'normal',
       fontSize: 18,
       fontWeight : "bold",
       color: "#FFFFFF",
+      marginBottom: 5,
     },
     addressText:{
       fontStyle: 'normal',
-      fontSize: 15,
+      fontSize: 12,
       color: "#FFFFFF",
+      marginBottom: 3,
     },
     partyNameText:{
       fontStyle: 'normal',
-      fontSize: 12,
+      fontSize: 18,
       color: "#FFFFFF",
+      marginRight : 10,
     },
     peopleNumberText:{
       fontStyle: 'normal',
-      fontSize: 12,
+      fontSize: 18,
       color: "#FFFFFF",
     },
     addMenuBox:{
@@ -272,6 +343,21 @@ useEffect(() => {
       textAlign: "center",
       color: "#FFFFFF",
   
+    },
+    outBox:{
+      width: 335,
+      height: 39,
+      backgroundColor: "#FF473A",
+      borderRadius: 10,
+      marginBottom : 12, 
+      justifyContent: 'center', 
+      alignItems: 'center' 
+    },
+    outText:{
+      fontStyle: 'normal',
+      fontSize: 20,
+      textAlign: "center",
+      color: "#FFFFFF",
     },
 
 
