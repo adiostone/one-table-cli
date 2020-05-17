@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,Button, Image,TextInput,TouchableOpacity,Dimensi
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
 
-import LogoButton from "../component/logoButton"
+import BaseTab from "../component/baseTab"
 import UserList from "../component/userList"
 import axios from 'axios'
 
@@ -16,23 +16,40 @@ export default function roomScreen({route, navigation}) {
 
 
   // const [partyID, setPartyID] = useState(route.params.partyID) 
-  const [restaurantID, setRestaurantID] = useState(route.params.restaurantID) 
-  const [restaurantName, setRestaurantName] = useState(route.params.restaurantName) 
-  const [address, setAddress] = useState(route.params.address) 
-  const [capacity, setCapacity] = useState(route.params.capacity);
-  const [curPeopleNum, setCurPeopleNum] = useState(route.params.members.length);
-  const [partyName, setPartyName] = useState(route.params.title) 
+  const [restaurantID, setRestaurantID] = useState() 
+  const [restaurantName, setRestaurantName] = useState() 
+  const [address, setAddress] = useState() 
+  const [capacity, setCapacity] = useState();
+  const [size, setSize] = useState();
+  const [title, setTitle] = useState() 
 
-  const [userList, setUserList] = useState(route.params.members) 
+  const [userList, setUserList] = useState([]) 
 
   const ws = useRef(socketContext.ws)
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+  
+      if (ws.current && ws.current.readyState === WebSocket.OPEN){
+        console.log("getMyPartyMetadata")
+        const message1 = { operation: 'getMyPartyMetadata', body: {} }
+        ws.current.send(JSON.stringify(message1))
+        console.log("getMyPartyMemberList")
+        const message2 = { operation: 'getMyPartyMemberList', body: {} }
+        ws.current.send(JSON.stringify(message2))
+      }
+  
+    });
+  
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     
       if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
         console.log("reconnect websocket")
         console.log(appContext.accessToken)
-        const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+        const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
         try {
           const newws = new WebSocket(wsURL)
           socketContext.setws(newws)
@@ -49,7 +66,7 @@ export default function roomScreen({route, navigation}) {
             else{
               console.log('invalid tokens -> refreshing tokens')
               axios({
-                url: 'https://api.onetable.xyz/v1/table/auth/refresh',
+                url: 'https://dev.api.onetable.xyz/v1/table/auth/refresh',
                 method: 'get',
                 headers: {
                   Authorization: `Bearer ${appContext.refreshToken}`,
@@ -63,7 +80,7 @@ export default function roomScreen({route, navigation}) {
                 const accessToken= access    
                 SecureStore.setItemAsync('accessToken', accessToken)
                 appContext.setAccessToken(accessToken)
-                const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+                const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${accessToken}`
                 const newws = new WebSocket(wsURL)
                 socketContext.setws(newws)
                 ws.current = newws
@@ -83,14 +100,53 @@ export default function roomScreen({route, navigation}) {
 useEffect(() => {
   if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
 
+
+  ws.current.onopen = e => {
+    console.log("getMyPartyMetadata")
+    const message1 = { operation: 'getMyPartyMetadata', body: {} }
+    ws.current.send(JSON.stringify(message1))
+    console.log("getMyPartyMemberList")
+    const message2 = { operation: 'getMyPartyMemberList', body: {} }
+    ws.current.send(JSON.stringify(message2))
+  }
+
+
   ws.current.onmessage = e => {
       const message = JSON.parse(e.data);
+      console.log("roomListen");
       console.log(message);
+      if(message.operation==="replyGetMyPartyMetadata"){
+        setAddress(message.body.address)
+        setCapacity(message.body.capacity)
+        setRestaurantName(message.body.restaurant.name)
+        setSize(message.body.size)
+        setTitle(message.body.title)
+
+      }
+      if(message.operation==="replyGetMyPartyMemberList"){
+        setUserList(message.body)
+      }
       if(message.operation==="notifyNewMember"){
-        console.log(message.body)
-        userList.push(message.body)
-        setUserList(userList)
-        // setCurPeopleNum(message.body.size)
+        setUserList([message.body.user].concat(userList))
+        setSize(message.body.size)
+      }
+      if(message.operation==="notifyMemberOut"){
+
+      }
+      if(message.operation==="notifyUpdateMemberStatus"){
+
+      }
+      if(message.operation==="notifyAddPublicMenu"){
+
+      }
+      if(message.operation==="notifyChangePublicMenu"){
+
+      }
+      if(message.operation==="notifyDeletePublicMenu"){
+
+      }
+      if(message.operation==="notifyWholeMemberPrice"){
+
       }
       if(message.operation==="ping"){
         const sendMessage = { operation: 'pong'}
@@ -103,13 +159,13 @@ useEffect(() => {
 
     return (
         <SafeAreaView style={styles.container}>
-          <LogoButton/>
+          <BaseTab/>
           <ScrollView style={styles.pinContainer}>
-            <View style={styles.listBox} onPress={() => {navigation.navigate("room")}}>
+            <View style={styles.listBox}>
               <Text style={styles.restaurantNameText}> {restaurantName}</Text>
               <Text style={styles.addressText}>{address}</Text>
-              <Text style={styles.partyNameText}>{partyName}</Text>
-              {/* <Text style={styles.peopleNumberText}> {curPeopleNum}/{capacity}</Text> */}
+              <Text style={styles.partyNameText}>{title}</Text>
+              <Text style={styles.peopleNumberText}> {size}/{capacity}</Text>
             </View>        
             <TouchableOpacity style={styles.shoppingBagBox} onPress={() => navigation.navigate('shoppingBag')}>
               <Text style={styles.shoppingBagText}>장바구니</Text>
