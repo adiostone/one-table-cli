@@ -8,6 +8,7 @@ export default function userItem(props) {
 
   const id = props.data.id
   const nickname =props.data.nickname
+  const image =props.data.image
   // const isHost =props.data.isHost 
   // const isReady = props.data.isReady 
 
@@ -20,6 +21,7 @@ export default function userItem(props) {
   return (
 
           <View style={styles.listBox}>
+            <Image source={{uri:image}} style={styles.imageStyle}/>
             {(appContext.nickname === nickname) ?
             <Text style={styles.meText}>{nickname}</Text> : <Text style={styles.foodNameText}>{nickname}</Text> 
             }
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
 
   listBox: {
     width: 335,
-    height: 39,
+    height: 100,
     backgroundColor: "#FFF5F5",
     borderRadius: 10,
     marginBottom : 12, 
@@ -57,5 +59,12 @@ nicknameText:{
   textAlign: "center",
 
 },
+
+imageStyle:{
+  width: 50,
+  height :50,
+  borderRadius : 50,
+  marginBottom : 10
+}
 
 });
