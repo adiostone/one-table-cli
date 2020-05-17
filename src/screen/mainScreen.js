@@ -104,7 +104,7 @@ export default function mainScreen({navigation}) {
 
       ws.current.onmessage = e => {
           const message = JSON.parse(e.data);
-          console.log("mainListen")
+          console.log("main listen")
           console.log(message);
           if(message.operation==="replyGetPartyList"){
             setPartyList(message.body)
@@ -113,27 +113,28 @@ export default function mainScreen({navigation}) {
             setPartyList([message.body].concat(partyList))
           }
           if(message.operation==="notifyDeleteParty"){
-            
+            for (let i=0 ; i < partyList.length; i++){
+              if(partyList[i].id===message.body.id){
+                partyList.splice(i,1)
+                setPartyList([...partyList])
+              } 
+            } 
           }
           if(message.operation==="notifyUpdateParty"){
             
           }
           if(message.operation==="notifyChangedPartySize"){
-            for (const value of partyList){
-              if(value.id===message.body.id){
-                console.log(value.size)
-                console.log(message.body.size)
-                value.size = message.body.size
-                console.log(value.size)
-
+            for (let i=0 ; i < partyList.length; i++){
+              if(partyList[i].id===message.body.id){
+                partyList[i] = message.body.size
+                setPartyList([...partyList])
               } 
             } 
           }
           if(message.operation==="replyJoinParty"){
-            console.log(message.body)
             if(message.body.isSuccess===true){
               console.log("join Success")
-              navigation.navigate("room",message.body)
+              navigation.navigate("room")
             }
             else{
               console.log("join failed")
@@ -156,7 +157,7 @@ export default function mainScreen({navigation}) {
             <Text style={styles.locationText}>위치 설정</Text>
           </TouchableOpacity>        
           <TouchableOpacity style={styles.createBox} onPress={() => navigation.navigate('restaurantList')}>
-            <Text style={styles.createText}> 파티 만들기</Text>
+            <Text style={styles.createText}>파티 만들기</Text>
           </TouchableOpacity>
           <PartyList data={partyList} ws={ws}/>
         </ScrollView>
