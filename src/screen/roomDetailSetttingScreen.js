@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext,useRef ,} from 'react'
 import { StyleSheet, Text,SafeAreaView , TouchableOpacity,View,Button, Image,TextInput,Dimensions } from 'react-native';
-import LogoButton from "../component/logoButton"
+import BaseTab from "../component/baseTab"
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
 
@@ -16,7 +16,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
   const [restaurantID, setRestaurantID] = useState(route.params.restaurantID);
   const [restaurantName, setRestaurantName] = useState(route.params.restaurantName);
 
-  const [roomName, setRoomName] = useState("같이 먹어요");
+  const [title, setTitle] = useState("같이 먹어요");
   const [capacity, setCapacity] = useState(3);
 
   const [formattedAddress, setFormattedAddress] = useState(appContext.formattedAddress);
@@ -27,7 +27,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
       if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
         console.log("reconnect websocket")
         console.log(appContext.accessToken)
-        const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+        const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
         try {
           const newws = new WebSocket(wsURL)
           socketContext.setws(newws)
@@ -44,7 +44,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
             else{
               console.log('invalid tokens -> refreshing tokens')
               axios({
-                url: 'https://api.onetable.xyz/v1/table/auth/refresh',
+                url: 'https://dev.api.onetable.xyz/v1/table/auth/refresh',
                 method: 'get',
                 headers: {
                   Authorization: `Bearer ${appContext.refreshToken}`,
@@ -58,7 +58,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
                 const accessToken= access    
                 SecureStore.setItemAsync('accessToken', accessToken)
                 appContext.setAccessToken(accessToken)
-                const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+                const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${accessToken}`
                 const newws = new WebSocket(wsURL)
                 socketContext.setws(newws)
                 ws.current = newws
@@ -80,7 +80,18 @@ export default function roomDetailSettingScreen({route, navigation}) {
 
     ws.current.onmessage = e => {
         const message = JSON.parse(e.data);
+        console.log("listenRoomDetail")
         console.log(message);
+        if(message.operation==="replyCreateParty"){
+          console.log(message.body)
+          if(message.body.isSuccess===true){
+            console.log("create Success")
+            navigation.navigate("room",message.body)
+          }
+          else{
+            console.log("create failed")
+          }
+        }
         if(message.operation==="ping"){
           const sendMessage = { operation: 'pong'}
           ws.current.send(JSON.stringify(sendMessage))
@@ -91,17 +102,16 @@ export default function roomDetailSettingScreen({route, navigation}) {
   function createParty(){
     if (!ws.current) return;
 
-    const message = { operation: 'createParty', body: {restaurantID: restaurantID ,title : roomName , capacity : capacity , address : formattedAddress+" "+detailAddress } }
+    const message = { operation: 'createParty', body: {restaurantID: restaurantID ,title : title , capacity : capacity , address : formattedAddress+" "+detailAddress } }
     ws.current.send(JSON.stringify(message))
     message.body["restaurantName"] = restaurantName
-    message.body["members"] = [appContext.nickname]
     console.log(message.body)
     navigation.navigate("room",message.body)
   }
 
     return (
       <SafeAreaView style={styles.container}>
-          <LogoButton/>
+          <BaseTab/>
           <View style={styles.roomDetailContainer}>
               <View style={styles.restaurantNameBox}>
               <Text style={styles.restaurantNameText}>{restaurantName}</Text>
@@ -109,7 +119,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
               <View style={styles.detailSettingBox}>
                 <Text style={styles.detailSettingText}>방제목</Text>                  
               </View>
-              <TextInput style={styles.detailSettingInputBox} onChangeText={(text) => setRoomName(text)}>{roomName}</TextInput>
+              <TextInput style={styles.detailSettingInputBox} onChangeText={(text) => settitle(text)}>{title}</TextInput>
               <View style={styles.detailSettingBox}>
                 <Text style={styles.detailSettingText}>최대인원</Text>                  
               </View>
