@@ -13,7 +13,7 @@ export default function loginScreen({navigation}) {
 
   async function loadNickname(accessToken){
     console.log("load nickname")
-    const res = await axios.get('https://api.onetable.xyz/v1/table/me/profile',
+    const res = await axios.get('https://dev.api.onetable.xyz/v1/table/me/profile',
         { headers: { Authorization: `Bearer ${accessToken}` }
     })
 
@@ -88,7 +88,7 @@ export default function loginScreen({navigation}) {
               console.log('deepLink: ' + deepLink)
               try {
                 const result = await WebBrowser.openAuthSessionAsync(                  
-                  'https://api.onetable.xyz/v1/table/auth/signin'
+                  'https://dev.api.onetable.xyz/v1/table/auth/signin'
                 , deepLink)
                 if(result.type == "success"){
                   login(result.url)

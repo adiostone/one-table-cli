@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext , useRef} from 'react'
 import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import { AppContext } from '../context/AppContext'
+
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
 
@@ -14,34 +15,16 @@ export default function partyItem(props) {
   const ws = props.ws;
 
   const partyID = props.data.id 
-  const restaurantName = props.data.restaurantName 
+  const restaurant = props.data.restaurant 
   const address = props.data.address 
   const capacity = props.data.capacity
-  const curPeopleNum = props.data.curPeopleNum
+  const size = props.data.size
   const partyName =props.data.title
 
   const navigation = useNavigation();
 
   useEffect(() => {
     
-  });
-
-  useEffect(() => {
-    if (!ws.current) return;
-
-    ws.current.onmessage = e => {
-        const message = JSON.parse(e.data);
-        console.log(message);
-        if(message.operation==="notifySuccessJoin"){
-          appContext.setPartyID(partyID)
-          appContext.setRestaurantID(message.body.restaurantID)
-          appContext.setRestaurantName(restaurantName)
-          message.body["partyID"] = partyID
-          message.body["restaurantName"] = restaurantName
-          console.log(message.body)
-          navigation.navigate("room",message.body)
-        }
-    };
   });
 
   function joinParty(){
@@ -54,11 +37,11 @@ export default function partyItem(props) {
   return (
 
           <TouchableOpacity style={styles.listBox} onPress={joinParty}>
-            <Text style={styles.restaurantNameText}> {restaurantName}</Text>
+            <Text style={styles.restaurantNameText}> {restaurant.name}</Text>
             <Text style={styles.addressText}>{address}</Text>
             <Text style={styles.partyNameText}>{partyName}</Text>
             <Text style={styles.peopleNumberText}>{capacity}</Text>
-            {/* <Text style={styles.peopleNumberText}> {curPeopleNum}/{capacity}</Text> */}
+            <Text style={styles.peopleNumberText}> {size}/{capacity}</Text>
           </TouchableOpacity>        
       
   );

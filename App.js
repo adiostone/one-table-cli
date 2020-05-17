@@ -8,6 +8,7 @@ import { SocketProvider } from './src/context/SocketContext'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import loginScreen from './src/screen/loginScreen'
+import loadScreen from './src/screen/loadScreen'
 import mainScreen from './src/screen/mainScreen'
 import mapScreen from './src/screen/mapScreen'
 import restaurantListScreen from './src/screen/restaurantListScreen'
@@ -49,6 +50,7 @@ export default function App(){
           <Stack.Navigator screenOptions={{
                 headerShown: false,
               }}>
+            <Stack.Screen name="load" component={loadScreen} />
             <Stack.Screen name="main" component={mainScreen} />
             <Stack.Screen name="login" component={loginScreen} />
             <Stack.Screen name="map" component={mapScreen} />

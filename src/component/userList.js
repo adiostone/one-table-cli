@@ -30,7 +30,6 @@ export default function userList(props) {
     <ScrollView style={styles.foodContainer}>
         {
           userList.map((data,i) => {
-            console.log(data)
           return (<UserItem key={i} data={data}/>);
         })}
     </ScrollView>

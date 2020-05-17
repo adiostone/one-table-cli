@@ -6,9 +6,9 @@ import axios from 'axios'
 
 export default function userItem(props) {
 
-  // const userID = props.data.userID
-  // const nickname =props.data.nickname
-  // const isMaster =props.data.isMaster 
+  const id = props.data.id
+  const nickname =props.data.nickname
+  // const isHost =props.data.isHost 
   // const isReady = props.data.isReady 
 
   const appContext = useContext(AppContext)
@@ -20,8 +20,8 @@ export default function userItem(props) {
   return (
 
           <View style={styles.listBox}>
-            {(appContext.nickname === props.data) ?
-            <Text style={styles.meText}>{props.data}</Text> : <Text style={styles.foodNameText}>{props.data}</Text> 
+            {(appContext.nickname === nickname) ?
+            <Text style={styles.meText}>{nickname}</Text> : <Text style={styles.foodNameText}>{nickname}</Text> 
             }
           </View>        
       

@@ -9,7 +9,8 @@ export default function chatItem(props) {
 
     const appContext = useContext(AppContext)
 
-    const chatID =props.data.id
+    const chatID =props.data.chatID
+    const userID =props.data.userID 
     const nickname =props.data.nickname 
     const chat =props.data.chat 
     const time = props.data.time
