@@ -5,11 +5,11 @@ export const AppContext = createContext()
 
 export const AppProvider =({children}) =>{
     //GoogleSignIn
-    const [isSignedIn, setIsSignedIn] = useState(false)
     const [accessToken, setAccessToken] = useState('')
     const [refreshToken, setRefreshToken] = useState('')
 
     //userData
+    const [userID, setUserID] = useState()
     const [nickname, setNickname] = useState("")
 
     //LocationInformation
@@ -24,18 +24,20 @@ export const AppProvider =({children}) =>{
     const [restaurantID, setRestaurantID] = useState() 
     const [restaurantName, setRestaurantName] = useState() 
 
+    //shoppingBagInformation
+    const [shoppingBagList, setShoppingBagList] = useState() 
 
   
     return (
       <AppContext.Provider
         value={{
-          isSignedIn,
-          setIsSignedIn,
           accessToken,
           setAccessToken,
           refreshToken,
           setRefreshToken,
 
+          userID,
+          setUserID,
           nickname,
           setNickname,
 
@@ -51,9 +53,15 @@ export const AppProvider =({children}) =>{
           setDetailAddress,
 
 
-          partyID, setPartyID, 
-          restaurantID, setRestaurantID,
-          restaurantName, setRestaurantName,
+          partyID, 
+          setPartyID, 
+          restaurantID, 
+          setRestaurantID,
+          restaurantName, 
+          setRestaurantName,
+
+          shoppingBagList, 
+          setShoppingBagList,
           
         }}
       >
