@@ -21,7 +21,7 @@ export default function restuarantListScreen({navigation}) {
 
         axios({
           method: 'get',
-          url: `https://dev.api.onetable.xyz/v1/table/restaurants?category=${category}`,
+          url: `https://api.onetable.xyz/v1/table/restaurants?category=${category}`,
           headers: {
             Authorization: `Bearer ${appContext.accessToken}`,
       }
@@ -45,7 +45,7 @@ export default function restuarantListScreen({navigation}) {
               else{
                 console.log('invalid tokens -> refreshing tokens')
                 axios({
-                  url: 'https://dev.api.onetable.xyz/v1/table/auth/refresh',
+                  url: 'https://api.onetable.xyz/v1/table/auth/refresh',
                   method: 'get',
                   headers: {
                     Authorization: `Bearer ${appContext.refreshToken}`,
@@ -61,7 +61,7 @@ export default function restuarantListScreen({navigation}) {
                   appContext.setAccessToken(accessToken)
                   axios({
                       method: 'get',
-                      url: `https://dev.api.onetable.xyz/v1/table/restaurants?category=${category}`,
+                      url: `https://api.onetable.xyz/v1/table/restaurants?category=${category}`,
                       headers: {
                         Authorization: `Bearer ${accessToken}`,
                   }
@@ -84,14 +84,14 @@ export default function restuarantListScreen({navigation}) {
       });
     
       return unsubscribe;
-    }, [navigation, category]);
+    }, [navigation]);
 
 
     useEffect(() => {
 
         axios({
             method: 'get',
-            url: `https://dev.api.onetable.xyz/v1/table/restaurants?category=${category}`,
+            url: `https://api.onetable.xyz/v1/table/restaurants?category=${category}`,
             headers: {
               Authorization: `Bearer ${appContext.accessToken}`,
         }
@@ -115,7 +115,7 @@ export default function restuarantListScreen({navigation}) {
                 else{
                   console.log('invalid tokens -> refreshing tokens')
                   axios({
-                    url: 'https://dev.api.onetable.xyz/v1/table/auth/refresh',
+                    url: 'https://api.onetable.xyz/v1/table/auth/refresh',
                     method: 'get',
                     headers: {
                       Authorization: `Bearer ${appContext.refreshToken}`,
@@ -131,7 +131,7 @@ export default function restuarantListScreen({navigation}) {
                     appContext.setAccessToken(accessToken)
                     axios({
                         method: 'get',
-                        url: `https://dev.api.onetable.xyz/v1/table/restaurants?category=${category}`,
+                        url: `https://api.onetable.xyz/v1/table/restaurants?category=${category}`,
                         headers: {
                           Authorization: `Bearer ${accessToken}`,
                     }

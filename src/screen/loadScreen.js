@@ -39,13 +39,14 @@ export default function loadScreen({navigation}) {
 
     const accessToken = await SecureStore.getItemAsync('accessToken')
     if (!accessToken) {
-        navigation.navigate('login')
+      SetError(true)
+      navigation.navigate('login')
     } 
     else {
 
         try {
             const res =await axios({
-                url: 'https://dev.api.onetable.xyz/v1/table/me/profile',
+                url: 'https://api.onetable.xyz/v1/table/me/profile',
                 headers: {
                   Authorization: `Bearer ${accessToken}`,
                 },
@@ -74,7 +75,7 @@ export default function loadScreen({navigation}) {
                     try {
 
                         const result = await axios({
-                            url: 'https://dev.api.onetable.xyz/v1/table/auth/refresh',
+                            url: 'https://api.onetable.xyz/v1/table/auth/refresh',
                             method: 'get',
                             headers: {
                               Authorization: `Bearer ${refreshToken}`,
@@ -88,7 +89,7 @@ export default function loadScreen({navigation}) {
                         SecureStore.setItemAsync('accessToken', accessToken)
                         appContext.setAccessToken(accessToken)
                         const resultData =  await axios({
-                            url: 'https://dev.api.onetable.xyz/v1/table/me/profile',
+                            url: 'https://api.onetable.xyz/v1/table/me/profile',
                             headers: {
                               Authorization: `Bearer ${accessToken}`,
                             },
@@ -104,6 +105,7 @@ export default function loadScreen({navigation}) {
                     catch (error) {                        
   
                         console.log('should login again')
+                        SetError(true)
                         navigation.navigate('login')
                         
                     }
@@ -117,7 +119,7 @@ export default function loadScreen({navigation}) {
   appContext.setRefreshToken(refresh)
   console.log("connect Websocket")
   console.log(accessToken)
-  const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${accessToken}`
+  const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
   const newws = new WebSocket(wsURL)
   await socketContext.setws(newws)
   SetEveryThingIsGood(true)

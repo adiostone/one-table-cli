@@ -41,7 +41,7 @@ export default function mapScreen({navigation}) {
     SecureStore.setItemAsync('detailAddress',textInput)
     axios({
         method: 'patch',
-        url: "https://dev.api.onetable.xyz/v1/table/me/place",
+        url: "https://api.onetable.xyz/v1/table/me/place",
         headers: {
           Authorization: `Bearer ${appContext.accessToken}`,
         },
@@ -95,7 +95,7 @@ export default function mapScreen({navigation}) {
 
             axios({
                 method: 'patch',
-                url: "https://dev.api.onetable.xyz/v1/table/me/place",
+                url: "https://api.onetable.xyz/v1/table/me/place",
                 headers: {
                   Authorization: `Bearer ${appContext.accessToken}`,
                 },

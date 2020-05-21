@@ -40,7 +40,7 @@ export default function chatScreen( {navigation}) {
     if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
       console.log("reconnect websocket")
       console.log(appContext.accessToken)
-      const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+      const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
       try {
         const newws = new WebSocket(wsURL)
         socketContext.setws(newws)
@@ -57,7 +57,7 @@ export default function chatScreen( {navigation}) {
           else{
             console.log('invalid tokens -> refreshing tokens')
             axios({
-              url: 'https://dev.api.onetable.xyz/v1/table/auth/refresh',
+              url: 'https://api.onetable.xyz/v1/table/auth/refresh',
               method: 'get',
               headers: {
                 Authorization: `Bearer ${appContext.refreshToken}`,
@@ -71,7 +71,7 @@ export default function chatScreen( {navigation}) {
               const accessToken= access    
               SecureStore.setItemAsync('accessToken', accessToken)
               appContext.setAccessToken(accessToken)
-              const wsURL = `wss://dev.api.onetable.xyz/v1/table/party?access=${accessToken}`
+              const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
               const newws = new WebSocket(wsURL)
               socketContext.setws(newws)
               ws.current = newws
