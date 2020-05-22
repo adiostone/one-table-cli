@@ -9,7 +9,7 @@ export default function foodListScreen({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-          <BaseTab/>
+          <BaseTab data={"room"}/>
           <FoodList/>
         </SafeAreaView>
 

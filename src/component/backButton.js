@@ -3,12 +3,12 @@ import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,T
 import { AppContext } from '../context/AppContext'
 import { useNavigation } from '@react-navigation/native';
 
-export default function backButton() {
+export default function backButton(props) {
 
   const navigation = useNavigation();
 
   return (
-        <TouchableOpacity  onPress={() => navigation.goBack()}>
+        <TouchableOpacity  onPress={() => navigation.replace(props.data)}>
                 <Image source={require('../assets/backButton.png')} style={styles.backStyle} />
         </TouchableOpacity>            
 

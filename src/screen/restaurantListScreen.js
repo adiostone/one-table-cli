@@ -154,7 +154,7 @@ export default function restuarantListScreen({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-          <BaseTab/>
+          <BaseTab data={"main"}/>
           <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.tabButton} onPress={()=> setCategory("치킨")}>
                   <Text style={styles.tabButtonText}>치킨</Text>

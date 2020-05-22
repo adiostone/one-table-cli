@@ -108,7 +108,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
 
     return (
       <SafeAreaView style={styles.container}>
-          <BaseTab/>
+          <BaseTab data={"restaurantList"}/>
           <View style={styles.roomDetailContainer}>
               <View style={styles.restaurantNameBox}>
               <Text style={styles.restaurantNameText}>{name}</Text>

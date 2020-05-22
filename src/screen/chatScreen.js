@@ -133,7 +133,7 @@ useEffect(() => {
 
     return (
         <SafeAreaView style={styles.container}>
-          <BaseTab/>
+          <BaseTab data={"room"}/>
           <ScrollView style={styles.pinContainer}>
             <ChatList data={chatList}/>     
             <View style={styles.submitBox}>

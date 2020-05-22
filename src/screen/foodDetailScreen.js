@@ -56,7 +56,7 @@ export default function foodDetailScreen({route, navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-          <BaseTab/>
+          <BaseTab data={"foodList"}/>
           <View style={styles.topBox}>
             <Text style={styles.foodNameText}>{foodName}</Text>
           </View>

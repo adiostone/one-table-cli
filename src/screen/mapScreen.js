@@ -51,7 +51,6 @@ export default function mapScreen({navigation}) {
     })   
     .then(res =>{
         console.log("send detail Location info to server")
-        console.log(res)
 
     })
     .catch(err =>{
@@ -129,7 +128,7 @@ export default function mapScreen({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <BaseTab/>
+        <BaseTab data={"main"}/>
         <ScrollView style={styles.mapContainer}>
             {(locationIsSet==="true") ?
             //main page

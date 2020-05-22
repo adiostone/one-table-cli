@@ -13,7 +13,7 @@ export default function shoppingBagScreen({route,navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-          <BaseTab/>
+          <BaseTab data={"room"}/>
           <ScrollView style={styles.scrollBox}>
             <View style={styles.shoppingBagBox}>
                 <Text style={styles.shoppingBagText}>장바구니</Text>

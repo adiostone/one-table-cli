@@ -5,12 +5,12 @@ import { useNavigation } from '@react-navigation/native';
 import LogoButton from "./logoButton"
 import BackButton from "./backButton"
 
-export default function baseTab() {
+export default function baseTab(props) {
 
   return (
     <View style={styles.baseList}>
         <View style={styles.left}>
-          <BackButton/>
+          <BackButton data={props.data}/>
         </View>
         <View style={styles.center}>
           <LogoButton/>
