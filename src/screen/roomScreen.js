@@ -209,18 +209,20 @@ useEffect(() => {
                 </View>
               </View>
             </View>    
-            <TouchableOpacity style={styles.shoppingBagBox} onPress={() => navigation.navigate('shoppingBag')}>
-              <Text style={styles.shoppingBagText}>장바구니</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.addMenuBox} onPress={() => navigation.navigate('foodList')}>
-              <Text style={styles.addMenuText}>메뉴 추가</Text>
-            </TouchableOpacity>   
-            <TouchableOpacity style={styles.chatBox} onPress={() => navigation.navigate('chat')}>
-              <Text style={styles.chatText}>채팅방</Text>
-            </TouchableOpacity>   
-            <TouchableOpacity style={styles.outBox} onPress={leaveParty}>
-              <Text style={styles.outText}>파티 나가기</Text>
-            </TouchableOpacity>   
+            <View style={styles.menuTab}>
+              <TouchableOpacity style={styles.shoppingBagBox} onPress={() => navigation.navigate('shoppingBag')}>
+                <Text style={styles.shoppingBagText}>장바구니</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.addMenuBox} onPress={() => navigation.navigate('foodList')}>
+                <Text style={styles.addMenuText}>메뉴 추가</Text>
+              </TouchableOpacity>   
+              <TouchableOpacity style={styles.chatBox} onPress={() => navigation.navigate('chat')}>
+                <Text style={styles.chatText}>채팅방</Text>
+              </TouchableOpacity>   
+              <TouchableOpacity style={styles.outBox} onPress={leaveParty}>
+                <Text style={styles.outText}>파티 나가기</Text>
+              </TouchableOpacity>   
+            </View>
             <UserList data={userList}/>     
           </ScrollView>
         </SafeAreaView>
@@ -272,7 +274,10 @@ useEffect(() => {
     rightBox:{
       flex : 2,
       padding : 8,
-  
+    },
+
+    menuTab:{
+
     },
     rightBottomBox:{
       display : "flex", 

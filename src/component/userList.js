@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
+import { StyleSheet, Text, FlatList, View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
@@ -27,21 +27,25 @@ export default function userList(props) {
     // }
 
   return (
-    <ScrollView style={styles.foodContainer}>
-        {
-          userList.map((data,i) => {
-          return (<UserItem key={i} data={data}/>);
-        })}
-    </ScrollView>
+    <View style={styles.userContainer}>
+      <FlatList data={userList} renderItem={({item}) => {
+        console.log(item)
+          return (<View style={{flexDirection: 'row', margin: 5 }}>
+            <UserItem data={item}/>
+          </View>)
+        }}
+          //Setting the number of column
+          numColumns={2}
+          keyExtractor={item => item.id}
+        />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
 
-  foodContainer: {
-    display : "flex",
-    flexDirection: "column",
-    alignContent : "stretch",
+  userContainer: {
+    justifyContent: 'center',
   },
 
 });
