@@ -49,7 +49,7 @@ export default function App(){
         <NavigationContainer>
           <Stack.Navigator screenOptions={{
                 headerShown: false,
-              }}>
+              }} >
             <Stack.Screen name="load" component={loadScreen} />
             <Stack.Screen name="main" component={mainScreen} />
             <Stack.Screen name="login" component={loginScreen} />
