@@ -9,10 +9,9 @@ export default function logoButton() {
     const navigation = useNavigation();
 
     return (
-          <TouchableOpacity  onPress={() => navigation.navigate('main')}>
-                  <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
+          <TouchableOpacity>
+              <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
           </TouchableOpacity>            
-
     );
   }
   const styles = StyleSheet.create({
@@ -20,7 +19,6 @@ export default function logoButton() {
   logoStyle: {
     width: 47,
     height: 37.7,
-    marginLeft:20,
     marginTop:20,
     marginBottom:13,
 

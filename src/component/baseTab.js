@@ -9,8 +9,12 @@ export default function baseTab() {
 
   return (
     <View style={styles.baseList}>
-        <LogoButton/>
-        <BackButton/>
+        <View style={styles.left}>
+          <BackButton/>
+        </View>
+        <View style={styles.center}>
+          <LogoButton/>
+        </View>
     </View>        
 
   );
@@ -18,10 +22,20 @@ export default function baseTab() {
 const styles = StyleSheet.create({
 
   baseList: {
-    display : "flex",
-    flexDirection : "row",
-    alignItems : "center"
+
+
   },
+  left : {
+    position : "absolute"
+  
+
+  },
+
+  center :{
+
+    alignSelf : "center" ,
+
+  }
 
 });
 
