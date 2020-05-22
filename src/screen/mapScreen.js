@@ -107,11 +107,9 @@ export default function mapScreen({navigation}) {
             })   
             .then(res =>{
                 console.log("send Location info to server")
-                console.log(res)
-
             })
             .catch(err =>{
-                console.log("send Location info to server")
+                console.log("error : send Location info to server")
                 console.log(err)
             })
         })

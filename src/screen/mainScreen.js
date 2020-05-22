@@ -36,61 +36,61 @@ export default function mainScreen({navigation}) {
 }, [navigation]);
 
 
-  useEffect(() => {
+  // useEffect(() => {
     
-      if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
+  //     if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
         
-        console.log("reconnect websocket")
-        console.log(appContext.accessToken)
-        const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
-        try {
-          const newws = new WebSocket(wsURL)
-          socketContext.setws(newws)
-          ws.current = newws
-          const message = {operation : "getParties" , body : null}    
-          ws.current.send(JSON.stringify(message))
-        }
-        catch(err){
-          if (err && err.response) {
-            console.log(err)
-            const status = err.response.status
-            if (status === 404) {
-              // Valid
-              console.log('valid tokens')
-            }
-            else{
-              console.log('invalid tokens -> refreshing tokens')
-              axios({
-                url: 'https://api.onetable.xyz/v1/table/auth/refresh',
-                method: 'get',
-                headers: {
-                  Authorization: `Bearer ${appContext.refreshToken}`,
-                },
-              })
-              .then(res => {
-                console.log('tokens have been refreshed')
-                // Refresh the tokens and store to the machine again
-                const { access } = res.data
-                console.log(access)
-                const accessToken= access    
-                SecureStore.setItemAsync('accessToken', accessToken)
-                appContext.setAccessToken(accessToken)
-                const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
-                const newws = new WebSocket(wsURL)
-                socketContext.setws(newws)
-                ws.current = newws
-                const message = {operation : "getParties" , body : null}    
-                ws.current.send(JSON.stringify(message))
-              })
-              .catch(err =>{
-                console.log("could't refresh token")
-              })
-            }
-          }
-        }
+  //       console.log("reconnect websocket")
+  //       console.log(appContext.accessToken)
+  //       const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+  //       try {
+  //         const newws = new WebSocket(wsURL)
+  //         socketContext.setws(newws)
+  //         ws.current = newws
+  //         const message = {operation : "getParties" , body : null}    
+  //         ws.current.send(JSON.stringify(message))
+  //       }
+  //       catch(err){
+  //         if (err && err.response) {
+  //           console.log(err)
+  //           const status = err.response.status
+  //           if (status === 404) {
+  //             // Valid
+  //             console.log('valid tokens')
+  //           }
+  //           else{
+  //             console.log('invalid tokens -> refreshing tokens')
+  //             axios({
+  //               url: 'https://api.onetable.xyz/v1/table/auth/refresh',
+  //               method: 'get',
+  //               headers: {
+  //                 Authorization: `Bearer ${appContext.refreshToken}`,
+  //               },
+  //             })
+  //             .then(res => {
+  //               console.log('tokens have been refreshed')
+  //               // Refresh the tokens and store to the machine again
+  //               const { access } = res.data
+  //               console.log(access)
+  //               const accessToken= access    
+  //               SecureStore.setItemAsync('accessToken', accessToken)
+  //               appContext.setAccessToken(accessToken)
+  //               const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+  //               const newws = new WebSocket(wsURL)
+  //               socketContext.setws(newws)
+  //               ws.current = newws
+  //               const message = {operation : "getParties" , body : null}    
+  //               ws.current.send(JSON.stringify(message))
+  //             })
+  //             .catch(err =>{
+  //               console.log("could't refresh token")
+  //             })
+  //           }
+  //         }
+  //       }
 
-      }
-  });
+  //     }
+  // });
 
     useEffect(() => {
       if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
@@ -151,7 +151,9 @@ export default function mainScreen({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <LogoButton/>
+        <View style={styles.logo}>
+          <LogoButton/>
+        </View>
         <ScrollView style={styles.pinContainer}>
           <TouchableOpacity style={styles.locationBox} onPress={() => navigation.navigate('map')}>
             <Text style={styles.locationText}>위치 설정</Text>
@@ -177,6 +179,9 @@ const styles = StyleSheet.create({
   pinContainer: {
     alignSelf: 'center',
 
+  },
+  logo:{
+    alignItems: "center",
   },
   locationBox:{
     width: 335,

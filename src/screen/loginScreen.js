@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { AppContext } from '../context/AppContext'
+import { SocketContext } from '../context/SocketContext'
+
 import * as WebBrowser from 'expo-web-browser'
 import * as SecureStore from 'expo-secure-store';
 
@@ -10,6 +12,8 @@ import { StyleSheet, Text, View, Image, Alert,TouchableOpacity,SafeAreaView} fro
 export default function loginScreen({navigation}) {
 
   const appContext = useContext(AppContext)
+  const socketContext = useContext(SocketContext)
+
 
   async function loadNickname(accessToken){
     console.log("load nickname")
@@ -73,6 +77,12 @@ export default function loginScreen({navigation}) {
 
       await loadNickname(accessToken)
       await loadLocationInfo()
+
+      console.log("connect Websocket")
+      console.log(accessToken)
+      const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+      const newws = new WebSocket(wsURL)
+      await socketContext.setws(newws)
 
       navigation.navigate('main')
     }

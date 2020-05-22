@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,Button, Image,Alert,TextInput,TouchableOpacity,D
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
 
-import BaseTab from "../component/baseTab"
+import LogoButton from "../component/logoButton"
 import UserList from "../component/userList"
 import axios from 'axios'
 
@@ -47,52 +47,52 @@ export default function roomScreen({navigation}) {
 
   useEffect(() => {
     
-      if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
-        console.log("reconnect websocket")
-        console.log(appContext.accessToken)
-        const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
-        try {
-          const newws = new WebSocket(wsURL)
-          socketContext.setws(newws)
-          ws.current = newws
-        }
-        catch(err){
-          if (err && err.response) {
-            console.log(err)
-            const status = err.response.status
-            if (status === 404) {
-              // Valid
-              console.log('valid tokens')
-            }
-            else{
-              console.log('invalid tokens -> refreshing tokens')
-              axios({
-                url: 'https://api.onetable.xyz/v1/table/auth/refresh',
-                method: 'get',
-                headers: {
-                  Authorization: `Bearer ${appContext.refreshToken}`,
-                },
-              })
-              .then(res => {
-                console.log('tokens have been refreshed')
-                // Refresh the tokens and store to the machine again
-                const { access } = res.data
-                console.log(access)
-                const accessToken= access    
-                SecureStore.setItemAsync('accessToken', accessToken)
-                appContext.setAccessToken(accessToken)
-                const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
-                const newws = new WebSocket(wsURL)
-                socketContext.setws(newws)
-                ws.current = newws
-              })
-              .catch(err =>{
-                console.log("could't refresh token")
-              })
-            }
-          }
-        }
-      }
+      // if (!ws.current || ws.current.readyState === WebSocket.CLOSED) {
+      //   console.log("reconnect websocket")
+      //   console.log(appContext.accessToken)
+      //   const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${appContext.accessToken}`
+      //   try {
+      //     const newws = new WebSocket(wsURL)
+      //     socketContext.setws(newws)
+      //     ws.current = newws
+      //   }
+      //   catch(err){
+      //     if (err && err.response) {
+      //       console.log(err)
+      //       const status = err.response.status
+      //       if (status === 404) {
+      //         // Valid
+      //         console.log('valid tokens')
+      //       }
+      //       else{
+      //         console.log('invalid tokens -> refreshing tokens')
+      //         axios({
+      //           url: 'https://api.onetable.xyz/v1/table/auth/refresh',
+      //           method: 'get',
+      //           headers: {
+      //             Authorization: `Bearer ${appContext.refreshToken}`,
+      //           },
+      //         })
+      //         .then(res => {
+      //           console.log('tokens have been refreshed')
+      //           // Refresh the tokens and store to the machine again
+      //           const { access } = res.data
+      //           console.log(access)
+      //           const accessToken= access    
+      //           SecureStore.setItemAsync('accessToken', accessToken)
+      //           appContext.setAccessToken(accessToken)
+      //           const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+      //           const newws = new WebSocket(wsURL)
+      //           socketContext.setws(newws)
+      //           ws.current = newws
+      //         })
+      //         .catch(err =>{
+      //           console.log("could't refresh token")
+      //         })
+      //       }
+      //     }
+      //   }
+      // }
     
       
   });
@@ -192,7 +192,9 @@ useEffect(() => {
 
     return (
         <SafeAreaView style={styles.container}>
-          <BaseTab/>
+          <View style={styles.logo}>
+            <LogoButton/>
+          </View>
           <ScrollView style={styles.pinContainer}>
             <View style={styles.listBox}>
               <View style={styles.leftBox}>
@@ -236,6 +238,9 @@ useEffect(() => {
     pinContainer: {
       alignSelf: 'center',
   
+    },
+    logo:{
+      alignItems: "center",
     },
     imageStyle:{
 
