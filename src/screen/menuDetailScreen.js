@@ -1,21 +1,50 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext ,useRef } from 'react'
 import { StyleSheet, Text,CheckBox, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
 import BaseTab from "../component/baseTab"
 import { AppContext } from '../context/AppContext'
+import { SocketContext } from '../context/SocketContext'
 
 
 export default function menuDetailScreen({route, navigation}) {
 
   const appContext = useContext(AppContext)
 
-  const [foodID, setFoodID] = useState(route.params.foodID) 
-  const [foodName, setFoodName] = useState(route.params.foodName) 
-  const [foodPrice, setFoodPrice] = useState(route.params.foodPrice) 
+  const socketContext = useContext(SocketContext)
+
+  const ws = useRef(socketContext.ws)
+
+  const [id, setid] = useState(route.params.id) 
+  const [name, setName] = useState(route.params.name) 
+  const [price, setPrice] = useState(route.params.price) 
   const [quantity, setQuantity] = useState(1) 
   const [isPublicMenu, setIsPublicMenu] = useState(false) 
   const [size, setSize] = useState(appContext.size) 
-  const [totalPrice, setTotalPrice] = useState(route.params.foodPrice * quantity) 
+  const [totalPrice, setTotalPrice] = useState(route.params.price * quantity) 
 
+  useEffect(() => {
+    if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
+
+    ws.current.onmessage = e => {
+        const message = JSON.parse(e.data);
+        console.log("menuDetail listen")
+        console.log(message);
+        if(message.operation==="replyAddShoppingBag"){
+          appContext.setBagFoodList([message.body].concat(appContext.bagFoodList))
+          navigation.navigate('shoppingBag')
+        }
+        if(message.operation==="ping"){
+          const sendMessage = { operation: 'pong'}
+          ws.current.send(JSON.stringify(sendMessage))
+        }
+    };
+  });
+
+  function addShoppingBag(){
+    if (!ws.current) return;
+
+    const message = { operation: 'addShoppingBag', body: {id: id ,quantity : quantity , price : price , totalPrice : totalPrice  , isPublicMenu : isPublicMenu} }
+    ws.current.send(JSON.stringify(message))
+  }
 
 
   function clickCheckBox(){
@@ -32,10 +61,10 @@ export default function menuDetailScreen({route, navigation}) {
     const newQuantity = quantity + 1
     setQuantity(newQuantity)
     if(isPublicMenu===true){
-      setTotalPrice(newQuantity*foodPrice/size)
+      setTotalPrice(newQuantity*price/size)
     }
     else{
-      setTotalPrice(newQuantity*foodPrice)
+      setTotalPrice(newQuantity*price)
     }
   } 
 
@@ -44,21 +73,22 @@ export default function menuDetailScreen({route, navigation}) {
       const newQuantity = quantity - 1
       setQuantity(newQuantity)
       if(isPublicMenu===true){
-        setTotalPrice(newQuantity*foodPrice/size)
+        setTotalPrice(newQuantity*price/size)
       }
       else{
-        setTotalPrice(newQuantity*foodPrice)
+        setTotalPrice(newQuantity*price)
       }
     }
     
   } 
+  
 
 
     return (
         <SafeAreaView style={styles.container}>
           <BaseTab data={"menuList"}/>
           <View style={styles.topBox}>
-            <Text style={styles.foodNameText}>{foodName}</Text>
+            <Text style={styles.nameText}>{name}</Text>
           </View>
           <View style={styles.middleBox}>
             <View style={styles.middleLeftBox}>
@@ -92,7 +122,7 @@ export default function menuDetailScreen({route, navigation}) {
             </View>
           </View>) : (<View/>)    
           } 
-          <TouchableOpacity style={styles.shoppingBagBox} onPress={() => navigation.navigate('shoppingBag')}>
+          <TouchableOpacity style={styles.shoppingBagBox} onPress={addShoppingBag}>
             <Text style={styles.shoppingBagText}>{totalPrice}원 담기</Text>
           </TouchableOpacity>
 
@@ -109,7 +139,7 @@ export default function menuDetailScreen({route, navigation}) {
       topBox: {
         height : 50 ,
     },
-    foodNameText:{
+    nameText:{
         fontSize : 30,
         fontWeight : "bold",
         alignSelf: "center",
