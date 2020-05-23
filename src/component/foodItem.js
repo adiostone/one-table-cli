@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function foodItem(props) {
 
     const id =props.data.id
-    const foodName =props.data.name 
+    const name =props.data.name 
     const prices =props.data.prices 
 
     const navigation = useNavigation();
@@ -21,11 +21,11 @@ export default function foodItem(props) {
   return (
 
           <TouchableOpacity style={styles.listBox} onPress={() => {navigation.navigate("menuDetail",{
-            foodID: id,
-            foodName: foodName,
-            foodPrice: prices[0].price,
+            id: id,
+            name: name,
+            price: prices[0].price,
           })}}>
-            <Text style={styles.foodNameText}>{foodName}</Text>
+            <Text style={styles.foodNameText}>{name}</Text>
             <Text style={styles.priceText}>{prices[0].price}원</Text>
           </TouchableOpacity>        
       

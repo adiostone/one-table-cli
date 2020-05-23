@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext , useRef} from 'react'
 import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import { AppContext } from '../context/AppContext'
+import { SocketContext } from '../context/SocketContext'
 
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
@@ -12,10 +13,11 @@ export default function partyItem(props) {
 
   const appContext = useContext(AppContext)
 
-  const ws = props.ws;
+  const socketContext = useContext(SocketContext)
 
-  const id = props.data.id 
- 
+  const ws = useRef(socketContext.ws)
+
+  const id = props.data.id  
   const restaurant = props.data.restaurant
   const address = props.data.address 
   const capacity = props.data.capacity

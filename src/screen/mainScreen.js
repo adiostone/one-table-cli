@@ -105,7 +105,7 @@ export default function mainScreen({navigation}) {
           <TouchableOpacity style={styles.createBox} onPress={() => navigation.navigate('restaurantList')}>
             <Text style={styles.createText}>파티 만들기</Text>
           </TouchableOpacity>
-          <PartyList data={partyList} ws={ws}/>
+          <PartyList data={partyList}/>
         </ScrollView>
     </SafeAreaView>
       

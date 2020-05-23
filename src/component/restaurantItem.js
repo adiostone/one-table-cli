@@ -41,21 +41,28 @@ export default function restaurantItem(props) {
 const styles = StyleSheet.create({
 
   restaurantButton: {
-    padding : 12,
+    paddingTop : 10,
+    paddingBottom : 10,
     borderBottomWidth: 1,
     borderColor: '#DFDFDF',
     display : "flex",
     flexDirection : "row"
 },
 leftBox:{ 
+  marginLeft : 10,
   flex : 1,
 },
 rightBox:{
+  marginLeft : 10,
   flex : 4,
+  justifyContent : "center"
 },
 imageStyle:{
-  width: 50,
-  height :50,
+  width: 60,
+  height :60,
+  borderRadius : 10,
+  borderWidth : 1,
+  borderColor : "#DFDFDF",
   alignSelf : "center"
 
 },

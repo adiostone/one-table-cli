@@ -9,9 +9,9 @@ export default function logoButton() {
     const navigation = useNavigation();
 
     return (
-          <TouchableOpacity>
+          <View>
               <Image source={require('../assets/OnetableLogo.png')} style={styles.logoStyle} />
-          </TouchableOpacity>            
+          </View>            
     );
   }
   const styles = StyleSheet.create({

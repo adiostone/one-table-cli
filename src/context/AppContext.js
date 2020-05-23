@@ -25,10 +25,11 @@ export const AppProvider =({children}) =>{
     const [restaurantName, setRestaurantName] = useState()
     const [isHost, setIsHost] = useState(false)  
     const [isReady, setIsReady] = useState(false)  
-    const [size, setSize] = useState()  
+    const [size, setSize] = useState()
+    const [wholePrice, setWholePrice] = useState(0)  
 
     //shoppingBagInformation
-    const [shoppingBagList, setShoppingBagList] = useState() 
+    const [bagFoodList, setBagFoodList] = useState([]) 
 
   
     return (
@@ -68,9 +69,12 @@ export const AppProvider =({children}) =>{
           setIsReady,
           size,
           setSize,
+          wholePrice, 
+          setWholePrice, 
 
-          shoppingBagList, 
-          setShoppingBagList,
+
+          bagFoodList, 
+          setBagFoodList,
           
         }}
       >
