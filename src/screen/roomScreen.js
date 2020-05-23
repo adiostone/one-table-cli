@@ -24,6 +24,11 @@ export default function roomScreen({navigation}) {
   const [title, setTitle] = useState() 
   const [image, setImage] = useState()
 
+  const [isHost, setIsHost] = useState(appContext.isHost)
+  const [isReady, setIsReady] = useState(appContext.isReady)
+
+  const [wholePrice, setWholePrice] = useState(appContext.wholePrice)
+  
   const [userList, setUserList] = useState([]) 
 
   const ws = useRef(socketContext.ws)
@@ -86,8 +91,8 @@ useEffect(() => {
           appContext.setPartyID()
           appContext.setRestaurantID()
           appContext.setRestaurantName()
-          appContext.setIsHost()
-          appContext.setIsReady()
+          appContext.setIsHost(false)
+          appContext.setIsReady(false)
           appContext.setSize()
           navigation.navigate("main")
         }
@@ -128,7 +133,7 @@ useEffect(() => {
       if(message.operation==="notifyDeletePublicMenu"){
 
       }
-      if(message.operation==="notifyWholeMemberPrice"){
+      if(message.operation==="notifyChangeWholePrice"){
 
       }
       if(message.operation==="ping"){
@@ -145,6 +150,34 @@ useEffect(() => {
       const message = { operation: 'leaveParty', body: {}}
       ws.current.send(JSON.stringify(message))
       navigation.navigate("main",message.body)
+  
+  }
+
+  function readyToNotReady(){
+    if (!ws.current) return;
+
+      const message = { operation: 'setReady', body: {}}
+      ws.current.send(JSON.stringify(message))
+      setIsReady(false)
+      appContext.setIsReady(false)
+  
+  }
+
+  function notReadyToReady(){
+    if (!ws.current) return;
+
+      const message = { operation: 'setNotReady', body: {}}
+      ws.current.send(JSON.stringify(message))
+      setIsReady(true)
+      appContext.setIsReady(true)
+  
+  }
+
+  function requestOrder(){
+    if (!ws.current) return;
+
+      const message = { operation: 'requestOrder', body: {}}
+      ws.current.send(JSON.stringify(message))
   
   }
 
@@ -184,8 +217,18 @@ useEffect(() => {
                 <Text style={styles.outText}>파티 나가기</Text>
               </TouchableOpacity>   
             </View>
-
-
+            {(isHost===true)?
+            (<TouchableOpacity style={styles.orderButton} onPress={requestOrder}>
+                <Text style={styles.orderText}>결제하기</Text>
+              </TouchableOpacity> ) : 
+              (isReady===false) ? 
+              (<TouchableOpacity style={styles.notReadyButton} onPress={notReadyToReady}>
+                <Text style={styles.notReadyText}>준비하기</Text>
+              </TouchableOpacity>) :  
+              (<TouchableOpacity style={styles.readyButton} onPress={readyToNotReady}>
+                <Text style={styles.readyText}>준비중</Text>
+              </TouchableOpacity>)
+              }
             <UserList data={userList}/>     
           </View>
         </SafeAreaView>
@@ -339,6 +382,63 @@ useEffect(() => {
       fontSize: 20,
       textAlign: "center",
       color: "#FFFFFF",
+    },
+
+    orderButton:{
+      width: 335,
+      height: 39,
+
+      backgroundColor: "#FF8181",
+      borderRadius: 10,
+      marginBottom : 15, 
+      justifyContent: 'center', 
+      alignItems: 'center' 
+  
+    },
+    orderText:{
+      fontStyle: 'normal',
+      fontSize: 20,
+      textAlign: "center",
+      color: "#FFFFFF",
+  
+    },
+
+    notReadyButton:{
+      width: 335,
+      height: 39,
+
+      backgroundColor: "#FF8181",
+      borderRadius: 10,
+      marginBottom : 15, 
+      justifyContent: 'center', 
+      alignItems: 'center' 
+  
+    },
+    notReadyText:{
+      fontStyle: 'normal',
+      fontSize: 20,
+      textAlign: "center",
+      color: "#FFFFFF",
+  
+    },
+
+    readyButton:{
+      width: 335,
+      height: 39,
+
+      backgroundColor: "#FF8181",
+      borderRadius: 10,
+      marginBottom : 15, 
+      justifyContent: 'center', 
+      alignItems: 'center' 
+  
+    },
+    readyText:{
+      fontStyle: 'normal',
+      fontSize: 20,
+      textAlign: "center",
+      color: "#FFFFFF",
+  
     },
 
 
