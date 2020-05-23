@@ -10,10 +10,9 @@ export default function foodItem(props) {
 
     const id =props.data.id
     const foodName =props.data.name 
-    const price =props.data.price 
+    const prices =props.data.prices 
 
     const navigation = useNavigation();
-
 
   useEffect(()=>{
    
@@ -21,13 +20,13 @@ export default function foodItem(props) {
 
   return (
 
-          <TouchableOpacity style={styles.listBox} onPress={() => {navigation.navigate("foodDetail",{
-            foodID: foodID,
+          <TouchableOpacity style={styles.listBox} onPress={() => {navigation.navigate("menuDetail",{
+            foodID: id,
             foodName: foodName,
-            foodPrice: price,
+            foodPrice: prices[0].price,
           })}}>
             <Text style={styles.foodNameText}>{foodName}</Text>
-            <Text style={styles.priceText}>{price}원</Text>
+            <Text style={styles.priceText}>{prices[0].price}원</Text>
           </TouchableOpacity>        
       
   );
