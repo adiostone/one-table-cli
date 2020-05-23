@@ -23,7 +23,9 @@ export const AppProvider =({children}) =>{
     const [partyID, setPartyID] = useState() 
     const [restaurantID, setRestaurantID] = useState() 
     const [restaurantName, setRestaurantName] = useState()
-    // const [isHost, setIsHost] = useState(false)  
+    const [isHost, setIsHost] = useState(false)  
+    const [isReady, setIsReady] = useState(false)  
+    const [size, setSize] = useState()  
 
     //shoppingBagInformation
     const [shoppingBagList, setShoppingBagList] = useState() 
@@ -60,9 +62,12 @@ export const AppProvider =({children}) =>{
           setRestaurantID,
           restaurantName, 
           setRestaurantName,
-          // isHost,
-          // setIsHost,
-
+          isHost,
+          setIsHost,
+          isReady,
+          setIsReady,
+          size,
+          setSize,
 
           shoppingBagList, 
           setShoppingBagList,
