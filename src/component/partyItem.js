@@ -68,6 +68,8 @@ const styles = StyleSheet.create({
   imageStyle:{
     width: 100,
     height :100,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
     alignSelf : "center"
 
   },

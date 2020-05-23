@@ -13,7 +13,7 @@ export default function menuDetailScreen({route, navigation}) {
   const [foodPrice, setFoodPrice] = useState(route.params.foodPrice) 
   const [quantity, setQuantity] = useState(1) 
   const [isPublicMenu, setIsPublicMenu] = useState(false) 
-  const [peopleNum, setPeopleNum] = useState(route.params.peopleNum) 
+  const [size, setSize] = useState(appContext.size) 
   const [totalPrice, setTotalPrice] = useState(route.params.foodPrice * quantity) 
 
 
@@ -32,7 +32,7 @@ export default function menuDetailScreen({route, navigation}) {
     const newQuantity = quantity + 1
     setQuantity(newQuantity)
     if(isPublicMenu===true){
-      setTotalPrice(newQuantity*foodPrice/peopleNum)
+      setTotalPrice(newQuantity*foodPrice/size)
     }
     else{
       setTotalPrice(newQuantity*foodPrice)
@@ -44,7 +44,7 @@ export default function menuDetailScreen({route, navigation}) {
       const newQuantity = quantity - 1
       setQuantity(newQuantity)
       if(isPublicMenu===true){
-        setTotalPrice(newQuantity*foodPrice/peopleNum)
+        setTotalPrice(newQuantity*foodPrice/size)
       }
       else{
         setTotalPrice(newQuantity*foodPrice)
@@ -75,8 +75,10 @@ export default function menuDetailScreen({route, navigation}) {
                 <Text style={styles.plusMinusText}>+</Text>
               </TouchableOpacity>
             </View>
-          </View>            
-          <View style={styles.bottomBox}>
+          </View>
+          {     
+          (appContext.isHost ===true) ?        
+          (<View style={styles.bottomBox}>
             <View style={styles.bottomLeftBox}>
               <Text style={styles.quantityText}>공유</Text>
             </View>
@@ -86,9 +88,10 @@ export default function menuDetailScreen({route, navigation}) {
                 (isPublicMenu===true) ? (<Text style={styles.checkBoxText}>X</Text>) : (<Text style={styles.checkBoxText}></Text>)
                 }
               </TouchableOpacity>
-              <Text style={styles.quantityText}>{peopleNum}</Text>
+              <Text style={styles.quantityText}>{size}</Text>
             </View>
-          </View>     
+          </View>) : (<View/>)    
+          } 
           <TouchableOpacity style={styles.shoppingBagBox} onPress={() => navigation.navigate('shoppingBag')}>
             <Text style={styles.shoppingBagText}>{totalPrice}원 담기</Text>
           </TouchableOpacity>
