@@ -71,6 +71,8 @@ useEffect(() => {
         setRestaurantName(message.body.restaurant.name)
         setRestaurantID(message.body.restaurant.id)
         appContext.setRestaurantID(message.body.restaurant.id)
+        appContext.setRestaurantName(message.body.restaurant.name)
+        appContext.setSize(message.body.size)
         setSize(message.body.size)
         setTitle(message.body.title)
         setImage(message.body.restaurant.icon)
@@ -81,6 +83,12 @@ useEffect(() => {
       if(message.operation==="replyLeaveParty"){
         if(message.body.isSuccess===true){
           console.log("leave Success")
+          appContext.setPartyID()
+          appContext.setRestaurantID()
+          appContext.setRestaurantName()
+          appContext.setIsHost()
+          appContext.setIsReady()
+          appContext.setSize()
           navigation.navigate("main")
         }
         else{
@@ -146,7 +154,7 @@ useEffect(() => {
           <View style={styles.logo}>
             <LogoButton/>
           </View>
-          <ScrollView style={styles.pinContainer}>
+          <View style={styles.pinContainer}>
             <View style={styles.listBox}>
               <View style={styles.leftBox}>
                 <Image source={{uri:image}} style={styles.imageStyle}/>
@@ -166,7 +174,9 @@ useEffect(() => {
               </TouchableOpacity>
               <TouchableOpacity style={styles.addMenuBox} onPress={() => navigation.navigate('menuList')}>
                 <Text style={styles.addMenuText}>메뉴 추가</Text>
-              </TouchableOpacity>   
+              </TouchableOpacity>  
+            </View>
+            <View style={styles.menuTab}>
               <TouchableOpacity style={styles.chatBox} onPress={() => navigation.navigate('chat')}>
                 <Text style={styles.chatText}>채팅방</Text>
               </TouchableOpacity>   
@@ -174,8 +184,10 @@ useEffect(() => {
                 <Text style={styles.outText}>파티 나가기</Text>
               </TouchableOpacity>   
             </View>
+
+
             <UserList data={userList}/>     
-          </ScrollView>
+          </View>
         </SafeAreaView>
 
     );
@@ -199,6 +211,9 @@ useEffect(() => {
 
       width: 100,
       height :100,
+      borderTopLeftRadius: 10,
+      borderBottomLeftRadius: 10,
+
       alignSelf : "center"
 
     },
@@ -228,6 +243,7 @@ useEffect(() => {
     },
 
     menuTab:{
+      flexDirection : "row",
 
     },
     rightBottomBox:{
@@ -259,11 +275,12 @@ useEffect(() => {
       color: "#FFFFFF",
     },
     addMenuBox:{
-      width: 335,
-      height: 39,
+      flex : 1 ,
+      height : 60,
       backgroundColor: "#FFBF75",
       borderRadius: 10,
-      marginBottom : 12, 
+      marginLeft : 15,
+      marginBottom : 15,       
       justifyContent: 'center', 
       alignItems: 'center' 
     },
@@ -274,11 +291,11 @@ useEffect(() => {
       color: "#FFFFFF",
     },
     chatBox:{
-      width: 335,
-      height: 39,
+      flex : 1 ,
+      height : 60,
       backgroundColor: "#FFC530",
       borderRadius: 10,
-      marginBottom : 12, 
+      marginBottom : 15, 
       justifyContent: 'center', 
       alignItems: 'center' 
     },
@@ -289,11 +306,12 @@ useEffect(() => {
       color: "#FFFFFF",
     },
     shoppingBagBox:{
-      width: 335,
-      height: 39,
+      flex : 1 ,
+      height : 60,
+
       backgroundColor: "#FF8181",
       borderRadius: 10,
-      marginBottom : 12, 
+      marginBottom : 15, 
       justifyContent: 'center', 
       alignItems: 'center' 
   
@@ -306,14 +324,16 @@ useEffect(() => {
   
     },
     outBox:{
-      width: 335,
-      height: 39,
+      flex : 1 ,
+      height : 60,
       backgroundColor: "#FF473A",
       borderRadius: 10,
-      marginBottom : 12, 
+      marginLeft : 15,
+      marginBottom : 15, 
       justifyContent: 'center', 
       alignItems: 'center' 
     },
+    
     outText:{
       fontStyle: 'normal',
       fontSize: 20,

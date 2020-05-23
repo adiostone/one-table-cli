@@ -34,6 +34,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
           console.log(message.body)
           if(message.body.isSuccess===true){
             console.log("create Success")
+            appContext.setIsHost(true)
             navigation.navigate("room",message.body)
           }
           else{
