@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext ,useRef } from 'react'
 import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import { AppContext } from '../context/AppContext'
+import { SocketContext } from '../context/SocketContext'
+
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
 
@@ -9,15 +11,21 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function bagFoodItem(props) {
 
-    const id = props.data.id 
-    const foodName = props.data.name
-    const foodPrice = props.data.foodPrice
-    const peopleNum = props.data.peopleNum
-    const isPublicMenu = props.data.isPublicMenu
-    const quantity =props.data.quantity 
-    const totalPrice=props.data.totalPrice 
+  const appContext = useContext(AppContext)
 
-    const navigation = useNavigation();
+  const socketContext = useContext(SocketContext)
+
+  const ws = useRef(socketContext.ws)
+
+  const id = props.data.id 
+  const name = props.data.name
+  const price = props.data.price
+  const isPublicMenu = props.data.isPublicMenu
+  const quantity =props.data.quantity 
+  const totalPrice=props.data.totalPrice 
+  const size = appContext.size
+
+  const navigation = useNavigation();
 
   useEffect(()=>{
    
@@ -25,26 +33,38 @@ export default function bagFoodItem(props) {
 
 
   function clickPlus(){
+    if (!ws.current) return;
+
     const newQuantity = quantity + 1
-    props.data.quantity =newQuantity
+    let newTotalPrice = 0
     if(isPublicMenu===true){
-        props.data.totalPrice = newQuantity*foodPrice/peopleNum
+        newTotalPrice= newQuantity*price/size
     }
     else{
-      props.data.totalPrice = newQuantity*foodPrice
+      newTotalPrice = newQuantity*price
     }
+    const message = { operation: 'updateShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
+    ws.current.send(JSON.stringify(message))  
   } 
 
   function clickMinus(){
+    if (!ws.current) return;
+
     if(quantity>1){
       const newQuantity = quantity - 1
-      props.data.quantity =newQuantity
+      let newTotalPrice = 0
       if(isPublicMenu===true){
-        props.data.totalPrice = newQuantity*foodPrice/peopleNum
+          newTotalPrice= newQuantity*price/size
       }
       else{
-        props.data.totalPrice = newQuantity*foodPrice
+        newTotalPrice = newQuantity*price
       }
+      const message = { operation: 'updateShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
+      ws.current.send(JSON.stringify(message))  
+    }
+    else{
+      const message = { operation: 'deleteShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
+      ws.current.send(JSON.stringify(message))   
     }
     
   } 
