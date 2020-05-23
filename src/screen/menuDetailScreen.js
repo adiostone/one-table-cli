@@ -4,7 +4,7 @@ import BaseTab from "../component/baseTab"
 import { AppContext } from '../context/AppContext'
 
 
-export default function foodDetailScreen({route, navigation}) {
+export default function menuDetailScreen({route, navigation}) {
 
   const appContext = useContext(AppContext)
 
@@ -56,7 +56,7 @@ export default function foodDetailScreen({route, navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-          <BaseTab data={"foodList"}/>
+          <BaseTab data={"menuList"}/>
           <View style={styles.topBox}>
             <Text style={styles.foodNameText}>{foodName}</Text>
           </View>
