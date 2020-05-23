@@ -6,25 +6,13 @@ import axios from 'axios'
 import ChatItem from './chatItem';
 
 
-export default function foodList(props) {
+export default function chatList(props) {
 
     const chatList=props.data
 
     useEffect(() => {
         // addDummyItem()
     },[])
-
-
-    // function addDummyItem(){
-    //     setRestaurantList({
-    //         data: [
-    //             {name: "네네 치킨",deliveryFee: 2000 ,atLeastMoney: 15000},
-    //             {name: "비비큐", deliveryFee: 3000 ,atLeastMoney: 16000},
-    //             {name: "굽네 치킨", deliveryFee: 2000 ,atLeastMoney: 15000},
-    //             {name: "호식이 두마리", deliveryFee: 1000 ,atLeastMoney: 14000},
-    //         ]
-    //     });
-    // }
 
   return (
     <ScrollView style={styles.chatContainer}>

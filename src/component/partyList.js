@@ -16,18 +16,6 @@ export default function partyList(props) {
         // addDummyItem()
     },[])
 
-
-    // function addDummyItem(){
-    //     setRestaurantListData({
-    //         data: [
-    //             {name: "네네 치킨",deliveryFee: 2000 ,atLeastMoney: 15000},
-    //             {name: "비비큐", deliveryFee: 3000 ,atLeastMoney: 16000},
-    //             {name: "굽네 치킨", deliveryFee: 2000 ,atLeastMoney: 15000},
-    //             {name: "호식이 두마리", deliveryFee: 1000 ,atLeastMoney: 14000},
-    //         ]
-    //     });
-    // }
-
   return (
     <ScrollView style={styles.listContainer}>
     {partyList.map((data, i) => {
