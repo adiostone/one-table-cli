@@ -65,9 +65,6 @@ export default function shoppingBagScreen({navigation}) {
                 <Text style={styles.shoppingBagText}>장바구니</Text>
             </View>
             <BagFoodList data={bagFoodList}/>
-            <TouchableOpacity style={styles.shoppingBagBox}>
-                <Text style={styles.shoppingBagText}>주문하기</Text>
-            </TouchableOpacity>
           </ScrollView>
         </SafeAreaView>
 

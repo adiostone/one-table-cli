@@ -44,6 +44,7 @@ export default function restuarantListScreen({navigation}) {
                 }
                 else{
                   console.log('invalid tokens -> refreshing tokens')
+                  console.log(appContext.refreshToken)
                   axios({
                     url: 'https://api.onetable.xyz/v1/table/auth/refresh',
                     method: 'get',
@@ -73,9 +74,9 @@ export default function restuarantListScreen({navigation}) {
                         setRestaurantList(res.data.restaurants)   
                     })
                   })
-                  // .catch(err =>{
-                  //   console.log("could't refresh token")
-                  // })
+                  .catch(err =>{
+                    console.log("could't refresh token")
+                  })
                 }
               }
         })

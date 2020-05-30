@@ -84,7 +84,7 @@ export default function mapScreen({navigation}) {
       appContext.setMapRegion(mapRegion);
       Geocoder.from({
         latitude: googleLocation.coords.latitude,
-        longitude: googleLocation.coords.longitude
+        longitude: googleLocation.coords.longitude,
       }).then(json => {
             const modifiedString=json.results[0].formatted_address.replace("대한민국 ","")
             console.log(modifiedString)

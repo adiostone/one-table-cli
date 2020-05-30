@@ -73,7 +73,7 @@ export default function bagFoodItem(props) {
 
       <View style={styles.listBox}>
         <View style={styles.foodNameBox}> 
-          <Text style={styles.foodNameText}>{foodName}</Text>
+          <Text style={styles.foodNameText}>{name}</Text>
         </View> 
         {(isPublicMenu===true) ?(
         <View style={styles.bottomBox}> 
@@ -88,7 +88,7 @@ export default function bagFoodItem(props) {
               <Text style={styles.plusMinusText}>+</Text>
             </TouchableOpacity>
             <View style={styles.colorBox}>
-              <Text style={styles.redText}>{peopleNum}</Text>
+              <Text style={styles.redText}>{size}</Text>
             </View>
             </View>         
           <View style={styles.bottomRightBox}> 
@@ -108,7 +108,7 @@ export default function bagFoodItem(props) {
               <Text style={styles.plusMinusText}>+</Text>
             </TouchableOpacity>
             <View style={styles.colorBox}>
-              <Text style={styles.blueText}>{peopleNum}</Text>
+              <Text style={styles.blueText}>{size}</Text>
             </View>
             </View>         
           <View style={styles.bottomRightBox}> 
