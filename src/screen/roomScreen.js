@@ -116,7 +116,7 @@ useEffect(() => {
       if(message.operation==="notifyKickedOutParty"){
         //party is exploded
         // Alert.alert("방장이 파티에 나가 파티가 없어졌습니다.")        
-        navigation.navigate("main")
+        navigation.replace("main")
       }
 
 
@@ -322,8 +322,8 @@ useEffect(() => {
       height : 60,
       backgroundColor: "#FFBF75",
       borderRadius: 10,
-      marginLeft : 15,
-      marginBottom : 15,       
+      marginLeft : 10,
+      marginBottom : 10,       
       justifyContent: 'center', 
       alignItems: 'center' 
     },
@@ -354,7 +354,7 @@ useEffect(() => {
 
       backgroundColor: "#FF8181",
       borderRadius: 10,
-      marginBottom : 15, 
+      marginBottom : 10, 
       justifyContent: 'center', 
       alignItems: 'center' 
   
@@ -371,8 +371,8 @@ useEffect(() => {
       height : 60,
       backgroundColor: "#FF473A",
       borderRadius: 10,
-      marginLeft : 15,
-      marginBottom : 15, 
+      marginLeft : 10,
+      marginBottom : 10, 
       justifyContent: 'center', 
       alignItems: 'center' 
     },
@@ -390,7 +390,7 @@ useEffect(() => {
 
       backgroundColor: "#FF8181",
       borderRadius: 10,
-      marginBottom : 15, 
+      marginBottom : 10, 
       justifyContent: 'center', 
       alignItems: 'center' 
   
@@ -426,7 +426,7 @@ useEffect(() => {
       width: 335,
       height: 39,
 
-      backgroundColor: "#FF8181",
+      backgroundColor: "#FFBF75",
       borderRadius: 10,
       marginBottom : 15, 
       justifyContent: 'center', 
