@@ -58,6 +58,16 @@ export default function loadScreen({navigation}) {
               const nickname =res.data.nickname      
               appContext.setNickname(nickname)   
               await loadLocationData(); 
+
+              console.log("connect Websocket")
+              console.log(accessToken)
+              const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+              const newws = new WebSocket(wsURL)
+              await socketContext.setws(newws)
+
+              const refresh = await SecureStore.getItemAsync('refreshToken')
+              appContext.setRefreshToken(refresh)              
+              SetEveryThingIsGood(true)
             
         } 
         catch (err) {
@@ -70,7 +80,7 @@ export default function loadScreen({navigation}) {
                   console.log('valid tokens')
                 } 
                 else {
-                    console.log('invalid tokens -> refreshing tokens')
+                   console.log('invalid tokens -> refreshing tokens')
                    const refreshToken = await SecureStore.getItemAsync('refreshToken')
                     try {
 
@@ -100,6 +110,14 @@ export default function loadScreen({navigation}) {
                           const nickname =resultData.data.nickname      
                           appContext.setNickname(nickname)   
                           await loadLocationData(); 
+
+                          appContext.setRefreshToken(refreshToken)
+                          console.log("connect Websocket")
+                          console.log(accessToken)
+                          const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
+                          const newws = new WebSocket(wsURL)
+                          await socketContext.setws(newws)
+                          SetEveryThingIsGood(true)
                         
                     } 
                     catch (error) {                        
@@ -115,14 +133,7 @@ export default function loadScreen({navigation}) {
         }
 
   }
-  const refresh = await SecureStore.getItemAsync('refreshToken')
-  appContext.setRefreshToken(refresh)
-  console.log("connect Websocket")
-  console.log(accessToken)
-  const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
-  const newws = new WebSocket(wsURL)
-  await socketContext.setws(newws)
-  SetEveryThingIsGood(true)
+  
 }
 
   async function loadLocationData(){
