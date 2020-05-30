@@ -18,7 +18,8 @@ import menuListScreen from './src/screen/menuListScreen'
 import menuDetailScreen from './src/screen/menuDetailScreen'
 import shoppingBagScreen from './src/screen/shoppingBagScreen';
 import chatScreen from './src/screen/chatScreen';
-
+import paymentScreen from './src/screen/paymentScreen';
+import afterPaymentScreen from './src/screen/afterPaymentScreen';
 
 import * as Font from 'expo-font';
 
@@ -50,17 +51,20 @@ export default function App(){
           <Stack.Navigator screenOptions={{
                 headerShown: false,
               }} >
-            <Stack.Screen name="load" component={loadScreen} />
-            <Stack.Screen name="main" component={mainScreen} />
-            <Stack.Screen name="login" component={loginScreen} />
-            <Stack.Screen name="map" component={mapScreen} />
-            <Stack.Screen name="restaurantList" component={restaurantListScreen} />
-            <Stack.Screen name="roomDetailSetting" component={roomDetailSettingScreen} />
+            <Stack.Screen name="load" component={loadScreen}/>
+            <Stack.Screen name="main" component={mainScreen}/>
+            <Stack.Screen name="login" component={loginScreen}/>
+            <Stack.Screen name="map" component={mapScreen}/>
+            <Stack.Screen name="restaurantList" component={restaurantListScreen}/>
+            <Stack.Screen name="roomDetailSetting" component={roomDetailSettingScreen}/>
             <Stack.Screen name="room" component={roomScreen}/>
-            <Stack.Screen name="menuList" component={menuListScreen} />
-            <Stack.Screen name="menuDetail" component={menuDetailScreen} />
-            <Stack.Screen name="shoppingBag" component={shoppingBagScreen} />
-            <Stack.Screen name="chat" component={chatScreen} />
+            <Stack.Screen name="menuList" component={menuListScreen}/>
+            <Stack.Screen name="menuDetail" component={menuDetailScreen}/>
+            <Stack.Screen name="shoppingBag" component={shoppingBagScreen}/>
+            <Stack.Screen name="chat" component={chatScreen}/>
+            <Stack.Screen name="payment" component={paymentScreen}/>
+            <Stack.Screen name="afterPayment" component={afterPaymentScreen}/>
+
           </Stack.Navigator>
         </NavigationContainer>
       </SocketProvider>
