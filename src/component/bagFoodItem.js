@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext ,useRef } from 'react'
-import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
+import { StyleSheet, Text, View,Button,Alert, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
 
@@ -17,6 +17,8 @@ export default function bagFoodItem(props) {
 
   const ws = useRef(socketContext.ws)
 
+  const isReady = appContext.isReady
+
   const id = props.data.id 
   const name = props.data.name
   const price = props.data.price
@@ -33,25 +35,14 @@ export default function bagFoodItem(props) {
 
 
   function clickPlus(){
-    if (!ws.current) return;
-
-    const newQuantity = quantity + 1
-    let newTotalPrice = 0
-    if(isPublicMenu===true){
-        newTotalPrice= newQuantity*price/size
+    if(isReady===true){
+      Alert.alert("준비중이므로 메뉴 수정이 불가능합니다")
     }
     else{
-      newTotalPrice = newQuantity*price
-    }
-    const message = { operation: 'updateShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
-    ws.current.send(JSON.stringify(message))  
-  } 
 
-  function clickMinus(){
-    if (!ws.current) return;
+      if (!ws.current) return;
 
-    if(quantity>1){
-      const newQuantity = quantity - 1
+      const newQuantity = quantity + 1
       let newTotalPrice = 0
       if(isPublicMenu===true){
           newTotalPrice= newQuantity*price/size
@@ -62,11 +53,32 @@ export default function bagFoodItem(props) {
       const message = { operation: 'updateShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
       ws.current.send(JSON.stringify(message))  
     }
-    else{
-      const message = { operation: 'deleteShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
-      ws.current.send(JSON.stringify(message))   
+  } 
+
+  function clickMinus(){
+    if(isReady===true){
+      Alert.alert("준비중이므로 메뉴 수정이 불가능합니다")
     }
-    
+    else{
+      if (!ws.current) return;
+
+      if(quantity>1){
+        const newQuantity = quantity - 1
+        let newTotalPrice = 0
+        if(isPublicMenu===true){
+            newTotalPrice= newQuantity*price/size
+        }
+        else{
+          newTotalPrice = newQuantity*price
+        }
+        const message = { operation: 'updateShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
+        ws.current.send(JSON.stringify(message))  
+      }
+      else{
+        const message = { operation: 'deleteShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
+        ws.current.send(JSON.stringify(message))   
+      }
+    }
   } 
 
   return (
