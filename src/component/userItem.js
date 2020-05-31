@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext ,useRef } from 'react'
 import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import { AppContext } from '../context/AppContext'
+import { SocketContext } from '../context/SocketContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
 
@@ -14,9 +15,17 @@ export default function userItem(props) {
 
   const appContext = useContext(AppContext)
 
-  useEffect(()=>{
-   
-  })
+  const socketContext = useContext(SocketContext)
+
+  const ws = useRef(socketContext.ws)
+
+
+  function kickOut(){
+    if (!ws.current) return;
+
+    const message = { operation: 'kickOutMember', body: {id: id } }
+    ws.current.send(JSON.stringify(message))
+  }
 
   return (
 
@@ -25,9 +34,13 @@ export default function userItem(props) {
               <View style={styles.hostBox}>
                  <Text style={styles.hostText}>방장</Text> 
               </View> :
+              (appContext.isHost ===true) ? 
+              <TouchableOpacity style={styles.kickOutBox} onPress={kickOut}>
+                <Image source={require('../assets/iconKickOut.png')} style={styles.kickOutImageStyle} />
+              </TouchableOpacity> : 
               <View style={styles.notHostBox}>
                 <Text style={styles.notHostText}></Text> 
-              </View>
+              </View> 
               }
               <Image source={{uri:image}} style={styles.profileImageStyle}/>
               {(appContext.nickname === nickname) ?
@@ -99,6 +112,18 @@ hostText:{
   textAlign: "center",
   fontWeight : "bold",
   color: "#FFFFFF",
+
+},
+
+kickOutBox:{
+  marginBottom : 10,
+  marginTop : 10,
+
+},
+kickOutImageStyle:{
+
+  width: 24,
+  height: 24,
 
 },
 
