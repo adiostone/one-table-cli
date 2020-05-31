@@ -70,7 +70,7 @@ export default function mainScreen({navigation}) {
           if(message.operation==="notifyChangedPartySize"){
             for (let i=0 ; i < partyList.length; i++){
               if(partyList[i].id===message.body.id){
-                partyList[i] = message.body.size
+                partyList[i].size = message.body.size
                 setPartyList([...partyList])
               } 
             } 
@@ -122,13 +122,13 @@ const styles = StyleSheet.create({
   },
   pinContainer: {
     alignSelf: 'center',
+    width: 340,
 
   },
   logo:{
     alignItems: "center",
   },
   locationBox:{
-    width: 335,
     height: 39,
     backgroundColor: "#FFBF75",
     borderRadius: 10,
@@ -143,7 +143,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   createBox:{
-    width: 335,
     height: 39,
     backgroundColor: "#FF8181",
     borderRadius: 10,

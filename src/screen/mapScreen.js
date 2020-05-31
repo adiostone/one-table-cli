@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
 
   },
   locationBox: {
-    width: 335,
+    width: 340,
     height: 39,
     backgroundColor: "#FFF5F5",
     borderRadius: 10,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   },
 
   resetLocationBox:{
-    width: 335,
+    width: 340,
     height: 39,
     backgroundColor: "#FFBF75",
     borderRadius: 10,

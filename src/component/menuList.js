@@ -17,7 +17,6 @@ export default function menuList(props) {
     <ScrollView style={styles.foodContainer}>
         {
         menuList.map((data,i) => {
-
         return (
         <View>
           <View style={styles.menuTab}>

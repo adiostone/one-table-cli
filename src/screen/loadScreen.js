@@ -52,6 +52,7 @@ export default function loadScreen({navigation}) {
                 },
               }) 
               appContext.setAccessToken(accessToken)
+              console.log(res.data)
               console.log("load nickname")
               console.log(res.data.nickname)
               //set nickname
@@ -104,6 +105,7 @@ export default function loadScreen({navigation}) {
                               Authorization: `Bearer ${accessToken}`,
                             },
                           })
+                          console.log(resultData.data)
                           console.log("load nickname")
                           console.log(resultData.data.nickname)
                           //set nickname
