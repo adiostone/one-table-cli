@@ -41,12 +41,12 @@ export default function chatItem(props) {
 const styles = StyleSheet.create({
 
 leftBox: {
-    marginLeft : 5,
+    marginLeft : 10,
     display : "flex",
     flexDirection : "row",
 },
 rightBox: {
-    marginRight : 5,
+    marginRight : 10,
     display : "flex",
     flexDirection : "row",
     justifyContent : "flex-end",

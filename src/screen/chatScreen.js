@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext , useRef } from 'react'
-import { StyleSheet, Text, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View,Button,Alert, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
 
@@ -57,6 +57,14 @@ useEffect(() => {
       if(message.operation==="notifyNewChat"){
         setChatList([message.body].concat(chatList))
       }
+      if(message.operation==="notifyNewMember"){
+        Alert.alert(message.body.user.nickname+"가 파티에 참가하셨습니다.")
+        appContext.setSize(message.body.size)
+      }
+      if(message.operation==="notifyOutMember"){
+        Alert.alert("파티원 한명이 나갔습니다.")
+        appContext.setSize(message.body.size)
+      }
       if(message.operation==="ping"){
         const sendMessage = { operation: 'pong'}
         ws.current.send(JSON.stringify(sendMessage))
@@ -72,9 +80,11 @@ useEffect(() => {
   function sendChat(){
     if (!ws.current) return;
 
-    const message = { operation: 'sendChat', body: {chat: textInput } }
-    ws.current.send(JSON.stringify(message))
-    setTextInput("")
+    if(textInput!==""){
+      const message = { operation: 'sendChat', body: {chat: textInput } }
+      ws.current.send(JSON.stringify(message))
+      setTextInput("")
+    }
   }
 
 
@@ -83,11 +93,11 @@ useEffect(() => {
           <BaseTab data={"room"}/>
           <ScrollView style={styles.pinContainer}>
             <ChatList data={chatList}/>     
-            <View style={styles.submitBox}>
+          </ScrollView>
+          <View style={styles.submitBox}>
                 <TextInput style={styles.textInputBox} onChangeText={(text) => setTextInput(text)}>{textInput}</TextInput>
                 <TouchableOpacity style={styles.submitButton} onPress={sendChat}/>
-            </View>
-          </ScrollView>
+          </View>
         </SafeAreaView>
 
     );
@@ -96,6 +106,7 @@ useEffect(() => {
   const styles = StyleSheet.create({
     container: {
       display:"flex",
+      flex : 1,
       flexDirection: 'column',
       alignItems: 'stretch',
       backgroundColor: '#fff',
@@ -106,10 +117,14 @@ useEffect(() => {
 
 
     submitBox: {
+        justifyContent: 'flex-end',
         marginTop : 10,
         alignSelf: 'center',
         display : "flex",
         flexDirection: 'row',
+        marginLeft :15 ,
+        marginRight :15 ,
+
       },
       textInputBox: {
         flex : 6,
@@ -119,7 +134,6 @@ useEffect(() => {
         fontSize: 14,
         textAlign: "left",
         borderWidth : 1,
-        marginLeft :10 ,
         padding : 6 ,
         marginRight : 5
 
@@ -130,7 +144,6 @@ useEffect(() => {
         borderTopRightRadius : 10,
         borderBottomRightRadius : 10,
         borderWidth : 1,    
-        marginRight :10 ,
         padding : 6 ,
 
       },
