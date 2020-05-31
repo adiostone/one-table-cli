@@ -31,11 +31,10 @@ export default function roomDetailSettingScreen({route, navigation}) {
         console.log("RoomDetail listen")
         console.log(message);
         if(message.operation==="replyCreateParty"){
-          console.log(message.body)
           if(message.body.isSuccess===true){
             console.log("create Success")
             appContext.setIsHost(true)
-            navigation.navigate("room",message.body)
+            navigation.replace("room",message.body)
           }
           else{
             console.log("create failed")
@@ -88,6 +87,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: '#fff',
+      flex :1 ,
     },
     roomDetailContainer: {
       display : "flex",

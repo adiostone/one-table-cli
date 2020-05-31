@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
     backgroundColor: '#fff',
+    flex :1 ,
   },
   mapContainer: {
 

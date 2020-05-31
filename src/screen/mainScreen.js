@@ -78,7 +78,7 @@ export default function mainScreen({navigation}) {
           if(message.operation==="replyJoinParty"){
             if(message.body.isSuccess===true){
               console.log("join Success")
-              navigation.navigate("room")
+              navigation.replace("room")
             }
             else{
               console.log("join failed")
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'stretch',
     backgroundColor: '#fff',
+    flex :1 ,
   },
   pinContainer: {
     alignSelf: 'center',

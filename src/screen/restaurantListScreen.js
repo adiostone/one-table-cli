@@ -117,6 +117,7 @@ export default function restuarantListScreen({navigation}) {
   const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
+        flex :1 ,
       },
     buttonContainer: {
       display : "flex",

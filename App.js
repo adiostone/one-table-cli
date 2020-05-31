@@ -16,7 +16,7 @@ import roomDetailSettingScreen from './src/screen/roomDetailSetttingScreen'
 import roomScreen from './src/screen/roomScreen'
 import menuListScreen from './src/screen/menuListScreen'
 import menuDetailScreen from './src/screen/menuDetailScreen'
-import shoppingBagScreen from './src/screen/shoppingBagScreen';
+import cartScreen from './src/screen/cartScreen';
 import chatScreen from './src/screen/chatScreen';
 import paymentScreen from './src/screen/paymentScreen';
 import afterPaymentScreen from './src/screen/afterPaymentScreen';
@@ -60,11 +60,10 @@ export default function App(){
             <Stack.Screen name="room" component={roomScreen}/>
             <Stack.Screen name="menuList" component={menuListScreen}/>
             <Stack.Screen name="menuDetail" component={menuDetailScreen}/>
-            <Stack.Screen name="shoppingBag" component={shoppingBagScreen}/>
+            <Stack.Screen name="cart" component={cartScreen}/>
             <Stack.Screen name="chat" component={chatScreen}/>
             <Stack.Screen name="payment" component={paymentScreen}/>
             <Stack.Screen name="afterPayment" component={afterPaymentScreen}/>
-
           </Stack.Navigator>
         </NavigationContainer>
       </SocketProvider>

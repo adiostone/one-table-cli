@@ -26,10 +26,11 @@ export const AppProvider =({children}) =>{
     const [isHost, setIsHost] = useState(false)  
     const [isReady, setIsReady] = useState(false)  
     const [size, setSize] = useState()
-    const [wholePrice, setWholePrice] = useState(0)  
+    const [wholePrice, setWholePrice] = useState(0) 
+    const [isEnter, setIsEnter] = useState(false)  
 
-    //shoppingBagInformation
-    const [bagFoodList, setBagFoodList] = useState([]) 
+    //cart Information
+    const [cartList, setCartList] = useState([]) 
 
   
     return (
@@ -70,11 +71,12 @@ export const AppProvider =({children}) =>{
           size,
           setSize,
           wholePrice, 
-          setWholePrice, 
+          setWholePrice,
+          isEnter,
+          setIsEnter,
 
-
-          bagFoodList, 
-          setBagFoodList,
+          cartList, 
+          setCartList,
           
         }}
       >
