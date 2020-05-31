@@ -54,9 +54,16 @@ useEffect(() => {
       if(message.operation==="replyGetMyPartyChats"){
         setChatList(message.body)
       }
+      if(message.operation==="replySendChat"){
+        if(message.body.isSuccess===true){
+          console.log("send chat Success")
+          setTextInput("")
+        }
+      }
       if(message.operation==="notifyNewChat"){
         setChatList([message.body].concat(chatList))
       }
+      //apply all party member 
       if(message.operation==="notifyNewMember"){
         Alert.alert(message.body.user.nickname+"가 파티에 참가하셨습니다.")
         appContext.setSize(message.body.size)
@@ -64,7 +71,77 @@ useEffect(() => {
       if(message.operation==="notifyOutMember"){
         Alert.alert("파티원 한명이 나갔습니다.")
         appContext.setSize(message.body.size)
+
+        //user(is host) out so apply new host
+        if(message.body.newHost!==undefined){
+          console.log("host is change")
+          if(appContext.userID===message.body.newHost.id){
+            console.log("I am new host")
+            appContext.setIsHost(true)
+          }
+        }
       }
+      if(message.operation==="notifyKickedOutMember"){
+        if(appContext.userID === message.body.user.id){
+          //you are kicked out
+          console.log("you are kicked out")
+          Alert.alert("강퇴 당하셨습니다")
+          appContext.setPartyID()
+          appContext.setRestaurantID()
+          appContext.setRestaurantName()
+          appContext.setIsHost(false)
+          appContext.setIsReady(false)
+          appContext.setCartList([])
+          appContext.setSize()
+          appContext.setIsEnter(false)
+          navigation.replace("main")
+        }
+        else{
+          Alert.alert("파티원 한명이 강퇴당했습니다.")
+          appContext.setSize(message.body.size)
+        }
+      }
+      if(message.operation==="notifyNewSharedMenu"){
+        Alert.alert("공유메뉴 "+message.body.name+"가 "+message.body.quantity +"개 추가 되었습니다.")
+        appContext.setCartList([message.body].concat(appContext.cartList))
+      }
+      if(message.operation==="notifyUpdateSharedMenu"){
+        Alert.alert("공유메뉴 "+message.body.name+"가 "+message.body.quantity +"개로 변경 되었습니다.")
+        for (let i=0 ; i <appContext.cartList.length; i++){
+          if(appContext.cartList[i].id===message.body.id){
+            appContext.cartList[i] = message.body
+            appContext.setCartList([...appContext.cartList])
+          } 
+        }       
+      }
+      if(message.operation==="notifyRefreshSharedCart"){
+        for (let i=0 ; i <appContext.cartList.length; i++){
+          for(let j=0 ; j <message.body.length; j++){
+            if(appContext.cartList[i].id===message.body[j].id){
+              appContext.cartList[i] = message.body[j]
+              appContext.setCartList([...appContext.cartList])
+            } 
+          }
+        }       
+      }
+      if(message.operation==="notifyDeleteSharedMenu"){
+        let deletedName = ""
+        for (let i=0 ; i <appContext.cartList.length; i++){
+          if(appContext.cartList[i].id===message.body.id){
+            deletedName=appContext.cartList[i].name
+            appContext.cartList.splice(i,1)
+            appContext.setCartList([...appContext.cartList])
+          } 
+        } 
+        Alert.alert("공유메뉴 "+deletedName+"가 삭제되었습니다")
+      }
+      if(message.operation==="notifyAllMemberNotReady"){
+        appContext.setIsReady(false)
+      }
+      if(message.operation==="notifyGoToPayment"){
+        navigation.navigate("payment")
+      }
+      //apply all ws
       if(message.operation==="ping"){
         const sendMessage = { operation: 'pong'}
         ws.current.send(JSON.stringify(sendMessage))
@@ -83,7 +160,6 @@ useEffect(() => {
     if(textInput!==""){
       const message = { operation: 'sendChat', body: {chat: textInput } }
       ws.current.send(JSON.stringify(message))
-      setTextInput("")
     }
   }
 
