@@ -95,6 +95,8 @@ useEffect(() => {
       flexDirection: 'column',
       alignItems: 'stretch',
       backgroundColor: '#fff',
+      flex :1 ,
+
     },
     pinContainer: {
   

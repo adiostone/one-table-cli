@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext , useRef } from 'react'
 import { StyleSheet, Text, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
-import BagFoodList from "../component/bagFoodList"
-import BaseTab from "../component/baseTab"
+import CartList from "../component/cartList"
+import LogoButton from "../component/logoButton"
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
 
@@ -13,7 +13,7 @@ export default function paymentScreen({navigation}) {
 
   const ws = useRef(socketContext.ws)
 
-  const [bagFoodList , setBagFoodList] = useState(appContext.bagFoodList)
+  const [cartList , setCartList] = useState(appContext.cartList)
 
   useEffect(() => {
     if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
@@ -35,12 +35,12 @@ export default function paymentScreen({navigation}) {
             <LogoButton/>
           </View>
           <ScrollView style={styles.scrollBox}>
-            <View style={styles.shoppingBagBox}>
-                <Text style={styles.shoppingBagText}>주문 내역</Text>
+            <View style={styles.cartBox}>
+                <Text style={styles.cartText}>최종 주문 내역</Text>
             </View>
-            <BagFoodList data={bagFoodList}/>
-            <TouchableOpacity style={styles.shoppingBagBox}>
-                <Text style={styles.shoppingBagText}>최종 결제</Text>
+            <CartList data={cartList}/>
+            <TouchableOpacity style={styles.cartBox}>
+                <Text style={styles.cartText}>최종 결제 확정</Text>
             </TouchableOpacity>
           </ScrollView>
         </SafeAreaView>
@@ -51,11 +51,13 @@ export default function paymentScreen({navigation}) {
   const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
+        flex :1 ,
+
       },
       logo:{
         alignItems: "center",
       },
-      shoppingBagBox:{
+      cartBox:{
         width: 335,
         height: 39,
         backgroundColor: "#FF8181",
@@ -66,7 +68,7 @@ export default function paymentScreen({navigation}) {
         alignSelf:"center"
     
       },
-      shoppingBagText:{
+      cartText:{
         fontStyle: 'normal',
         fontSize: 20,
         textAlign: "center",
