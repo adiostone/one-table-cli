@@ -36,7 +36,7 @@ export default function userItem(props) {
               </View> :
               (appContext.isHost ===true) ? 
               <TouchableOpacity style={styles.kickOutBox} onPress={kickOut}>
-                <Image source={require('../assets/iconKickOut.png')} style={styles.kickOutImageStyle} />
+                <Image source={require('../assets/kickOut.png')} style={styles.kickOutImageStyle} />
               </TouchableOpacity> : 
               <View style={styles.notHostBox}>
                 <Text style={styles.notHostText}></Text> 
