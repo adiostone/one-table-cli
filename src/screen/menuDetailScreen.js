@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext ,useRef } from 'react'
-import { StyleSheet, Text,CheckBox, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Text,CheckBox, View,Button, Alert,Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
 import BaseTab from "../component/baseTab"
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
@@ -32,6 +32,28 @@ export default function menuDetailScreen({route, navigation}) {
           appContext.setBagFoodList([message.body].concat(appContext.bagFoodList))
           navigation.navigate('shoppingBag')
         }
+        if(message.operation==="notifyNewMember"){
+          Alert.alert(message.body.user.nickname+"가 파티에 참가하셨습니다.")
+          appContext.setSize(message.body.size)
+          setSize(message.body.size)
+          if(isPublicMenu===true){
+            setTotalPrice(quantity*price/message.body.size)
+          }
+          else{
+            setTotalPrice(quantity*price)
+          }
+        }
+        if(message.operation==="notifyOutMember"){
+          Alert.alert("파티원 한명이 나갔습니다.")
+          appContext.setSize(message.body.size)
+          setSize(message.body.size)
+          if(isPublicMenu===true){
+            setTotalPrice(quantity*price/message.body.size)
+          }
+          else{
+            setTotalPrice(quantity*price)
+          }
+        }
         if(message.operation==="ping"){
           const sendMessage = { operation: 'pong'}
           ws.current.send(JSON.stringify(sendMessage))
@@ -50,9 +72,11 @@ export default function menuDetailScreen({route, navigation}) {
   function clickCheckBox(){
     if(isPublicMenu===true){
       setIsPublicMenu(false)
+      setTotalPrice(quantity*price)
     }
     else{
       setIsPublicMenu(true)
+      setTotalPrice(quantity*price/size)
     }
   } 
 
@@ -81,8 +105,6 @@ export default function menuDetailScreen({route, navigation}) {
     }
     
   } 
-  
-
 
     return (
         <SafeAreaView style={styles.container}>
@@ -221,10 +243,11 @@ export default function menuDetailScreen({route, navigation}) {
 
     },
     shoppingBagBox:{
-      width: 335,
+      width: 340,
       height: 39,
       backgroundColor: "#FF8181",
       borderRadius: 10,
+      marginTop : 12,
       marginBottom : 12,
       justifyContent: 'center', 
       alignSelf: 'center' 

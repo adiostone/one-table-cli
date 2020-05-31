@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { StyleSheet, Text, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
+import React, { useEffect, useState, useContext , useRef} from 'react'
+import { StyleSheet, Text, View,Button, Image,TextInput,Alert,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
 import MenuList from "../component/menuList"
 import { AppContext } from '../context/AppContext'
+import { SocketContext } from '../context/SocketContext'
 
 import BaseTab from "../component/baseTab"
 import axios from 'axios'
@@ -12,7 +13,11 @@ export default function menuListScreen({navigation}) {
 
   const appContext = useContext(AppContext)
 
+  const socketContext = useContext(SocketContext)
+
   const [menuList, setMenuList] = useState([]) 
+
+  const ws = useRef(socketContext.ws)
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -80,6 +85,29 @@ export default function menuListScreen({navigation}) {
   
     return unsubscribe;
   }, [navigation]);
+
+
+  useEffect(() => {
+    if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
+
+    ws.current.onmessage = e => {
+        const message = JSON.parse(e.data);
+        console.log("menu List listen")
+        console.log(message);
+        if(message.operation==="notifyNewMember"){
+          Alert.alert(message.body.user.nickname+"가 파티에 참가하셨습니다.")
+          appContext.setSize(message.body.size)
+        }
+        if(message.operation==="notifyOutMember"){
+          Alert.alert("파티원 한명이 나갔습니다.")
+          appContext.setSize(message.body.size)
+        }
+        if(message.operation==="ping"){
+          const sendMessage = { operation: 'pong'}
+          ws.current.send(JSON.stringify(sendMessage))
+        }
+    };
+  });
 
     return (
         <SafeAreaView style={styles.container}>
