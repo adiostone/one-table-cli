@@ -9,7 +9,8 @@ import axios from 'axios'
 import { useNavigation } from '@react-navigation/native';
 
 
-export default function bagFoodItem(props) {
+export default function cartItem(props) {
+
 
   const appContext = useContext(AppContext)
 
@@ -22,9 +23,9 @@ export default function bagFoodItem(props) {
   const id = props.data.id 
   const name = props.data.name
   const price = props.data.price
-  const isPublicMenu = props.data.isPublicMenu
+  const isShared = props.data.isShared
   const quantity =props.data.quantity 
-  const totalPrice=props.data.totalPrice 
+  const pricePerCapita=props.data.pricePerCapita
   const size = appContext.size
 
   const navigation = useNavigation();
@@ -33,49 +34,62 @@ export default function bagFoodItem(props) {
    
   })
 
-
   function clickPlus(){
+    if (!ws.current) return;
+
     if(isReady===true){
       Alert.alert("준비중이므로 메뉴 수정이 불가능합니다")
     }
-    else{
+    else if(isShared===true){
+      if(appContext.isHost===true){
+        const newQuantity = quantity + 1
 
-      if (!ws.current) return;
-
-      const newQuantity = quantity + 1
-      let newTotalPrice = 0
-      if(isPublicMenu===true){
-          newTotalPrice= newQuantity*price/size
+        const message = { operation: 'updateMenuInCart', body: {id: id ,quantity : newQuantity , isShared : isShared} }
+        ws.current.send(JSON.stringify(message))  
       }
       else{
-        newTotalPrice = newQuantity*price
+        Alert.alert("공유 메뉴는 방장만 수정가능합니다.")
       }
-      const message = { operation: 'updateShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
+    }
+    else{
+      const newQuantity = quantity + 1
+      const message = { operation: 'updateMenuInCart', body: {id: id ,quantity : newQuantity , isShared : isShared} }
       ws.current.send(JSON.stringify(message))  
     }
   } 
 
   function clickMinus(){
+
+    if (!ws.current) return;
+
     if(isReady===true){
       Alert.alert("준비중이므로 메뉴 수정이 불가능합니다")
     }
-    else{
-      if (!ws.current) return;
-
-      if(quantity>1){
+    else if(isShared===true){
+      if(appContext.isHost===true){
         const newQuantity = quantity - 1
-        let newTotalPrice = 0
-        if(isPublicMenu===true){
-            newTotalPrice= newQuantity*price/size
+        if(newQuantity>0){
+          const message = { operation: 'updateMenuInCart', body: {id: id ,quantity : newQuantity , isShared : isShared} }
+          ws.current.send(JSON.stringify(message))  
         }
         else{
-          newTotalPrice = newQuantity*price
+          const message = { operation: 'deleteMenuInCart', body: {id: id ,isShared : isShared} }
+          ws.current.send(JSON.stringify(message))   
         }
-        const message = { operation: 'updateShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
+        
+      }
+      else{
+        Alert.alert("공유 메뉴는 방장만 수정가능합니다.")
+      }
+    }
+    else{
+      const newQuantity = quantity - 1
+      if(newQuantity>0){
+        const message = { operation: 'updateMenuInCart', body: {id: id ,quantity : newQuantity , isShared : isShared} }
         ws.current.send(JSON.stringify(message))  
       }
       else{
-        const message = { operation: 'deleteShoppingBag', body: {id: id ,quantity : newQuantity , price : price , totalPrice : newTotalPrice , isPublicMenu : isPublicMenu} }
+        const message = { operation: 'deleteMenuInCart', body: {id: id ,isShared : isShared} }
         ws.current.send(JSON.stringify(message))   
       }
     }
@@ -87,7 +101,7 @@ export default function bagFoodItem(props) {
         <View style={styles.foodNameBox}> 
           <Text style={styles.foodNameText}>{name}</Text>
         </View> 
-        {(isPublicMenu===true) ?(
+        {(isShared===true) ?(
         <View style={styles.bottomBox}> 
           <View style={styles.bottomLeftBox}>
             <TouchableOpacity style={styles.plusMinusBox} onPress={clickMinus}>
@@ -100,11 +114,11 @@ export default function bagFoodItem(props) {
               <Text style={styles.plusMinusText}>+</Text>
             </TouchableOpacity>
             <View style={styles.colorBox}>
-              <Text style={styles.redText}>{size}</Text>
+              <Text style={styles.redText}>공유 1/{size}</Text>
             </View>
             </View>         
           <View style={styles.bottomRightBox}> 
-            <Text style={styles.redText}>{totalPrice}</Text>
+            <Text style={styles.redText}>{pricePerCapita}원</Text>
           </View> 
           
         </View>) : 
@@ -120,11 +134,11 @@ export default function bagFoodItem(props) {
               <Text style={styles.plusMinusText}>+</Text>
             </TouchableOpacity>
             <View style={styles.colorBox}>
-              <Text style={styles.blueText}>{size}</Text>
+              <Text style={styles.blueText}>개인</Text>
             </View>
             </View>         
           <View style={styles.bottomRightBox}> 
-            <Text style={styles.blueText}>{totalPrice}</Text>
+            <Text style={styles.blueText}>{pricePerCapita}원</Text>
           </View>
         </View>)
         } 
@@ -158,15 +172,16 @@ bottomBox: {
 bottomLeftBox: {
 
 marginLeft :20,
-marginRight :150,
 display : "flex",
 flexDirection : "row",
 alignSelf : "center",
 alignItems : "center",
+flex : 5,
+
 
 },
 bottomRightBox: {
-
+  flex : 2,
 },
 quantityBox:{
   width : 25,
@@ -194,9 +209,7 @@ foodPriceText:{
   fontSize : 14
 },
 colorBox:{
-  marginLeft : 5,
-  width : 25,
-  height : 25 ,
+  marginLeft : 15,
   alignItems: 'center' ,
 },
 blueText:{

@@ -3,33 +3,29 @@ import { StyleSheet, Text, View,Button, Image,TextInput,Dimensions ,ScrollView,T
 import { AppContext } from '../context/AppContext'
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
-import BagFoodItem from './bagFoodItem';
+import CartItem from './cartItem';
 
 
-export default function bagFoodList(props) {
+export default function cartList(props) {
 
-    const bagFoodList = [
-            {name: "후라이드 치킨",foodPrice : 15000, quantity : 1 ,totalPrice: 5000,size : 3 ,isPublicMenu : true},
-            {name: "감자튀김",foodPrice : 3000, quantity : 1 ,totalPrice: 3000, size : 1 ,isPublicMenu : false},
-
-        ]
+    const cartList = props.data
 
     const [totalPrice, setTotalPrice] = useState(0)
 
     useEffect(() => {
 
-      let price = 0 
-      bagFoodList.forEach((item)=>{
-        price = price + item.totalPrice
+      let totalPrice = 0 
+      cartList.forEach((item)=>{
+        totalPrice = totalPrice + item.pricePerCapita
       }) 
-      setTotalPrice(price)
-    },[])
+      setTotalPrice(totalPrice)
+    },[cartList])
 
   return (
-    <ScrollView style={styles.bagFoodContainer}>
+    <ScrollView style={styles.cartContainer}>
       {
-        bagFoodList.map((data,i) => {
-        return (<BagFoodItem key={i} data={data}/>);
+        cartList.map((data,i) => {
+        return (<CartItem key={i} data={data}/>);
       })}
       <View style={styles.totalPriceBox}>
         <View style={styles.leftBox}>
@@ -46,7 +42,7 @@ export default function bagFoodList(props) {
 const styles = StyleSheet.create({
 
 
-  bagFoodContainer: {
+  cartContainer: {
     display : "flex",
     flexDirection: "column",
     alignContent : "stretch",
@@ -59,9 +55,11 @@ const styles = StyleSheet.create({
       alignItems : "center"
   },
   leftBox: {
-
-    marginLeft :40,
-    marginRight :130,
+    flex : 5,
+    marginLeft :30,
+},
+rightBox: {
+  flex : 2,
 },
 totalPriceText: {
 
