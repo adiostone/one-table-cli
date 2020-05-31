@@ -53,13 +53,14 @@ export default function loadScreen({navigation}) {
               }) 
               appContext.setAccessToken(accessToken)
               console.log(res.data)
-              console.log("load nickname")
-              console.log(res.data.nickname)
-              //set nickname
+              console.log("load nickname and id")
+              //set nickname and id
               const nickname =res.data.nickname      
+              const id =res.data.id      
               appContext.setNickname(nickname)   
-              await loadLocationData(); 
+              appContext.setUserID(id)   
 
+              await loadLocationData(); 
               console.log("connect Websocket")
               console.log(accessToken)
               const wsURL = `wss://api.onetable.xyz/v1/table/party?access=${accessToken}`
@@ -106,11 +107,12 @@ export default function loadScreen({navigation}) {
                             },
                           })
                           console.log(resultData.data)
-                          console.log("load nickname")
-                          console.log(resultData.data.nickname)
-                          //set nickname
-                          const nickname =resultData.data.nickname      
+                          console.log("load nickname and id")
+                          //set nickname and id
+                          const nickname =resultData.data.nickname    
+                          const id =resultData.data.id      
                           appContext.setNickname(nickname)   
+                          appContext.setUserID(id)   
                           await loadLocationData(); 
 
                           appContext.setRefreshToken(refreshToken)
