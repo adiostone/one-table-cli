@@ -14,7 +14,6 @@ export default function roomScreen({navigation}) {
 
   const socketContext = useContext(SocketContext)
 
-
   // const [partyID, setPartyID] = useState(route.params.partyID) 
   const [restaurantID, setRestaurantID] = useState() 
   const [restaurantName, setRestaurantName] = useState() 
@@ -23,11 +22,13 @@ export default function roomScreen({navigation}) {
   const [size, setSize] = useState();
   const [title, setTitle] = useState() 
   const [image, setImage] = useState()
+  const [minOrderPrice, setMinOrderPrice] = useState(0)
 
   const [isHost, setIsHost] = useState(appContext.isHost)
   const [isReady, setIsReady] = useState(appContext.isReady)
+  const [isEnter, setIsEnter] = useState(appContext.isEnter)
 
-  const [wholePrice, setWholePrice] = useState(appContext.wholePrice)
+  const [totalPrice, setTotalPrice] = useState(0)
   
   const [userList, setUserList] = useState([]) 
 
@@ -36,15 +37,20 @@ export default function roomScreen({navigation}) {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
 
-      if (ws.current && ws.current.readyState === WebSocket.OPEN){
-        console.log("getMyPartyMetadata")
-        const message1 = { operation: 'getMyPartyMetadata', body: {} }
-        ws.current.send(JSON.stringify(message1))
-        console.log("getMyPartyMemberList")
-        const message2 = { operation: 'getMyPartyMemberList', body: {} }
-        ws.current.send(JSON.stringify(message2))
+      if (!ws.current) return;
+      console.log("getMyPartyMetadata")
+      const message1 = { operation: 'getMyPartyMetadata', body: {} }
+      ws.current.send(JSON.stringify(message1))
+      console.log("getMyPartyMemberList")
+      const message2 = { operation: 'getMyPartyMemberList', body: {} }
+      ws.current.send(JSON.stringify(message2))
+      console.log(isEnter)
+      if(isEnter===false){
+        const message3 = { operation: 'getSharedCart', body: {} }
+        ws.current.send(JSON.stringify(message3))
+        setIsEnter(true)
+        appContext.setIsEnter(true)
       }
-  
     });
   
     return unsubscribe;
@@ -53,7 +59,7 @@ export default function roomScreen({navigation}) {
 
 
 useEffect(() => {
-  if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
+  if (!ws.current) return;
 
 
   ws.current.onopen = e => {
@@ -63,6 +69,13 @@ useEffect(() => {
     console.log("getMyPartyMemberList")
     const message2 = { operation: 'getMyPartyMemberList', body: {} }
     ws.current.send(JSON.stringify(message2))
+    if(isEnter===false){
+      console.log("getSharedCart")
+      const message3 = { operation: 'getSharedCart', body: {} }
+      ws.current.send(JSON.stringify(message3))
+      setIsEnter(true)
+      appContext.setIsEnter(true)
+    }
   }
 
 
@@ -75,15 +88,20 @@ useEffect(() => {
         setCapacity(message.body.capacity)
         setRestaurantName(message.body.restaurant.name)
         setRestaurantID(message.body.restaurant.id)
+        setMinOrderPrice(message.body.restaurant.minOrderPrice)
         appContext.setRestaurantID(message.body.restaurant.id)
         appContext.setRestaurantName(message.body.restaurant.name)
         appContext.setSize(message.body.size)
         setSize(message.body.size)
         setTitle(message.body.title)
         setImage(message.body.restaurant.icon)
+        setTotalPrice(message.body.totalPrice)
       }
       if(message.operation==="replyGetMyPartyMemberList"){
         setUserList(message.body)
+      }
+      if(message.operation==="replyGetSharedCart"){
+        appContext.setCartList(message.body)
       }
       if(message.operation==="replyLeaveParty"){
         if(message.body.isSuccess===true){
@@ -93,16 +111,27 @@ useEffect(() => {
           appContext.setRestaurantName()
           appContext.setIsHost(false)
           appContext.setIsReady(false)
+          appContext.setIsEnter(false)
           appContext.setSize()
+          appContext.setCartList([])
           navigation.replace("main")
         }
         else{
           console.log("leave failed")
         }      
       }
+      
+      if(message.operation==="replyKickedOutMember"){
+
+      }
+      if(message.operation==="notifyRefreshTotalPrice"){
+        setTotalPrice(message.body.totalPrice)
+      }
+      //apply all party member 
       if(message.operation==="notifyNewMember"){
         setUserList([message.body.user].concat(userList))
         setSize(message.body.size)
+        appContext.setSize(message.body.size)
       }
       if(message.operation==="notifyOutMember"){
         //user(is not host) out 
@@ -113,11 +142,14 @@ useEffect(() => {
           } 
         } 
         setSize(message.body.size)
+        appContext.setSize(message.body.size)
 
         //user(is host) out so apply new host
-        if(message.body.newHost!==null)
+        if(message.body.newHost!==undefined)
         {
-          if(appContext.id===message.body.newHost.id){
+          console.log("host is change")
+          if(appContext.userID===message.body.newHost.id){
+            console.log("I am new host")
             appContext.setIsHost(true)
             setIsHost(true)
           }
@@ -130,11 +162,8 @@ useEffect(() => {
         }
 
       }
-      if(message.operation==="replyKickedOutMember"){
-
-      }
       if(message.operation==="notifyKickedOutMember"){
-        if(appContext.id === message.body.user.id){
+        if(appContext.userID === message.body.user.id){
           //you are kicked out
           console.log("you are kicked out")
           Alert.alert("강퇴 당하셨습니다")
@@ -143,6 +172,8 @@ useEffect(() => {
           appContext.setRestaurantName()
           appContext.setIsHost(false)
           appContext.setIsReady(false)
+          appContext.setIsEnter(false)
+          appContext.setCartList([])
           appContext.setSize()
           navigation.replace("main")
         }
@@ -157,20 +188,58 @@ useEffect(() => {
           setSize(message.body.size)
         }
       }
-      if(message.operation==="notifyUpdateMemberStatus"){
-
+      if(message.operation==="notifyNewSharedMenu"){
+        Alert.alert("공유메뉴 "+message.body.name+"가 "+message.body.quantity +"개 추가 되었습니다.")
+        appContext.setCartList([message.body].concat(appContext.cartList))
       }
-      if(message.operation==="notifyAddPublicMenu"){
-
+      if(message.operation==="notifyUpdateSharedMenu"){
+        Alert.alert("공유메뉴 "+message.body.name+"가 "+message.body.quantity +"개로 변경 되었습니다.")
+        for (let i=0 ; i <appContext.cartList.length; i++){
+          if(appContext.cartList[i].id===message.body.id){
+            appContext.cartList[i] = message.body
+            appContext.setCartList([...appContext.cartList])
+          } 
+        }       
       }
-      if(message.operation==="notifyChangePublicMenu"){
-
+      if(message.operation==="notifyRefreshSharedCart"){
+        for (let i=0 ; i <appContext.cartList.length; i++){
+          for(let j=0 ; j <message.body.length; j++){
+            if(appContext.cartList[i].id===message.body[j].id){
+              appContext.cartList[i] = message.body[j]
+              appContext.setCartList([...appContext.cartList])
+            } 
+          }
+        }       
       }
-      if(message.operation==="notifyDeletePublicMenu"){
-
+      if(message.operation==="notifyDeleteSharedMenu"){
+        let deletedName = ""
+        for (let i=0 ; i <appContext.cartList.length; i++){
+          if(appContext.cartList[i].id===message.body.id){
+            deletedName=appContext.cartList[i].name
+            appContext.cartList.splice(i,1)
+            appContext.setCartList([...appContext.cartList])
+          } 
+        } 
+        Alert.alert("공유메뉴 "+deletedName+"가 삭제되었습니다")
       }
-      if(message.operation==="notifyChangeWholePrice"){
-
+      if(message.operation==="notifyMemberReady"){
+        for (let i=0 ; i <userList.length; i++){
+          if(userList[i].id===message.body.id){
+            userList[i].isReady = message.body.isReady
+            setUserList([...userList])
+          } 
+        }
+      }
+      if(message.operation==="notifyAllMemberNotReady"){
+        for (let i=0 ; i <userList.length; i++){
+          userList[i].isReady = false
+          setUserList([...userList])
+        }
+        setIsReady(false)
+        appContext.setIsReady(false)
+      }
+      if(message.operation==="notifyGoToPayment"){
+        navigation.navigate("payment")
       }
       if(message.operation==="ping"){
         const sendMessage = { operation: 'pong'}
@@ -190,29 +259,57 @@ useEffect(() => {
   function readyToNotReady(){
     if (!ws.current) return;
 
-      const message = { operation: 'setReady', body: {}}
+      const message = { operation: 'setReady', body: {isReady : false}}
       ws.current.send(JSON.stringify(message))
       setIsReady(false)
       appContext.setIsReady(false)
+
+      for (let i=0 ; i <userList.length; i++){
+        if(userList[i].id===appContext.userID){
+          userList[i].isReady = false
+          setUserList([...userList])
+        } 
+      }
   
   }
 
   function notReadyToReady(){
     if (!ws.current) return;
 
-      const message = { operation: 'setNotReady', body: {}}
+      const message = { operation: 'setReady', body: {isReady : true}}
       ws.current.send(JSON.stringify(message))
       setIsReady(true)
       appContext.setIsReady(true)
+
+      for (let i=0 ; i <userList.length; i++){
+        if(userList[i].id===appContext.userID){
+          userList[i].isReady = true
+          setUserList([...userList])
+        } 
+      }
   
   }
 
-  function requestOrder(){
+  function goToPayment(){
     if (!ws.current) return;
+      if(totalPrice<minOrderPrice){
+        Alert.alert("최소 주문 금액이 부족합니다.")
+        return
+      }
 
-      const message = { operation: 'requestOrder', body: {}}
-      ws.current.send(JSON.stringify(message))
-  
+      let everybodyIsready = true
+      for (let i=0 ; i <userList.length; i++){
+        if(userList[i].isReady===false && userList[i].id!==appContext.userID){
+          everybodyIsready =false
+        } 
+      }
+      if(everybodyIsready===true){
+        const message = { operation: 'goToPayment', body: {}}
+        ws.current.send(JSON.stringify(message))
+      }
+      else{
+        Alert.alert("모두 준비가 되지 않았습니다.")
+      }
   }
 
   function goMenuList(){
@@ -220,7 +317,7 @@ useEffect(() => {
       Alert.alert("준비중이므로 메뉴 추가가 불가능합니다")
     }
     else{
-      navigation.navigate('menuList')
+      navigation.replace('menuList')
     }
   }
 
@@ -245,23 +342,26 @@ useEffect(() => {
               </View>
             </View>    
             <View style={styles.menuTab}>
-              <TouchableOpacity style={styles.shoppingBagBox} onPress={() => navigation.navigate('shoppingBag')}>
-                <Text style={styles.shoppingBagText}>장바구니</Text>
+              <TouchableOpacity style={styles.cartBox} onPress={() => navigation.replace('cart')}>
+                <Text style={styles.cartText}>장바구니</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.addMenuBox} onPress={goMenuList}>
                 <Text style={styles.addMenuText}>메뉴 추가</Text>
               </TouchableOpacity>  
             </View>
             <View style={styles.menuTab}>
-              <TouchableOpacity style={styles.chatBox} onPress={() => navigation.navigate('chat')}>
+              <TouchableOpacity style={styles.chatBox} onPress={() => navigation.replace('chat')}>
                 <Text style={styles.chatText}>채팅방</Text>
               </TouchableOpacity>   
               <TouchableOpacity style={styles.outBox} onPress={leaveParty}>
                 <Text style={styles.outText}>파티 나가기</Text>
               </TouchableOpacity>   
             </View>
+            <View style={styles.priceButton}>
+              <Text style={styles.priceText}>총 금액 {totalPrice}원 / {minOrderPrice}원</Text>
+            </View>
             {(isHost===true)?
-            (<TouchableOpacity style={styles.orderButton} onPress={requestOrder}>
+            (<TouchableOpacity style={styles.orderButton} onPress={goToPayment}>
                 <Text style={styles.orderText}>결제하기</Text>
               </TouchableOpacity> ) : 
               (isReady===false) ? 
@@ -285,6 +385,7 @@ useEffect(() => {
       flexDirection: 'column',
       alignItems: 'stretch',
       backgroundColor: '#fff',
+      flex :1 ,
     },
     pinContainer: {
       alignSelf: 'center',
@@ -391,7 +492,7 @@ useEffect(() => {
       textAlign: "center",
       color: "#FFFFFF",
     },
-    shoppingBagBox:{
+    cartBox:{
       flex : 1 ,
       height : 60,
 
@@ -402,7 +503,7 @@ useEffect(() => {
       alignItems: 'center' 
   
     },
-    shoppingBagText:{
+    cartText:{
       fontStyle: 'normal',
       fontSize: 20,
       textAlign: "center",
@@ -438,6 +539,23 @@ useEffect(() => {
   
     },
     orderText:{
+      fontStyle: 'normal',
+      fontSize: 20,
+      textAlign: "center",
+      color: "#FFFFFF",
+  
+    },
+    priceButton:{
+      height: 39,
+
+      backgroundColor: "#CB661D",
+      borderRadius: 10,
+      marginBottom : 10, 
+      justifyContent: 'center', 
+      alignItems: 'center' 
+  
+    },
+    priceText:{
       fontStyle: 'normal',
       fontSize: 20,
       textAlign: "center",

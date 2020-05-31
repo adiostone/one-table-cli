@@ -17,7 +17,7 @@ export default function menuDetailScreen({route, navigation}) {
   const [name, setName] = useState(route.params.name) 
   const [price, setPrice] = useState(route.params.price) 
   const [quantity, setQuantity] = useState(1) 
-  const [isPublicMenu, setIsPublicMenu] = useState(false) 
+  const [isShared, setIsShared] = useState(false) 
   const [size, setSize] = useState(appContext.size) 
   const [totalPrice, setTotalPrice] = useState(route.params.price * quantity) 
 
@@ -28,15 +28,22 @@ export default function menuDetailScreen({route, navigation}) {
         const message = JSON.parse(e.data);
         console.log("menuDetail listen")
         console.log(message);
-        if(message.operation==="replyAddShoppingBag"){
-          appContext.setBagFoodList([message.body].concat(appContext.bagFoodList))
-          navigation.navigate('shoppingBag')
+        if(message.operation==="replyAddToCart"){
+          if(message.body.isSuccess===true){
+            console.log("add success")
+            appContext.setCartList([message.body.addedMenu].concat(appContext.cartList))
+            navigation.replace('cart')
+          }
+          else{
+            console.log("add failed")
+          }
         }
+        //apply all party member 
         if(message.operation==="notifyNewMember"){
           Alert.alert(message.body.user.nickname+"가 파티에 참가하셨습니다.")
           appContext.setSize(message.body.size)
           setSize(message.body.size)
-          if(isPublicMenu===true){
+          if(isShared===true){
             setTotalPrice(quantity*price/message.body.size)
           }
           else{
@@ -47,13 +54,78 @@ export default function menuDetailScreen({route, navigation}) {
           Alert.alert("파티원 한명이 나갔습니다.")
           appContext.setSize(message.body.size)
           setSize(message.body.size)
-          if(isPublicMenu===true){
-            setTotalPrice(quantity*price/message.body.size)
+           //user(is host) out so apply new host
+          if(message.body.newHost!==undefined){
+            console.log("host is change")
+            if(appContext.userID===message.body.newHost.id){
+              console.log("I am new host")
+              appContext.setIsHost(true)
+            }
+          }
+
+        }
+        if(message.operation==="notifyKickedOutMember"){
+          if(appContext.userID === message.body.user.id){
+            //you are kicked out
+            console.log("you are kicked out")
+            Alert.alert("강퇴 당하셨습니다")
+            appContext.setPartyID()
+            appContext.setRestaurantID()
+            appContext.setRestaurantName()
+            appContext.setIsHost(false)
+            appContext.setIsReady(false)
+            appContext.setCartList([])
+            appContext.setIsEnter(false)
+            appContext.setSize()
+            navigation.replace("main")
           }
           else{
-            setTotalPrice(quantity*price)
+            Alert.alert("파티원 한명이 강퇴당했습니다.")
+            appContext.setSize(message.body.size)
+            setSize(message.body.size)
+            if(isShared===true){
+              setTotalPrice(quantity*price/message.body.size)
+            }
+            else{
+              setTotalPrice(quantity*price)
+            }
           }
         }
+        if(message.operation==="notifyNewSharedMenu"){
+          Alert.alert("공유메뉴 "+message.body.name+"가 "+message.body.quantity +"개 추가 되었습니다.")
+          appContext.setCartList([message.body].concat(appContext.cartList))
+        }
+        if(message.operation==="notifyUpdateSharedMenu"){
+          Alert.alert("공유메뉴 "+message.body.name+"가 "+message.body.quantity +"개로 변경 되었습니다.")
+          for (let i=0 ; i <appContext.cartList.length; i++){
+            if(appContext.cartList[i].id===message.body.id){
+              appContext.cartList[i] = message.body
+              appContext.setCartList([...appContext.cartList])
+            } 
+          }       
+        }
+        if(message.operation==="notifyRefreshSharedCart"){
+          for (let i=0 ; i <appContext.cartList.length; i++){
+            for(let j=0 ; j <message.body.length; j++){
+              if(appContext.cartList[i].id===message.body[j].id){
+                appContext.cartList[i] = message.body[j]
+                appContext.setCartList([...appContext.cartList])
+              } 
+            }
+          }       
+        }
+        if(message.operation==="notifyDeleteSharedMenu"){
+          let deletedName = ""
+          for (let i=0 ; i <appContext.cartList.length; i++){
+            if(appContext.cartList[i].id===message.body.id){
+              deletedName=appContext.cartList[i].name
+              appContext.cartList.splice(i,1)
+              appContext.setCartList([...appContext.cartList])
+            } 
+          } 
+          Alert.alert("공유메뉴 "+deletedName+"가 삭제되었습니다")
+        }
+        //apply all ws 
         if(message.operation==="ping"){
           const sendMessage = { operation: 'pong'}
           ws.current.send(JSON.stringify(sendMessage))
@@ -61,21 +133,21 @@ export default function menuDetailScreen({route, navigation}) {
     };
   });
 
-  function addShoppingBag(){
+  function addCart(){
     if (!ws.current) return;
 
-    const message = { operation: 'addShoppingBag', body: {id: id ,quantity : quantity , price : price , totalPrice : totalPrice  , isPublicMenu : isPublicMenu} }
+    const message = { operation: 'addToCart', body: {id: id ,quantity : quantity , price : price , totalPrice : totalPrice  , isShared : isShared} }
     ws.current.send(JSON.stringify(message))
   }
 
 
   function clickCheckBox(){
-    if(isPublicMenu===true){
-      setIsPublicMenu(false)
+    if(isShared===true){
+      setIsShared(false)
       setTotalPrice(quantity*price)
     }
     else{
-      setIsPublicMenu(true)
+      setIsShared(true)
       setTotalPrice(quantity*price/size)
     }
   } 
@@ -84,7 +156,7 @@ export default function menuDetailScreen({route, navigation}) {
   function clickPlus(){
     const newQuantity = quantity + 1
     setQuantity(newQuantity)
-    if(isPublicMenu===true){
+    if(isShared===true){
       setTotalPrice(newQuantity*price/size)
     }
     else{
@@ -96,7 +168,7 @@ export default function menuDetailScreen({route, navigation}) {
     if(quantity>1){
       const newQuantity = quantity - 1
       setQuantity(newQuantity)
-      if(isPublicMenu===true){
+      if(isShared===true){
         setTotalPrice(newQuantity*price/size)
       }
       else{
@@ -137,15 +209,15 @@ export default function menuDetailScreen({route, navigation}) {
             <View style={styles.bottomRightBox}>
               <TouchableOpacity style={styles.checkBox} onPress={clickCheckBox}>
                 {
-                (isPublicMenu===true) ? (<Text style={styles.checkBoxText}>X</Text>) : (<Text style={styles.checkBoxText}></Text>)
+                (isShared===true) ? (<Text style={styles.checkBoxText}>X</Text>) : (<Text style={styles.checkBoxText}></Text>)
                 }
               </TouchableOpacity>
               <Text style={styles.quantityText}>{size}</Text>
             </View>
           </View>) : (<View/>)    
           } 
-          <TouchableOpacity style={styles.shoppingBagBox} onPress={addShoppingBag}>
-            <Text style={styles.shoppingBagText}>{totalPrice}원 담기</Text>
+          <TouchableOpacity style={styles.cartBox} onPress={addCart}>
+            <Text style={styles.cartText}>{totalPrice}원 담기</Text>
           </TouchableOpacity>
 
         </SafeAreaView>
@@ -157,6 +229,8 @@ export default function menuDetailScreen({route, navigation}) {
   const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
+        flex :1 ,
+
       },
       topBox: {
         height : 50 ,
@@ -242,7 +316,7 @@ export default function menuDetailScreen({route, navigation}) {
       fontWeight : "bold",
 
     },
-    shoppingBagBox:{
+    cartBox:{
       width: 340,
       height: 39,
       backgroundColor: "#FF8181",
@@ -252,7 +326,7 @@ export default function menuDetailScreen({route, navigation}) {
       justifyContent: 'center', 
       alignSelf: 'center' 
     },
-    shoppingBagText:{
+    cartText:{
       fontStyle: 'normal',
       fontSize: 20,
       textAlign: "center",
