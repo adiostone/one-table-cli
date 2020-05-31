@@ -35,7 +35,7 @@ export default function roomScreen({navigation}) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-  
+
       if (ws.current && ws.current.readyState === WebSocket.OPEN){
         console.log("getMyPartyMetadata")
         const message1 = { operation: 'getMyPartyMetadata', body: {} }
@@ -94,7 +94,7 @@ useEffect(() => {
           appContext.setIsHost(false)
           appContext.setIsReady(false)
           appContext.setSize()
-          navigation.navigate("main")
+          navigation.replace("main")
         }
         else{
           console.log("leave failed")
@@ -105,6 +105,7 @@ useEffect(() => {
         setSize(message.body.size)
       }
       if(message.operation==="notifyOutMember"){
+        //user(is not host) out 
         for (let i=0 ; i <userList.length; i++){
           if(userList[i].id===message.body.user.id){
             userList.splice(i,1)
@@ -112,15 +113,50 @@ useEffect(() => {
           } 
         } 
         setSize(message.body.size)
+
+        //user(is host) out so apply new host
+        if(message.body.newHost!==null)
+        {
+          if(appContext.id===message.body.newHost.id){
+            appContext.setIsHost(true)
+            setIsHost(true)
+          }
+          for (let i=0 ; i <userList.length; i++){
+            if(userList[i].id===message.body.newHost.id){
+              userList[i].isHost = true
+              setUserList([...userList])
+            } 
+          }
+        }
+
       }
-      if(message.operation==="notifyKickedOutParty"){
-        //party is exploded
-        // Alert.alert("방장이 파티에 나가 파티가 없어졌습니다.")        
-        navigation.replace("main")
+      if(message.operation==="replyKickedOutMember"){
+
       }
-
-
-
+      if(message.operation==="notifyKickedOutMember"){
+        if(appContext.id === message.body.user.id){
+          //you are kicked out
+          console.log("you are kicked out")
+          Alert.alert("강퇴 당하셨습니다")
+          appContext.setPartyID()
+          appContext.setRestaurantID()
+          appContext.setRestaurantName()
+          appContext.setIsHost(false)
+          appContext.setIsReady(false)
+          appContext.setSize()
+          navigation.replace("main")
+        }
+        else{
+          //other user is kicked out
+          for (let i=0 ; i <userList.length; i++){
+            if(userList[i].id===message.body.user.id){
+              userList.splice(i,1)
+              setUserList([...userList])
+            } 
+          } 
+          setSize(message.body.size)
+        }
+      }
       if(message.operation==="notifyUpdateMemberStatus"){
 
       }
@@ -148,9 +184,7 @@ useEffect(() => {
     if (!ws.current) return;
 
       const message = { operation: 'leaveParty', body: {}}
-      ws.current.send(JSON.stringify(message))
-      navigation.navigate("main",message.body)
-  
+      ws.current.send(JSON.stringify(message))  
   }
 
   function readyToNotReady(){
@@ -181,6 +215,15 @@ useEffect(() => {
   
   }
 
+  function goMenuList(){
+    if(isReady===true){
+      Alert.alert("준비중이므로 메뉴 추가가 불가능합니다")
+    }
+    else{
+      navigation.navigate('menuList')
+    }
+  }
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -205,7 +248,7 @@ useEffect(() => {
               <TouchableOpacity style={styles.shoppingBagBox} onPress={() => navigation.navigate('shoppingBag')}>
                 <Text style={styles.shoppingBagText}>장바구니</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.addMenuBox} onPress={() => navigation.navigate('menuList')}>
+              <TouchableOpacity style={styles.addMenuBox} onPress={goMenuList}>
                 <Text style={styles.addMenuText}>메뉴 추가</Text>
               </TouchableOpacity>  
             </View>
@@ -245,6 +288,7 @@ useEffect(() => {
     },
     pinContainer: {
       alignSelf: 'center',
+      width: 340,
   
     },
     logo:{
@@ -261,7 +305,6 @@ useEffect(() => {
 
     },
     listBox:{
-      width: 335,
       height: 100,
   
       backgroundColor: "#CB661D",
@@ -338,7 +381,7 @@ useEffect(() => {
       height : 60,
       backgroundColor: "#FFC530",
       borderRadius: 10,
-      marginBottom : 15, 
+      marginBottom : 10, 
       justifyContent: 'center', 
       alignItems: 'center' 
     },
@@ -371,8 +414,8 @@ useEffect(() => {
       height : 60,
       backgroundColor: "#FF473A",
       borderRadius: 10,
-      marginLeft : 10,
       marginBottom : 10, 
+      marginLeft : 10,
       justifyContent: 'center', 
       alignItems: 'center' 
     },
@@ -385,7 +428,6 @@ useEffect(() => {
     },
 
     orderButton:{
-      width: 335,
       height: 39,
 
       backgroundColor: "#FF8181",
@@ -404,12 +446,11 @@ useEffect(() => {
     },
 
     notReadyButton:{
-      width: 335,
       height: 39,
 
       backgroundColor: "#FF8181",
       borderRadius: 10,
-      marginBottom : 15, 
+      marginBottom : 10, 
       justifyContent: 'center', 
       alignItems: 'center' 
   
@@ -423,12 +464,11 @@ useEffect(() => {
     },
 
     readyButton:{
-      width: 335,
       height: 39,
 
       backgroundColor: "#FFBF75",
       borderRadius: 10,
-      marginBottom : 15, 
+      marginBottom : 10, 
       justifyContent: 'center', 
       alignItems: 'center' 
   
