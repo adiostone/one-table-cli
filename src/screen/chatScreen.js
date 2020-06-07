@@ -74,7 +74,7 @@ useEffect(() => {
 
         //user(is host) out so apply new host
         if(message.body.newHost!==undefined){
-          console.log("host is change")
+          Alert.alert("내가 방장이 되었습니다.")
           if(appContext.userID===message.body.newHost.id){
             console.log("I am new host")
             appContext.setIsHost(true)

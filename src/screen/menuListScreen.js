@@ -106,7 +106,7 @@ export default function menuListScreen({navigation}) {
           if(message.body.newHost!==undefined){
             console.log("host is change")
             if(appContext.userID===message.body.newHost.id){
-              console.log("I am new host")
+              Alert.alert("내가 방장이 되었습니다.")
               appContext.setIsHost(true)
             }
           }
