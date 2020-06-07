@@ -34,6 +34,11 @@ export default function decideNotMeetScreen({navigation}) {
         const message = JSON.parse(e.data);
         console.log("confirmOrder listen")
         console.log(message);
+        if(message.operation==="replySetAdditionalInfo"){
+          if(message.body.isSuccess ===true){
+            navigation.navigate("afterPaymentChat")
+          }
+        }
         if(message.operation==="ping"){
           const sendMessage = { operation: 'pong'}
           ws.current.send(JSON.stringify(sendMessage))
@@ -41,19 +46,21 @@ export default function decideNotMeetScreen({navigation}) {
     };
   });
 
-  function goToConfirmOrder(){
+  function setAdditionalInfo(){
     if (!ws.current) return;
 
-    const message = { operation: 'goToOrderConfirm', body: {isNotMeet: isNotMeet ,address1 : formattedAddress, address2 : detailAddress} }
+    const message = { operation: 'setAdditionalInfo', body: {isNonF2F: isNotMeet ,nonF2FAddress : formattedAddress+" "+detailAddress, phoneNumber : phoneNum, request : requestText} }
     ws.current.send(JSON.stringify(message))
   }
 
   function clickCheckBox(){
     if(isNotMeet===true){
       setIsNotMeet(false)
+      appContext.setIsNotMeet(false)
     }
     else{
       setIsNotMeet(true)
+      appContext.setIsNotMeet(true)
     }
   } 
 
@@ -103,8 +110,8 @@ export default function decideNotMeetScreen({navigation}) {
             <View style={styles.cartBox}>
               <Text style={styles.cartText}>최종 주문 내역</Text>
             </View>
-            <ViewCartList data={finalCart} isNotMeet={isNotMeet}/>
-            <TouchableOpacity style={styles.cartBox}>
+            <ViewCartList data={finalCart}/>
+            <TouchableOpacity style={styles.cartBox} onPress={setAdditionalInfo}>
               <Text style={styles.cartText}>최종 결제 확정</Text>
             </TouchableOpacity>
           </ScrollView>
