@@ -151,7 +151,7 @@ export default function cartScreen({navigation}) {
         flex :1 ,
       },
       cartBox:{
-        width: 335,
+        width: 340,
         height: 39,
         backgroundColor: "#FF8181",
         borderRadius: 10,

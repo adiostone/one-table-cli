@@ -59,7 +59,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
           <BaseTab data={"restaurantList"}/>
           <View style={styles.roomDetailContainer}>
               <View style={styles.restaurantNameBox}>
-              <Text style={styles.restaurantNameText}>{name}</Text>
+                <Text style={styles.restaurantNameText}>{name}</Text>
               </View>
               <View style={styles.detailSettingBox}>
                 <Text style={styles.detailSettingText}>방제목</Text>                  
@@ -96,7 +96,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
     },
     restaurantNameBox: {
       marginTop: 10,
-      width: 335,
+      width: 340,
       height: 60,
       backgroundColor: "#FF8181",
       borderRadius: 10,
@@ -117,7 +117,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
     },
     detailSettingBox: {
 
-      width: 335,
+      width: 340,
       height: 39,
       backgroundColor: "#FFBF75",
       borderRadius: 10,
@@ -136,7 +136,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
     },
     detailSettingInputBox: {
 
-      width: 335,
+      width: 340,
       height: 39,
       backgroundColor: "#FFF5F5",
       borderRadius: 10,
@@ -149,7 +149,7 @@ export default function roomDetailSettingScreen({route, navigation}) {
       textAlign: "center",
     },
     buttonBox:{
-      width: 335,
+      width: 340,
       height: 39,
       backgroundColor: "#FF8181",
       borderRadius: 10,

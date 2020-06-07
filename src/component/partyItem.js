@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
 
   },
   listBox:{
-    width: 335,
+    width: 340,
     height: 100,
 
     backgroundColor: "#CB661D",
