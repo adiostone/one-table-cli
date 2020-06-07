@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext , useRef } from 'react'
 import { StyleSheet, Text, View,Button, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
-import CartList from "../component/cartList"
+import CartList from "../component/viewCartList"
 import LogoButton from "../component/logoButton"
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
 
-export default function paymentScreen({navigation}) {
+export default function confirmOrderScreen({navigation}) {
 
   const appContext = useContext(AppContext)
 
@@ -20,7 +20,7 @@ export default function paymentScreen({navigation}) {
 
     ws.current.onmessage = e => {
         const message = JSON.parse(e.data);
-        console.log("payment listen")
+        console.log("confirmOrder listen")
         console.log(message);
         if(message.operation==="ping"){
           const sendMessage = { operation: 'pong'}
@@ -38,7 +38,7 @@ export default function paymentScreen({navigation}) {
             <View style={styles.cartBox}>
                 <Text style={styles.cartText}>최종 주문 내역</Text>
             </View>
-            <CartList data={cartList}/>
+            <ViewCartList data={cartList}/>
             <TouchableOpacity style={styles.cartBox}>
                 <Text style={styles.cartText}>최종 결제 확정</Text>
             </TouchableOpacity>

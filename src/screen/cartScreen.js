@@ -121,7 +121,7 @@ export default function cartScreen({navigation}) {
           appContext.setIsReady(false)
         }
         if(message.operation==="notifyGoToPayment"){
-          navigation.navigate("payment")
+          navigation.navigate("confirmOrder")
         }
         //apply all ws 
         if(message.operation==="ping"){

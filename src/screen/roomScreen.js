@@ -239,7 +239,7 @@ useEffect(() => {
         appContext.setIsReady(false)
       }
       if(message.operation==="notifyGoToPayment"){
-        navigation.navigate("payment")
+        navigation.navigate("confirmOrder")
       }
       if(message.operation==="ping"){
         const sendMessage = { operation: 'pong'}

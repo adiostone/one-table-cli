@@ -18,7 +18,7 @@ import menuListScreen from './src/screen/menuListScreen'
 import menuDetailScreen from './src/screen/menuDetailScreen'
 import cartScreen from './src/screen/cartScreen';
 import chatScreen from './src/screen/chatScreen';
-import paymentScreen from './src/screen/paymentScreen';
+import confirmOrderScreen from './src/screen/confirmOrderScreen';
 import afterPaymentScreen from './src/screen/afterPaymentScreen';
 
 import * as Font from 'expo-font';
@@ -62,7 +62,7 @@ export default function App(){
             <Stack.Screen name="menuDetail" component={menuDetailScreen}/>
             <Stack.Screen name="cart" component={cartScreen}/>
             <Stack.Screen name="chat" component={chatScreen}/>
-            <Stack.Screen name="payment" component={paymentScreen}/>
+            <Stack.Screen name="confirmOrder" component={confirmOrderScreen}/>
             <Stack.Screen name="afterPayment" component={afterPaymentScreen}/>
           </Stack.Navigator>
         </NavigationContainer>
