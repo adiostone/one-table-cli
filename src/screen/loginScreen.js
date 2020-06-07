@@ -21,14 +21,14 @@ export default function loginScreen({navigation}) {
         { headers: { Authorization: `Bearer ${accessToken}` }
     })
 
-    console.log(res.data.nickname)
-    const nickname =res.data.nickname
-
+    console.log(res.data)
+    const nickname =res.data.nickname      
+    const id =res.data.id     
+    //set nickname and id 
+    appContext.setNickname(nickname)   
+    appContext.setUserID(id)   
     //for welcome user
     Alert.alert(nickname + "님 환영합니다!")
-
-    //set nickname
-    appContext.setNickname(nickname)
 
   }
 
