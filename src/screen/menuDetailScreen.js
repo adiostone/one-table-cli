@@ -227,8 +227,6 @@ export default function menuDetailScreen({route, navigation}) {
           </TouchableOpacity>
 
         </SafeAreaView>
-  
-
     );
   }
 
