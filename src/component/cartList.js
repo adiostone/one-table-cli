@@ -8,18 +8,23 @@ import CartItem from './cartItem';
 
 export default function cartList(props) {
 
-    const cartList = props.data
+  const appContext = useContext(AppContext)
 
-    const [totalPrice, setTotalPrice] = useState(0)
+  const cartList = props.data
 
-    useEffect(() => {
+  const [totalPrice, setTotalPrice] = useState(0)
 
-      let totalPrice = 0 
-      cartList.forEach((item)=>{
-        totalPrice = totalPrice + item.pricePerCapita
-      }) 
-      setTotalPrice(totalPrice)
-    },[cartList])
+  useEffect(() => {
+
+    let totalPrice = 0 
+    cartList.forEach((item)=>{
+      if(item.isShared === true && appContext.size !==1){
+        totalPrice = totalPrice + appContext.packagingCost
+      } 
+      totalPrice = totalPrice + item.pricePerCapita
+    }) 
+    setTotalPrice(totalPrice)
+  },[cartList])
 
   return (
     <ScrollView style={styles.cartContainer}>
