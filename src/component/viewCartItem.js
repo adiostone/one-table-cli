@@ -22,7 +22,7 @@ export default function viewCartItem(props) {
 
   const id = props.data.id 
   const name = props.data.name
-  const price = props.data.price
+  const packagingCost = props.data.packagingCost
   const isShared = props.data.isShared
   const quantity =props.data.quantity 
   const pricePerCapita=props.data.pricePerCapita
@@ -41,8 +41,8 @@ export default function viewCartItem(props) {
           <Text style={styles.foodNameText}>{name}</Text>
         </View> 
         {(isShared===true) ?(
-        <View style={styles.bottomBox}> 
-          <View style={styles.bottomLeftBox}>
+        <View style={styles.middleBox}> 
+          <View style={styles.middleLeftBox}>
             <View style={styles.quantityBox}>
               <Text style={styles.quantityText}>{quantity}</Text>
             </View>
@@ -50,13 +50,13 @@ export default function viewCartItem(props) {
               <Text style={styles.redText}>공유 1/{size}</Text>
             </View>
             </View>         
-          <View style={styles.bottomRightBox}> 
+          <View style={styles.middleRightBox}> 
             <Text style={styles.redText}>{pricePerCapita}원</Text>
           </View> 
           
         </View>) : 
-        (<View style={styles.bottomBox}> 
-          <View style={styles.bottomLeftBox}>
+        (<View style={styles.middleBox}> 
+          <View style={styles.middleLeftBox}>
             <View style={styles.quantityBox}>
               <Text style={styles.quantityText}>{quantity}</Text>
             </View>
@@ -64,11 +64,21 @@ export default function viewCartItem(props) {
               <Text style={styles.blueText}>개인</Text>
             </View>
             </View>         
-          <View style={styles.bottomRightBox}> 
+          <View style={styles.middleRightBox}> 
             <Text style={styles.blueText}>{pricePerCapita}원</Text>
           </View>
         </View>)
         } 
+        {(packagingCost !==0) ?
+        <View style={styles.bottomBox}> 
+          <View style={styles.bottomLeftBox}>
+            <Text style={styles.quantityText}>포장비</Text>
+          </View>         
+          <View style={styles.bottomRightBox}> 
+            <Text style={styles.redText}>{appContext.packagingCost}원</Text>
+          </View>
+        </View> : <View/>
+        }
       </View>        
       
   );
@@ -86,7 +96,53 @@ foodNameBox:{
 },
 foodNameText:{
     fontSize : 20,
-    fontWeight : "bold",
+},
+
+middleBox: {
+
+  display : "flex",
+  flexDirection : "row",
+  height : 40 ,
+  alignItems : "center"
+},
+middleLeftBox: {
+
+marginLeft :20,
+display : "flex",
+flexDirection : "row",
+alignSelf : "center",
+alignItems : "center",
+flex : 5,
+
+
+},
+middleRightBox: {
+  flex : 2,
+},
+quantityBox:{
+  width : 25,
+  height : 25 ,
+  alignItems: 'center' ,
+},
+quantityText:{
+  fontSize : 20,
+},
+
+foodPriceText:{
+  fontSize : 14
+},
+colorBox:{
+  marginLeft : 15,
+  alignItems: 'center' ,
+},
+blueText:{
+  fontSize : 19,
+  color : "blue"
+},
+redText:{
+  fontSize : 19,
+  color : "red"
+
 },
 
 bottomBox: {
@@ -109,32 +165,6 @@ flex : 5,
 },
 bottomRightBox: {
   flex : 2,
-},
-quantityBox:{
-  width : 25,
-  height : 25 ,
-  alignItems: 'center' ,
-},
-quantityText:{
-  fontSize : 20,
-  fontWeight : "bold",
-},
-
-foodPriceText:{
-  fontSize : 14
-},
-colorBox:{
-  marginLeft : 15,
-  alignItems: 'center' ,
-},
-blueText:{
-  fontSize : 19,
-  color : "blue"
-},
-redText:{
-  fontSize : 19,
-  color : "red"
-
 },
 
 
