@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
   },
   pinContainer: {
     alignSelf: 'center',
-    width: 340,
 
   },
   logo:{
@@ -131,6 +130,7 @@ const styles = StyleSheet.create({
   },
   locationBox:{
     height: 39,
+    width: 340,
     backgroundColor: "#FFBF75",
     borderRadius: 10,
     marginBottom : 12, 
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
   },
   createBox:{
     height: 39,
+    width: 340,
     backgroundColor: "#FF8181",
     borderRadius: 10,
     marginBottom : 12, 

@@ -7,7 +7,7 @@ import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
 
 
-export default function menuDetailScreen({route, navigation}) {
+export default function decideNotMeetScreen({navigation}) {
 
   const appContext = useContext(AppContext)
 

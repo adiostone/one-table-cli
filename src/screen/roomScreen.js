@@ -389,25 +389,15 @@ useEffect(() => {
     },
     pinContainer: {
       alignSelf: 'center',
-      width: 340,
   
     },
     logo:{
       alignItems: "center",
     },
-    imageStyle:{
 
-      width: 100,
-      height :100,
-      borderTopLeftRadius: 10,
-      borderBottomLeftRadius: 10,
-
-      alignSelf : "center"
-
-    },
     listBox:{
       height: 100,
-  
+      width: 340,
       backgroundColor: "#CB661D",
       borderRadius: 10,
       marginBottom : 12, 
@@ -424,15 +414,22 @@ useEffect(() => {
       alignContent : "center",
       alignItems : 'center',
     },
+    imageStyle:{
+
+      width: 100,
+      height :100,
+      borderTopLeftRadius: 10,
+      borderBottomLeftRadius: 10,
+
+      alignSelf : "center"
+
+    },
     rightBox:{
       flex : 2,
       padding : 8,
     },
 
-    menuTab:{
-      flexDirection : "row",
 
-    },
     rightBottomBox:{
       display : "flex", 
       flexDirection : "row"
@@ -460,6 +457,12 @@ useEffect(() => {
       fontStyle: 'normal',
       fontSize: 18,
       color: "#FFFFFF",
+    },
+
+    menuTab:{
+      width: 340,
+      flexDirection : "row",
+
     },
     addMenuBox:{
       flex : 1 ,
@@ -530,7 +533,7 @@ useEffect(() => {
 
     orderButton:{
       height: 39,
-
+      width: 340,
       backgroundColor: "#FF8181",
       borderRadius: 10,
       marginBottom : 10, 
@@ -547,7 +550,7 @@ useEffect(() => {
     },
     priceButton:{
       height: 39,
-
+      width: 340,
       backgroundColor: "#CB661D",
       borderRadius: 10,
       marginBottom : 10, 
@@ -565,7 +568,7 @@ useEffect(() => {
 
     notReadyButton:{
       height: 39,
-
+      width: 340,
       backgroundColor: "#FF8181",
       borderRadius: 10,
       marginBottom : 10, 
@@ -583,7 +586,7 @@ useEffect(() => {
 
     readyButton:{
       height: 39,
-
+      width: 340,
       backgroundColor: "#FFBF75",
       borderRadius: 10,
       marginBottom : 10, 
