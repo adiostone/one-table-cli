@@ -8,30 +8,51 @@ import ViewCartItem from './viewCartItem';
 
 export default function viewCartList(props) {
 
-    const cartList = props.data
+  const appContext = useContext(AppContext)
 
-    const [totalPrice, setTotalPrice] = useState(0)
+  const finalCart= props.data
+  const isNotMeet = props.isNotMeet
 
-    useEffect(() => {
+  const [totalPrice, setTotalPrice] = useState(0)
 
-      let totalPrice = 0 
-      cartList.forEach((item)=>{
-        totalPrice = totalPrice + item.pricePerCapita
-      }) 
-      setTotalPrice(totalPrice)
-    },[cartList])
+  useEffect(() => {
+
+    let totalPrice = finalCart.totalPrice + finalCart.deliveryCostPerCapita
+    if(isNotMeet ===true){
+      totalPrice = totalPrice + appContext.nonF2FCost
+    }
+    setTotalPrice(totalPrice)
+  })
 
   return (
     <ScrollView style={styles.cartContainer}>
       {
-        cartList.map((data,i) => {
+        finalCart.menus.map((data,i) => {
         return (<ViewCartItem key={i} data={data}/>);
       })}
-      <View style={styles.totalPriceBox}>
-        <View style={styles.leftBox}>
+      <View style={styles.topBox}>
+        <View style={styles.topLeftBox}>
+          <Text style={styles.topText}>배달비</Text>
+        </View>
+        <View style={styles.topRightBox}>
+          <Text style={styles.topText}>{finalCart.deliveryCostPerCapita}원</Text>
+        </View>
+      </View>
+      {(isNotMeet===true) ?
+      <View style={styles.middleBox}>
+        <View style={styles.middleLeftBox}>
+          <Text style={styles.middleText}>비대면 배달비</Text>
+        </View>
+        <View style={styles.middleRightBox}>
+          <Text style={styles.middleText}>{appContext.nonF2FCost}원</Text>
+        </View>
+      </View> : <View/>
+      }
+      <View style={styles.bottomBox}>
+        <View style={styles.bottomLeftBox}>
           <Text style={styles.totalPriceText}>총 주문금액</Text>
         </View>
-        <View style={styles.rightBox}>
+        <View style={styles.bottomRightBox}>
           <Text style={styles.totalPriceText}>{totalPrice}원</Text>
         </View>
       </View>
@@ -47,18 +68,56 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignContent : "stretch",
   },
-    totalPriceBox: {
+  topBox: {
+
+    display : "flex",
+    flexDirection : "row",
+    height : 50 ,
+    alignItems : "center"
+},
+topLeftBox: {
+  flex : 5,
+  marginLeft :30,
+},
+topRightBox: {
+flex : 2,
+},
+topText: {
+
+fontStyle: 'normal',
+fontSize: 18,
+},
+  middleBox: {
+
+    display : "flex",
+    flexDirection : "row",
+    height : 50 ,
+    alignItems : "center"
+},
+middleLeftBox: {
+  flex : 5,
+  marginLeft :30,
+},
+middleRightBox: {
+flex : 2,
+},
+middleText: {
+
+fontStyle: 'normal',
+fontSize: 18,
+},
+    bottomBox: {
 
       display : "flex",
       flexDirection : "row",
-      height : 60 ,
+      height : 50 ,
       alignItems : "center"
   },
-  leftBox: {
+  bottomLeftBox: {
     flex : 5,
     marginLeft :30,
 },
-rightBox: {
+bottomRightBox: {
   flex : 2,
 },
 totalPriceText: {

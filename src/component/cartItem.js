@@ -101,9 +101,9 @@ export default function cartItem(props) {
         <View style={styles.foodNameBox}> 
           <Text style={styles.foodNameText}>{name}</Text>
         </View> 
-        {(isShared===true) ?(
-        <View style={styles.bottomBox}> 
-          <View style={styles.bottomLeftBox}>
+        {(isShared===true)?(
+        <View style={styles.middleBox}> 
+          <View style={styles.middleLeftBox}>
             <TouchableOpacity style={styles.plusMinusBox} onPress={clickMinus}>
                   <Text style={styles.plusMinusText}>-</Text>
             </TouchableOpacity>
@@ -117,13 +117,12 @@ export default function cartItem(props) {
               <Text style={styles.redText}>공유 1/{size}</Text>
             </View>
             </View>         
-          <View style={styles.bottomRightBox}> 
+          <View style={styles.middleRightBox}> 
             <Text style={styles.redText}>{pricePerCapita}원</Text>
           </View> 
-          
         </View>) : 
-        (<View style={styles.bottomBox}> 
-          <View style={styles.bottomLeftBox}>
+        (<View style={styles.middleBox}> 
+          <View style={styles.middleLeftBox}>
             <TouchableOpacity style={styles.plusMinusBox} onPress={clickMinus}>
                   <Text style={styles.plusMinusText}>-</Text>
             </TouchableOpacity>
@@ -137,11 +136,21 @@ export default function cartItem(props) {
               <Text style={styles.blueText}>개인</Text>
             </View>
             </View>         
-          <View style={styles.bottomRightBox}> 
+          <View style={styles.middleRightBox}> 
             <Text style={styles.blueText}>{pricePerCapita}원</Text>
           </View>
         </View>)
         } 
+        {(size!==1 && isShared===true) ?
+        <View style={styles.bottomBox}> 
+          <View style={styles.bottomLeftBox}>
+            <Text style={styles.quantityText}>포장비</Text>
+          </View>         
+          <View style={styles.bottomRightBox}> 
+            <Text style={styles.redText}>{appContext.packagingCost}원</Text>
+          </View>
+        </View> : <View/>
+        }
       </View>        
       
   );
@@ -159,17 +168,16 @@ foodNameBox:{
 },
 foodNameText:{
     fontSize : 20,
-    fontWeight : "bold",
 },
 
-bottomBox: {
+middleBox: {
 
   display : "flex",
   flexDirection : "row",
   height : 40 ,
   alignItems : "center"
 },
-bottomLeftBox: {
+middleLeftBox: {
 
 marginLeft :20,
 display : "flex",
@@ -180,7 +188,7 @@ flex : 5,
 
 
 },
-bottomRightBox: {
+middleRightBox: {
   flex : 2,
 },
 quantityBox:{
@@ -190,7 +198,6 @@ quantityBox:{
 },
 quantityText:{
   fontSize : 20,
-  fontWeight : "bold",
 },
 plusMinusBox:{
   width : 20,
@@ -222,6 +229,26 @@ redText:{
 
 },
 
+bottomBox: {
 
+  display : "flex",
+  flexDirection : "row",
+  height : 40 ,
+  alignItems : "center"
+},
+bottomLeftBox: {
+
+marginLeft :20,
+display : "flex",
+flexDirection : "row",
+alignSelf : "center",
+alignItems : "center",
+flex : 5,
+
+
+},
+bottomRightBox: {
+  flex : 2,
+},
 
 });
