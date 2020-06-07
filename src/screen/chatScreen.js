@@ -140,7 +140,8 @@ useEffect(() => {
         appContext.setIsReady(false)
       }
       if(message.operation==="notifyGoToPayment"){
-        navigation.navigate("decideNotMeet")
+        appContext.setFinalCart(message.body)
+        navigation.navigate("confirmOrder")
       }
       //apply all ws
       if(message.operation==="ping"){
