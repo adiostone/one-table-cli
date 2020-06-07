@@ -28,6 +28,11 @@ export const AppProvider =({children}) =>{
     const [size, setSize] = useState()
     const [wholePrice, setWholePrice] = useState(0) 
     const [isEnter, setIsEnter] = useState(false)  
+    const [isNotMeet, setIsNotMeet] = useState(false)  
+    const [deliveryCost, setDeliveryCost] = useState(0)  
+    const [packagingCost, setPackagingCost] = useState(0)  
+    const [nonF2FCost, setNonF2FCost] = useState(0)  
+    const [finalCart ,setFinalCart] = useState()  
 
     //cart Information
     const [cartList, setCartList] = useState([]) 
@@ -74,9 +79,19 @@ export const AppProvider =({children}) =>{
           setWholePrice,
           isEnter,
           setIsEnter,
+          isNotMeet,
+          setIsNotMeet,
+          packagingCost,
+          setPackagingCost,
+          nonF2FCost,
+          setNonF2FCost,
+          deliveryCost,
+          setDeliveryCost,
 
           cartList, 
           setCartList,
+          finalCart,
+          setFinalCart
           
         }}
       >
