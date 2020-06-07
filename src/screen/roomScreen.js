@@ -92,6 +92,9 @@ useEffect(() => {
         appContext.setRestaurantID(message.body.restaurant.id)
         appContext.setRestaurantName(message.body.restaurant.name)
         appContext.setSize(message.body.size)
+        appContext.setPackagingCost(message.body.restaurant.packagingCost)
+        appContext.setNonF2FCost(message.body.restaurant.nonF2FCost)
+        appContext.setDeliveryCost(message.body.restaurant.deliveryCost)
         setSize(message.body.size)
         setTitle(message.body.title)
         setImage(message.body.restaurant.icon)
@@ -241,7 +244,8 @@ useEffect(() => {
         appContext.setIsReady(false)
       }
       if(message.operation==="notifyGoToPayment"){
-        navigation.navigate("decideNotMeet")
+        appContext.setFinalCart(message.body)
+        navigation.navigate("confirmOrder")
       }
       if(message.operation==="ping"){
         const sendMessage = { operation: 'pong'}
