@@ -16,6 +16,8 @@ export default function menuDetailScreen({route, navigation}) {
   const [id, setid] = useState(route.params.id) 
   const [name, setName] = useState(route.params.name) 
   const [price, setPrice] = useState(route.params.price) 
+  const [image, setImage] = useState(route.params.image) 
+  const [isSharing, setIsSharing] = useState(route.params.isSharing) 
   const [quantity, setQuantity] = useState(1) 
   const [isShared, setIsShared] = useState(false) 
   const [size, setSize] = useState(appContext.size) 
@@ -60,6 +62,7 @@ export default function menuDetailScreen({route, navigation}) {
             if(appContext.userID===message.body.newHost.id){
               Alert.alert("내가 방장이 되었습니다.")
               appContext.setIsHost(true)
+              appContext.setIsReady(false)
             }
           }
 
@@ -181,6 +184,9 @@ export default function menuDetailScreen({route, navigation}) {
     return (
         <SafeAreaView style={styles.container}>
           <BaseTab data={"menuList"}/>
+          {(image !==null) ? 
+          (<Image source={{uri:image}} style={styles.imageStyle}/>) : (<View/>)
+          }
           <View style={styles.topBox}>
             <Text style={styles.nameText}>{name}</Text>
           </View>
@@ -201,7 +207,7 @@ export default function menuDetailScreen({route, navigation}) {
             </View>
           </View>
           {     
-          (appContext.isHost ===true) ?        
+          (appContext.isHost ===true && isSharing ===true) ?        
           (<View style={styles.bottomBox}>
             <View style={styles.bottomLeftBox}>
               <Text style={styles.quantityText}>공유</Text>
@@ -231,6 +237,13 @@ export default function menuDetailScreen({route, navigation}) {
         backgroundColor: '#fff',
         flex :1 ,
 
+      },
+      imageStyle:{
+        width: 150,
+        height :150,
+        borderRadius : 10,
+        marginBottom : 15,
+        alignSelf :"center"
       },
       topBox: {
         height : 50 ,
