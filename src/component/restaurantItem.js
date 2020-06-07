@@ -14,7 +14,7 @@ export default function restaurantItem(props) {
     const icon =props.data.icon 
     const category =props.data.category 
     const name = props.data.name 
-    const deliveryFee =props.data.deliveryFee 
+    const deliveryCost =props.data.deliveryCost 
     const minOrderPrice =props.data.minOrderPrice 
 
     const navigation = useNavigation();
@@ -30,7 +30,10 @@ export default function restaurantItem(props) {
           </View>
           <View style={styles.rightBox}>
             <Text style={styles.restaurantNameText}>{name}</Text>
-            <Text style={styles.restaurantDetailText}>최소주문금액 {minOrderPrice}원</Text>
+            <View style={styles.rightBottomBox}>
+              <Text style={styles.restaurantDetailText}>최소주문금액 {minOrderPrice}원 </Text>
+              <Text style={styles.restaurantDetailText}>배달팁 {deliveryCost}원</Text>
+            </View>
           </View>
         </TouchableOpacity>
       
@@ -55,7 +58,7 @@ leftBox:{
 rightBox:{
   marginLeft : 10,
   flex : 4,
-  justifyContent : "center"
+  justifyContent : "center",
 },
 imageStyle:{
   width: 60,
@@ -65,6 +68,10 @@ imageStyle:{
   borderColor : "#DFDFDF",
   alignSelf : "center"
 
+},
+rightBottomBox:{
+  marginTop : 5,
+  flexDirection : "row"
 },
 restaurantNameText:{
     fontSize : 20,
