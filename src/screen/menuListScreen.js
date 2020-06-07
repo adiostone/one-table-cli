@@ -108,6 +108,7 @@ export default function menuListScreen({navigation}) {
             if(appContext.userID===message.body.newHost.id){
               Alert.alert("내가 방장이 되었습니다.")
               appContext.setIsHost(true)
+              appContext.setIsReady(false)
             }
           }
         }

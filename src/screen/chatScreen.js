@@ -78,6 +78,7 @@ useEffect(() => {
           if(appContext.userID===message.body.newHost.id){
             console.log("I am new host")
             appContext.setIsHost(true)
+            appContext.setIsReady(false)
           }
         }
       }
@@ -139,7 +140,7 @@ useEffect(() => {
         appContext.setIsReady(false)
       }
       if(message.operation==="notifyGoToPayment"){
-        navigation.navigate("confirmOrder")
+        navigation.navigate("decideNotMeet")
       }
       //apply all ws
       if(message.operation==="ping"){

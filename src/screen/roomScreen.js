@@ -152,6 +152,8 @@ useEffect(() => {
             Alert.alert("내가 방장이 되었습니다.")
             appContext.setIsHost(true)
             setIsHost(true)
+            appContext.setIsReady(false)
+            setIsReady(false)
           }
           for (let i=0 ; i <userList.length; i++){
             if(userList[i].id===message.body.newHost.id){
@@ -239,7 +241,7 @@ useEffect(() => {
         appContext.setIsReady(false)
       }
       if(message.operation==="notifyGoToPayment"){
-        navigation.navigate("confirmOrder")
+        navigation.navigate("decideNotMeet")
       }
       if(message.operation==="ping"){
         const sendMessage = { operation: 'pong'}

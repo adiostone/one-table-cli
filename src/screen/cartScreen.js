@@ -55,6 +55,7 @@ export default function cartScreen({navigation}) {
             if(appContext.userID===message.body.newHost.id){
               Alert.alert("내가 방장이 되었습니다.")
               appContext.setIsHost(true)
+              appContext.setIsReady(false)
             }
           }
         }
@@ -121,7 +122,7 @@ export default function cartScreen({navigation}) {
           appContext.setIsReady(false)
         }
         if(message.operation==="notifyGoToPayment"){
-          navigation.navigate("confirmOrder")
+          navigation.navigate("decideNotMeet")
         }
         //apply all ws 
         if(message.operation==="ping"){
