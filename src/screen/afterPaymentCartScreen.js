@@ -14,7 +14,7 @@ export default function afterPaymentCartScreen({navigation}) {
 
   const ws = useRef(socketContext.ws)
 
-  const [cartList , setCartList] = useState(appContext.cartList)
+  const finalCart = appContext.finalCart
 
   useEffect(() => {
     if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
@@ -37,7 +37,7 @@ export default function afterPaymentCartScreen({navigation}) {
             <View style={styles.cartBox}>
                 <Text style={styles.cartText}>최종 주문 내역</Text>
             </View>
-            <ViewCartList data={cartList}/>
+            <ViewCartList data={finalCart}/>
           </ScrollView>
         </SafeAreaView>
 

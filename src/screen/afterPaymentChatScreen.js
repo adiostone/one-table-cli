@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext , useRef } from 'react'
 import { StyleSheet, Text, View,Button,Alert, Image,TextInput,TouchableOpacity,Dimensions, ScrollView, SafeAreaView } from 'react-native';
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
-
+import LogoButton from "../component/logoButton"
 import BaseTab from "../component/baseTab"
 import ChatList from "../component/chatList"
 import axios from 'axios'
@@ -127,7 +127,7 @@ useEffect(() => {
               </View>
           </View>    
           <TouchableOpacity style={styles.cartBox} onPress={() => navigation.navigate('afterPaymentCart')}>
-            <Text style={styles.cartText}>파티 만들기</Text>
+            <Text style={styles.cartText}>장바구니 확인</Text>
           </TouchableOpacity>
           <ScrollView style={styles.pinContainer}>
             <ChatList data={chatList}/>     
@@ -167,12 +167,15 @@ useEffect(() => {
       shadowOffset: { width: 8, height: 8, },
       shadowOpacity: 0.3, 
       shadowRadius: 4,
+      alignSelf : "center"
+
     },
     leftBox:{ 
       flex : 1,
       backgroundColor: '#fff',
       alignContent : "center",
       alignItems : 'center',
+
     },
     imageStyle:{
 
@@ -226,7 +229,8 @@ useEffect(() => {
       borderRadius: 10,
       marginBottom : 12, 
       justifyContent: 'center', 
-      alignItems: 'center' 
+      alignItems: 'center', 
+      alignSelf : "center"
   
     },
     cartText:{

@@ -11,7 +11,7 @@ export default function viewCartList(props) {
   const appContext = useContext(AppContext)
 
   const finalCart= props.data
-  const isNotMeet = props.isNotMeet
+  const isNotMeet = appContext.isNotMeet
 
   const [totalPrice, setTotalPrice] = useState(0)
 

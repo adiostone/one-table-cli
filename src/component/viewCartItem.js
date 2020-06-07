@@ -18,8 +18,6 @@ export default function viewCartItem(props) {
 
   const ws = useRef(socketContext.ws)
 
-  const isReady = appContext.isReady
-
   const id = props.data.id 
   const name = props.data.name
   const packagingCost = props.data.packagingCost
