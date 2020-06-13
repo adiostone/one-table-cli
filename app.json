@@ -24,7 +24,12 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "OneTable",
       "supportsTablet": true
-    }
+    },
+    "android": {
+      "package": "OneTable"
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }
