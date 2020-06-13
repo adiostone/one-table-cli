@@ -17,7 +17,7 @@ export default function viewCartList(props) {
 
   useEffect(() => {
 
-    let totalPrice = finalCart.totalPrice + finalCart.deliveryCostPerCapita
+    let totalPrice = finalCart.totalPrice
     if(isNotMeet ===true){
       totalPrice = totalPrice + appContext.nonF2FCost
     }
