@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext,useRef } from 'react'
+import React, { useEffect, useState, useContext , useRef } from 'react'
 import { StyleSheet, Text, Alert,View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 
 import { AppContext } from '../context/AppContext'
@@ -7,6 +7,55 @@ import { SocketContext } from '../context/SocketContext'
 import LogoButton from "../component/logoButton"
 
 export function paymentResultScreen({navigation}) {
+
+    const appContext = useContext(AppContext)
+
+    const socketContext = useContext(SocketContext)
+
+    const ws = useRef(socketContext.ws)
+
+
+    useEffect(() => {
+    if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
+  
+    ws.current.onmessage = e => {
+  
+        const message = JSON.parse(e.data);
+        console.log("paymentResult listen");
+        console.log(message);
+        //
+        if(message.operation==="notifyCompletePayment"){
+            for(let i=0 ; i<appContext.userList.length ; i++ ){
+                if(message.body.id===appContext.userList[i].id){
+                  appContext.userList[i].isPaid=true
+                  appContext.setUserList([...appContext.userList])
+                }
+            }
+        }
+        if(message.operation==="notifyOrderIsAccepted"){
+          Alert.alert("주문이 접수되었습니다")
+        }
+        if(message.operation==="notifyOrderIsRefused"){
+          Alert.alert("주문이 거절되었습니다")
+        }
+        if(message.operation==="notifyStartDelivery"){
+          Alert.alert("주문이 배달 시작하였습니다")
+        }
+        //apply all party member 
+  
+  
+        //apply all ws
+        if(message.operation==="ping"){
+          const sendMessage = { operation: 'pong'}
+          ws.current.send(JSON.stringify(sendMessage))
+        }
+  
+    };
+  
+  
+  
+    });
+
 
     return (
     <SafeAreaView style={styles.container}>

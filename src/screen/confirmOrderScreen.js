@@ -34,9 +34,12 @@ export default function decideNotMeetScreen({navigation}) {
         const message = JSON.parse(e.data);
         console.log("confirmOrder listen")
         console.log(message);
-        if(message.operation==="replySetOrderInfo"){
+        if(message.operation==="replyGetReadyPayment"){
           if(message.body.isSuccess ===true){
-            navigation.navigate("payment",{finalPrice : finalCart.totalPrice ,phoneNum : phoneNum, address: formattedAddress})
+            navigation.replace("payment", {finalPrice : message.body.finalTotalPrice ,phoneNum : phoneNum, address: formattedAddress})
+          }
+          else{
+            console.log("payment failed")
           }
         }
         if(message.operation==="ping"){
@@ -46,10 +49,10 @@ export default function decideNotMeetScreen({navigation}) {
     };
   });
 
-  function setAdditionalInfo(){
+  function getReadyPayment(){
     if (!ws.current) return;
 
-    const message = { operation: 'setOrderInfo', body: {isNonF2F: isNotMeet ,nonF2FAddress : formattedAddress+" "+detailAddress, phoneNumber : phoneNum, request : requestText} }
+    const message = { operation: 'getReadyPayment', body: {isNonF2F: isNotMeet ,nonF2FAddress : formattedAddress+" "+detailAddress, phoneNumber : phoneNum, request : requestText} }
     ws.current.send(JSON.stringify(message))
   }
 
@@ -111,7 +114,7 @@ export default function decideNotMeetScreen({navigation}) {
               <Text style={styles.cartText}>최종 주문 내역</Text>
             </View>
             <ViewCartList data={finalCart}/>
-            <TouchableOpacity style={styles.cartBox} onPress={setAdditionalInfo}>
+            <TouchableOpacity style={styles.cartBox} onPress={getReadyPayment}>
               <Text style={styles.cartText}>최종 결제 확정</Text>
             </TouchableOpacity>
           </ScrollView>
