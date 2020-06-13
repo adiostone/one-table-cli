@@ -8,7 +8,7 @@ import UserList from "../component/userList"
 import axios from 'axios'
 
 
-export default function roomScreen({navigation}) {
+export default function roomScreen({navigation}){
 
   const appContext = useContext(AppContext)
 
@@ -57,7 +57,6 @@ export default function roomScreen({navigation}) {
   }, [navigation]);
 
 
-
 useEffect(() => {
   if (!ws.current) return;
 
@@ -102,6 +101,7 @@ useEffect(() => {
       }
       if(message.operation==="replyGetMyPartyMemberList"){
         setUserList(message.body)
+        appContext.setUserList(message.body)
       }
       if(message.operation==="replyGetSharedCart"){
         appContext.setCartList(message.body)
@@ -133,6 +133,7 @@ useEffect(() => {
       //apply all party member 
       if(message.operation==="notifyNewMember"){
         setUserList([message.body.user].concat(userList))
+        appContext.setUserList([message.body.user].concat(userList))
         setSize(message.body.size)
         appContext.setSize(message.body.size)
       }
@@ -142,6 +143,7 @@ useEffect(() => {
           if(userList[i].id===message.body.user.id){
             userList.splice(i,1)
             setUserList([...userList])
+            appContext.setUserList([...userList])
           } 
         } 
         setSize(message.body.size)
@@ -162,6 +164,7 @@ useEffect(() => {
             if(userList[i].id===message.body.newHost.id){
               userList[i].isHost = true
               setUserList([...userList])
+              appContext.setUserList([...userList])
             } 
           }
         }
@@ -188,6 +191,7 @@ useEffect(() => {
             if(userList[i].id===message.body.user.id){
               userList.splice(i,1)
               setUserList([...userList])
+              appContext.setUserList([...userList])
             } 
           } 
           setSize(message.body.size)
@@ -232,6 +236,7 @@ useEffect(() => {
           if(userList[i].id===message.body.id){
             userList[i].isReady = message.body.isReady
             setUserList([...userList])
+            appContext.setUserList([...userList])
           } 
         }
       }
@@ -239,6 +244,7 @@ useEffect(() => {
         for (let i=0 ; i <userList.length; i++){
           userList[i].isReady = false
           setUserList([...userList])
+          appContext.setUserList([...userList])
         }
         setIsReady(false)
         appContext.setIsReady(false)
@@ -274,6 +280,7 @@ useEffect(() => {
         if(userList[i].id===appContext.userID){
           userList[i].isReady = false
           setUserList([...userList])
+          appContext.setUserList([...userList])
         } 
       }
   
@@ -291,6 +298,7 @@ useEffect(() => {
         if(userList[i].id===appContext.userID){
           userList[i].isReady = true
           setUserList([...userList])
+          appContext.setUserList([...userList])
         } 
       }
   

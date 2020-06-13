@@ -13,25 +13,46 @@ export default function chatItem(props) {
     const userID =props.data.userID 
     const nickname =props.data.nickname 
     const chat =props.data.chat 
+    const [image,setImage] = useState(null)
     // const time = props.data.time
 
+    const userList =appContext.userList 
+
   useEffect(()=>{
+    for (let i=0 ; i <userList.length; i++){
+        if(userList[i].nickname===nickname){
+          setImage(userList[i].image)
+        } 
+      }
    
   })
 
   return (
     (appContext.nickname !== nickname) ? 
-          (<View style={styles.leftBox}>
+          (image===null) ? (<View style={styles.leftRightBox}>
                     <View style={styles.nicknameBox}>
                         <Text style={styles.nicknameText}>{nickname}</Text>
                     </View>
                     <View style={styles.chatBox}>
-                    <Text style={styles.chatText}>{chat}</Text>
+                        <Text style={styles.chatText}>{chat}</Text>
                     </View>
-                    {/* <Text style={styles.timeText}>{time}</Text> */}
-                </View>) :
-            (<View style={styles.rightBox}>
-                {/* <Text style={styles.timeText}>{time}</Text> */}
+                </View>) : (
+                <View style={styles.leftBox}>
+                    <View style={styles.leftLeftBox}>
+                        <Image source={{uri:image}} style={styles.profileImageStyle}/>
+                    </View>
+                    <View style={styles.leftRightBox}>
+                        <View style={styles.nicknameBox}>
+                            <Text style={styles.nicknameText}>{nickname}</Text>
+                        </View>
+                        <View style={styles.chatBox}>
+                        <Text style={styles.chatText}>{chat}</Text>
+                        </View>
+                    </View>
+                </View>
+
+                )
+            :(<View style={styles.rightBox}>
                 <View style={styles.chatBox}>
                     <Text style={styles.chatText}>{chat}</Text>
                 </View>
@@ -40,44 +61,53 @@ export default function chatItem(props) {
 }
 const styles = StyleSheet.create({
 
-leftBox: {
-    marginLeft : 10,
-    display : "flex",
-    flexDirection : "row",
-},
-rightBox: {
-    marginRight : 10,
-    display : "flex",
-    flexDirection : "row",
-    justifyContent : "flex-end",
-},
-nicknameBox:{
-    padding : 6 ,
-    borderRadius : 5,
-    borderWidth: 1,
-    borderColor: 'black',
-    margin : 4,
-},
-nicknameText:{
-    fontSize : 14,
-    fontWeight : "bold",
-},
-chatBox:{
-    padding : 6 ,
-    borderRadius : 5,
-    borderWidth: 1,
-    borderColor: 'black',
-    margin : 4,
-},
-chatText:{
-  fontSize : 14,
-},
-timeText:{  
-    fontSize : 10,
-    color : "gray",
-    position : "relative" ,
-    bottom : -5,
-},
+    leftBox: {
+        marginLeft : 10,
+        display : "flex",
+        flexDirection : "row",
+    },
+    leftLeftBox: {
+        justifyContent : "center",
+    },
+    profileImageStyle:{
+        width: 40,
+        height :40,
+        borderRadius : 50,
+    },
+    leftRightBox: {
+        marginLeft : 10,
+        display : "flex",
+        flexDirection : "column",
+    },
+    rightBox: {
+        marginRight : 10,
+        display : "flex",
+        flexDirection : "row",
+        justifyContent : "flex-end",
+    },
+    nicknameBox:{
+        margin : 4,
+    },
+    nicknameText:{
+        fontSize : 12,
+        fontWeight : "bold",
+    },
+    chatBox:{
+        padding : 6 ,
+        borderRadius : 5,
+        borderWidth: 1,
+        borderColor: 'black',
+        margin : 4,
+    },
+    chatText:{
+    fontSize : 12,
+    },
+    timeText:{  
+        fontSize : 10,
+        color : "gray",
+        position : "relative" ,
+        bottom : -5,
+    },
 
 
 });
