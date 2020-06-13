@@ -43,4 +43,6 @@ target 'Onetablecli' do
 
   # react-native-cli autolinking
   use_native_modules!
+  pod 'IamportReactNative', :path => '../node_modules/iamport-react-native'
+
 end
