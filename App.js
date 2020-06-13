@@ -22,7 +22,7 @@ import confirmOrderScreen from './src/screen/confirmOrderScreen';
 import paymentScreen from './src/screen/paymentScreen';
 import paymentResultScreen from './src/screen/paymentResultScreen';
 import paymentTestScreen from './src/screen/paymentTestScreen';
-import afterPaymentChatScreen from './src/screen/afterPaymentChatScreen';
+import waitingRoomScreen from './src/screen/waitingRoomScreen';
 import afterPaymentCartScreen from './src/screen/afterPaymentCartScreen';
 
 import * as Font from 'expo-font';
@@ -75,7 +75,7 @@ export default function App(){
             <Stack.Screen name="confirmOrder" component={confirmOrderScreen}/>
             <Stack.Screen name="payment" component={paymentScreen}/>
             <Stack.Screen name="paymentResult" component={paymentResultScreen}/>
-            <Stack.Screen name="afterPaymentChat" component={afterPaymentChatScreen}/>
+            <Stack.Screen name="waitingRoom" component={waitingRoomScreen}/>
             <Stack.Screen name="afterPaymentCart" component={afterPaymentCartScreen}/>
           </Stack.Navigator>
         </NavigationContainer>

@@ -32,7 +32,7 @@ export default function afterPaymentCartScreen({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-          <BaseTab data={"afterPaymentChat"}/>
+          <BaseTab data={"waitingRoom"}/>
           <ScrollView style={styles.scrollBox}>
             <View style={styles.cartBox}>
                 <Text style={styles.cartText}>최종 주문 내역</Text>

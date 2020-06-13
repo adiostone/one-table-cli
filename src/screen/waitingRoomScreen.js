@@ -60,7 +60,7 @@ useEffect(() => {
   ws.current.onmessage = e => {
 
       const message = JSON.parse(e.data);
-      console.log("AfterPaymentChat listen");
+      console.log("waitingRoom listen");
       console.log(message);
       if(message.operation==="replyGetMyPartyMetadata"){
         setAddress(message.body.address)
