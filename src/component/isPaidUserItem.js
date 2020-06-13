@@ -23,14 +23,14 @@ export default function isPaidUserItem(props) {
   return (
 
           <View style={styles.listBox}>
-              {(isHost === true) ?
+              {/* {(isHost === true) ?
               <View style={styles.hostBox}>
                  <Text style={styles.hostText}>방장</Text> 
               </View> :
               <View style={styles.notHostBox}>
                 <Text style={styles.notHostText}></Text> 
               </View> 
-              }
+              } */}
               <Image source={{uri:image}} style={styles.profileImageStyle}/>
               {(appContext.nickname === nickname) ?
               <Text style={styles.meText}>{nickname}</Text> : <Text style={styles.otherText}>{nickname}</Text> 
@@ -51,7 +51,7 @@ export default function isPaidUserItem(props) {
 const styles = StyleSheet.create({
 
   listBox: {
-    width : 160,
+    width : 80,
     backgroundColor: "#FFF5F5",
     borderRadius: 10,
     alignSelf : "center",
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 meText:{
 
   fontStyle: 'normal',
-  fontSize: 14,
+  fontSize: 10,
   fontWeight : "bold",
   textAlign: "center",
 
@@ -71,25 +71,25 @@ meText:{
 otherText:{
 
   fontStyle: 'normal',
-  fontSize: 14,
+  fontSize: 10,
   textAlign: "center",
 
 },
 
 
 profileImageStyle:{
-  width: 50,
-  height :50,
+  width: 40,
+  height :40,
   borderRadius : 50,
   marginBottom : 10,
+  marginTop : 10,
 },
 
 hostBox:{
-  width: 60,
-  paddingTop : 5,
-  paddingBottom : 5,
-  marginBottom : 10,
-  marginTop : 10,
+  width: 40,
+  paddingTop : 2,
+  paddingBottom : 2,
+  marginBottom : 5,
   borderRadius : 5,
   backgroundColor: "#FF473A",
 },
@@ -105,11 +105,10 @@ hostText:{
 },
 
 notHostBox:{
-  width: 60,
-  paddingTop : 5,
-  paddingBottom : 5,
-  marginBottom : 10,
-  marginTop : 10,
+  width: 40,
+  paddingTop : 2,
+  paddingBottom : 2,
+  marginBottom : 5,
 },
 notHostText:{
 
@@ -121,7 +120,7 @@ notHostText:{
 },
 
 paidBox:{
-  width: 90,
+  width: 50,
   paddingTop : 5,
   paddingBottom : 5,
   marginBottom : 10,
@@ -133,7 +132,7 @@ paidBox:{
 paidText:{
 
   fontStyle: 'normal',
-  fontSize: 14,
+  fontSize: 10,
   textAlign: "center",
   fontWeight : "bold",
   color: "#FFFFFF",
@@ -141,7 +140,7 @@ paidText:{
 },
 
 notPaidBox:{
-  width: 90,
+  width: 50,
   paddingTop : 5,
   paddingBottom : 5,
   marginBottom : 10,
