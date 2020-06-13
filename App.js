@@ -19,6 +19,9 @@ import menuDetailScreen from './src/screen/menuDetailScreen'
 import cartScreen from './src/screen/cartScreen';
 import chatScreen from './src/screen/chatScreen';
 import confirmOrderScreen from './src/screen/confirmOrderScreen';
+import paymentScreen from './src/screen/paymentScreen';
+import paymentResultScreen from './src/screen/paymentResultScreen';
+import paymentTestScreen from './src/screen/paymentTestScreen';
 import afterPaymentChatScreen from './src/screen/afterPaymentChatScreen';
 import afterPaymentCartScreen from './src/screen/afterPaymentCartScreen';
 
@@ -50,7 +53,13 @@ export default function App(){
       <SocketProvider>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{
-                headerShown: false,
+                safeAreaInsets: { top: 0, bottom: 0 },
+                headerLeft: null,
+                title: '',
+                headerStyle: {
+                  backgroundColor: '#fff',
+                  shadowColor: 'transparent'
+                },
               }} >
             <Stack.Screen name="load" component={loadScreen}/>
             <Stack.Screen name="main" component={mainScreen}/>
@@ -64,6 +73,8 @@ export default function App(){
             <Stack.Screen name="cart" component={cartScreen}/>
             <Stack.Screen name="chat" component={chatScreen}/>
             <Stack.Screen name="confirmOrder" component={confirmOrderScreen}/>
+            <Stack.Screen name="payment" component={paymentScreen}/>
+            <Stack.Screen name="paymentResult" component={paymentResultScreen}/>
             <Stack.Screen name="afterPaymentChat" component={afterPaymentChatScreen}/>
             <Stack.Screen name="afterPaymentCart" component={afterPaymentCartScreen}/>
           </Stack.Navigator>
