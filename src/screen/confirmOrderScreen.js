@@ -34,9 +34,9 @@ export default function decideNotMeetScreen({navigation}) {
         const message = JSON.parse(e.data);
         console.log("confirmOrder listen")
         console.log(message);
-        if(message.operation==="replySetAdditionalInfo"){
+        if(message.operation==="replySetOrderInfo"){
           if(message.body.isSuccess ===true){
-            navigation.navigate("afterPaymentChat")
+            navigation.navigate("payment",{finalPrice : finalCart.totalPrice ,phoneNum : phoneNum, address: formattedAddress})
           }
         }
         if(message.operation==="ping"){
@@ -49,7 +49,7 @@ export default function decideNotMeetScreen({navigation}) {
   function setAdditionalInfo(){
     if (!ws.current) return;
 
-    const message = { operation: 'setAdditionalInfo', body: {isNonF2F: isNotMeet ,nonF2FAddress : formattedAddress+" "+detailAddress, phoneNumber : phoneNum, request : requestText} }
+    const message = { operation: 'setOrderInfo', body: {isNonF2F: isNotMeet ,nonF2FAddress : formattedAddress+" "+detailAddress, phoneNumber : phoneNum, request : requestText} }
     ws.current.send(JSON.stringify(message))
   }
 
