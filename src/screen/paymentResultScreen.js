@@ -33,7 +33,7 @@ export function paymentResultScreen({navigation}) {
             }
         }
         if(message.operation==="notifyOrderIsAccepted"){
-          Alert.alert("주문이 접수되었습니다")
+            Alert.alert(`주문이 접수되었습니다 예상 소요시간은 ${message.body.estimatedTime}분 입니다`)
         }
         if(message.operation==="notifyOrderIsRefused"){
           Alert.alert("주문이 거절되었습니다")
