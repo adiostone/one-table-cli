@@ -34,6 +34,8 @@ export const AppProvider =({children}) =>{
     const [nonF2FCost, setNonF2FCost] = useState(0)  
     const [finalCart ,setFinalCart] = useState()  
 
+    const [isDelivered, setIsDelivered] = useState(false)  
+
     const [userList, setUserList] = useState([]) 
 
     //cart Information
@@ -89,6 +91,9 @@ export const AppProvider =({children}) =>{
           setNonF2FCost,
           deliveryCost,
           setDeliveryCost,
+
+          isDelivered,
+          setIsDelivered,
 
           userList,
           setUserList,
