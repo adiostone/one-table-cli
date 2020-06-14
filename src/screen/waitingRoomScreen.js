@@ -23,6 +23,8 @@ export default function waitingRoomScreen({navigation}) {
 
   const [userList, setUserList] = useState(appContext.userList);
 
+  const [isDelivered, setIsDelivered] = useState(appContext.isDelivered)  
+
   useEffect(() => {
     if (!ws.current) return;
 
@@ -58,6 +60,13 @@ useEffect(() => {
           setTextInput("")
         }
       }
+      if(message.operation==="replyReceiveDelivery"){
+        if(message.body.isSuccess===true){
+          console.log("exit success")
+          navigation.replace('main')
+        }
+        console.log("exit failed")
+      }
       if(message.operation==="notifyNewChat"){
         setChatList([message.body].concat(chatList))
       }
@@ -79,6 +88,15 @@ useEffect(() => {
       }
       if(message.operation==="notifyStartDelivery"){
         Alert.alert("주문이 배달 시작하였습니다")
+      }
+      if(message.operation==="notifyMemberReceiveDelivery"){
+        for (let i=0 ; i <userList.length; i++){
+          if(userList[i].id===message.body.id){
+            userList.splice(i,1)
+            setUserList([...userList])
+            appContext.setUserList([...userList])
+          } 
+        } 
       }
       //apply all party member 
 
@@ -103,6 +121,13 @@ useEffect(() => {
       const message = { operation: 'sendChat', body: {chat: textInput } }
       ws.current.send(JSON.stringify(message))
     }
+  }
+
+  function receiveDelivery(){
+    if (!ws.current) return;
+
+    const message = { operation: 'receiveDelivery', body: {} }
+    ws.current.send(JSON.stringify(message))
   }
 
 
