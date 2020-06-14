@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 
   listBox: {
     width : 80,
-    backgroundColor: "#FFF5F5",
+    // backgroundColor: "#FFF5F5",
     borderRadius: 10,
     alignSelf : "center",
     flexDirection : "column",
@@ -126,7 +126,7 @@ paidBox:{
   marginBottom : 10,
   marginTop : 10,
   borderRadius : 5,
-  backgroundColor: "#FFBF75",
+  backgroundColor: "#95FF93",
 },
 
 paidText:{
