@@ -14,8 +14,6 @@ export default function afterPaymentCartScreen({navigation}) {
 
   const [restaurantName, setRestaurantName] = useState() 
   const [address, setAddress] = useState() 
-  const [capacity, setCapacity] = useState();
-  const [size, setSize] = useState();
   const [title, setTitle] = useState() 
   const [image, setImage] = useState()
 
@@ -75,6 +73,14 @@ export default function afterPaymentCartScreen({navigation}) {
         if(message.operation==="notifyStartDelivery"){
           Alert.alert("주문이 배달 시작하였습니다")
         }
+        if(message.operation==="notifyMemberReceiveDelivery"){
+          for (let i=0 ; i <userList.length; i++){
+            if(appContext.userList[i].id===message.body.id){
+              appContext.userList.splice(i,1)
+              appContext.setUserList([...appContext.userList])
+            } 
+          } 
+        }
         if(message.operation==="ping"){
           const sendMessage = { operation: 'pong'}
           ws.current.send(JSON.stringify(sendMessage))
@@ -94,7 +100,6 @@ export default function afterPaymentCartScreen({navigation}) {
                 <Text style={styles.addressText}>{address}</Text>
                 <View style={styles.rightBottomBox}>
                   <Text style={styles.partyNameText}>{title}</Text>
-                  <Text style={styles.peopleNumberText}> {size}/{capacity}</Text>
                 </View>
               </View>
           </View>    
@@ -116,7 +121,7 @@ export default function afterPaymentCartScreen({navigation}) {
 
       },
       listBox:{
-        height: 100,
+        height:90,
         width: 340,
         backgroundColor: "#CB661D",
         borderRadius: 10,

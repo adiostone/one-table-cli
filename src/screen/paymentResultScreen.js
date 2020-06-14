@@ -41,6 +41,14 @@ export function paymentResultScreen({navigation}) {
         if(message.operation==="notifyStartDelivery"){
           Alert.alert("주문이 배달 시작하였습니다")
         }
+        if(message.operation==="notifyMemberReceiveDelivery"){
+          for (let i=0 ; i <userList.length; i++){
+            if(appContext.userList[i].id===message.body.id){
+              appContext.userList.splice(i,1)
+              appContext.setUserList([...appContext.userList])
+            } 
+          } 
+        }
         //apply all party member 
   
   
