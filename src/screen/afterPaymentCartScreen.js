@@ -50,9 +50,7 @@ export default function afterPaymentCartScreen({navigation}) {
         console.log(message);
         if(message.operation==="replyGetMyPartyMetadata"){
           setAddress(message.body.address)
-          setCapacity(message.body.capacity)
           setRestaurantName(message.body.restaurant.name)
-          setSize(message.body.size)
           setTitle(message.body.title)
           setImage(message.body.restaurant.icon)
         }
@@ -123,7 +121,7 @@ export default function afterPaymentCartScreen({navigation}) {
 
       },
       listBox:{
-        height:90,
+        height:100,
         width: 340,
         backgroundColor: "#CB661D",
         borderRadius: 10,
