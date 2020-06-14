@@ -17,7 +17,7 @@ export default function decideNotMeetScreen({navigation}) {
 
   const finalCart = appContext.finalCart
 
-  const [isNotMeet, setIsNotMeet] = useState(false)
+  const [isNotMeet, setIsNotMeet] = useState(appContext.isNotMeet)
 
   const [phoneNum, setPhoneNum] = useState()
   const [requestText, setRequestText] = useState()
