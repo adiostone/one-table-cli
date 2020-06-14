@@ -87,6 +87,8 @@ useEffect(() => {
         Alert.alert("주문이 거절되었습니다")
       }
       if(message.operation==="notifyStartDelivery"){
+        setIsDelivered(true)
+        appContext.setIsDelivered(true)
         Alert.alert("주문이 배달 시작하였습니다")
       }
       if(message.operation==="notifyMemberReceiveDelivery"){
@@ -136,7 +138,12 @@ useEffect(() => {
           <View style={styles.logo}>
             <LogoButton/>
           </View>
-          <IsPaidUserList data={userList}/>     
+          <IsPaidUserList data={userList}/>   
+          {(isDelivered ===true) ?
+          <TouchableOpacity style={styles.receiveBox} onPress={receiveDelivery}>
+            <Text style={styles.receiveText}>수령 확인</Text>
+          </TouchableOpacity> : <View/>
+          } 
           <TouchableOpacity style={styles.cartBox} onPress={() => navigation.navigate('afterPaymentCart')}>
             <Text style={styles.cartText}>결제 내역 확인</Text>
           </TouchableOpacity>
@@ -165,6 +172,24 @@ useEffect(() => {
     },
     logo:{
       alignItems: "center",
+    },
+
+    receiveBox:{
+      height: 39,
+      width: 340,
+      backgroundColor: "#FF8181",
+      borderRadius: 10,
+      marginBottom : 12, 
+      justifyContent: 'center', 
+      alignItems: 'center' 
+  
+    },
+    receiveText:{
+      fontStyle: 'normal',
+      fontSize: 20,
+      textAlign: "center",
+      color: "#FFFFFF",
+  
     },
 
 

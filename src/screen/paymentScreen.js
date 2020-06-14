@@ -47,10 +47,11 @@ export function paymentScreen({route ,navigation  }) {
                 Alert.alert(`주문이 접수되었습니다 예상 소요시간은 ${message.body.estimatedTime}분 입니다`)
             }
             if(message.operation==="notifyOrderIsRefused"){
-            Alert.alert("주문이 거절되었습니다")
+                Alert.alert("주문이 거절되었습니다")
             }
             if(message.operation==="notifyStartDelivery"){
-            Alert.alert("주문이 배달 시작하였습니다")
+                appContext.setIsDelivered(true)
+                Alert.alert("주문이 배달 시작하였습니다")
             }
             if(message.operation==="notifyMemberReceiveDelivery"){
                 for (let i=0 ; i <userList.length; i++){

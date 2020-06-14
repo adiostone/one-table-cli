@@ -39,6 +39,7 @@ export function paymentResultScreen({navigation}) {
           Alert.alert("주문이 거절되었습니다")
         }
         if(message.operation==="notifyStartDelivery"){
+          appContext.setIsDelivered(true)
           Alert.alert("주문이 배달 시작하였습니다")
         }
         if(message.operation==="notifyMemberReceiveDelivery"){
