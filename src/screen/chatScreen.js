@@ -66,11 +66,19 @@ useEffect(() => {
       //apply all party member 
       if(message.operation==="notifyNewMember"){
         Alert.alert(message.body.user.nickname+"가 파티에 참가하셨습니다.")
+        appContext.setUserList([message.body.user].concat(userList))
         appContext.setSize(message.body.size)
       }
       if(message.operation==="notifyOutMember"){
         Alert.alert("파티원 한명이 나갔습니다.")
         appContext.setSize(message.body.size)
+
+        for (let i=0 ; i <appContext.userList.length; i++){
+          if(appContext.userList[i].id===message.body.user.id){
+            appContext.userList.splice(i,1)
+            appContext.setUserList([...appContext.userList])
+          } 
+        } 
 
         //user(is host) out so apply new host
         if(message.body.newHost!==undefined){
