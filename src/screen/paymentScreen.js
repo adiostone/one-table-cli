@@ -48,6 +48,7 @@ export function paymentScreen({route ,navigation  }) {
             }
             if(message.operation==="notifyOrderIsRefused"){
                 Alert.alert("주문이 거절되었습니다")
+                navigation.replace('main')
             }
             if(message.operation==="notifyStartDelivery"){
                 appContext.setIsDelivered(true)
