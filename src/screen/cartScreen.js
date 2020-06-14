@@ -72,14 +72,6 @@ export default function cartScreen({navigation}) {
             //you are kicked out
             console.log("you are kicked out")
             Alert.alert("강퇴 당하셨습니다")
-            appContext.setPartyID()
-            appContext.setRestaurantID()
-            appContext.setRestaurantName()
-            appContext.setIsHost(false)
-            appContext.setIsReady(false)
-            appContext.setCartList([])
-            appContext.setSize()
-            appContext.setIsEnter(false)
             navigation.replace("main")
           }
           else{

@@ -109,14 +109,6 @@ useEffect(() => {
       if(message.operation==="replyLeaveParty"){
         if(message.body.isSuccess===true){
           console.log("leave Success")
-          appContext.setPartyID()
-          appContext.setRestaurantID()
-          appContext.setRestaurantName()
-          appContext.setIsHost(false)
-          appContext.setIsReady(false)
-          appContext.setIsEnter(false)
-          appContext.setSize()
-          appContext.setCartList([])
           navigation.replace("main")
         }
         else{
@@ -175,14 +167,6 @@ useEffect(() => {
           //you are kicked out
           console.log("you are kicked out")
           Alert.alert("강퇴 당하셨습니다")
-          appContext.setPartyID()
-          appContext.setRestaurantID()
-          appContext.setRestaurantName()
-          appContext.setIsHost(false)
-          appContext.setIsReady(false)
-          appContext.setIsEnter(false)
-          appContext.setCartList([])
-          appContext.setSize()
           navigation.replace("main")
         }
         else{

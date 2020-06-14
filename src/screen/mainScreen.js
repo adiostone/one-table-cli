@@ -24,6 +24,20 @@ export default function mainScreen({navigation}) {
   useEffect(() => {
   const unsubscribe = navigation.addListener('focus', () => {
 
+    appContext.setPartyID()
+    appContext.setRestaurantID()
+    appContext.setRestaurantName()
+    appContext.setIsHost(false)
+    appContext.setIsReady(false)
+    appContext.setIsNotMeet(false)
+    appContext.setSize(0)
+    appContext.setWholePrice(0)
+    appContext.setIsDelivered(false)
+    appContext.setIsEnter(false)
+    appContext.setCartList([])
+    appContext.setFinalCart([])
+    appContext.setUserList([])
+
     if (ws.current && ws.current.readyState === WebSocket.OPEN){
       console.log("getPartyList")
       const message = { operation: 'getPartyList', body: {} }
