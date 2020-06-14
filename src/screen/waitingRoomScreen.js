@@ -178,12 +178,13 @@ useEffect(() => {
     receiveBox:{
       height: 39,
       width: 340,
-      backgroundColor: "#FF8181",
+      backgroundColor: "#FFBF75",
       borderRadius: 10,
       marginBottom : 12, 
       justifyContent: 'center', 
-      alignItems: 'center' 
-  
+      alignItems: 'center' ,
+      alignSelf : "center"
+
     },
     receiveText:{
       fontStyle: 'normal',
