@@ -34,6 +34,10 @@ export default function waitingRoomScreen({navigation}) {
 
 },[]);
 
+useEffect(() => {
+  setIsDelivered(appContext.isDelivered)
+},[appContext.isDelivered]);
+
 
 useEffect(() => {
   if (!ws.current || ws.current.readyState === WebSocket.CLOSED) return;
@@ -52,7 +56,7 @@ useEffect(() => {
       console.log("waitingRoom listen");
       console.log(message);
       if(message.operation==="replyGetMyPartyChats"){
-        setChatList(message.body)
+        setChatList(message.body.slice(0).reverse())
       }
       if(message.operation==="replySendChat"){
         if(message.body.isSuccess===true){
