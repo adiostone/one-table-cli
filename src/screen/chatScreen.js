@@ -52,7 +52,7 @@ useEffect(() => {
       console.log("chat listen");
       console.log(message);
       if(message.operation==="replyGetMyPartyChats"){
-        setChatList(message.body)
+        setChatList(message.body.slice(0).reverse())
       }
       if(message.operation==="replySendChat"){
         if(message.body.isSuccess===true){
