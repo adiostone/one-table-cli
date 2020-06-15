@@ -24,11 +24,17 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "OneTable",
-      "supportsTablet": true
+      "bundleIdentifier": "com.adistone.onetable",
+      "supportsTablet": true,
+      "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "OneTable"
+      "package": "com.adistone.onetable",
+      "versionCode": 1
+    },
+    "notification": {
+      "icon": "./src/assets/OneTableNotificationLogo.png",
+      "iosDisplayInForeground": true
     },
     "entryPoint": "node_modules/expo/AppEntry.js"
   }
