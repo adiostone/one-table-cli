@@ -24,11 +24,31 @@ export default function loginScreen({navigation}) {
     console.log(res.data)
     const nickname =res.data.nickname      
     const id =res.data.id     
+    const pushToken =res.data.pushToken    
+    const isHungry =res.data.isHungry  
     //set nickname and id 
     appContext.setNickname(nickname)   
-    appContext.setUserID(id)   
+    appContext.setUserID(id)  
+    appContext.setIsHungry(isHungry)    
     //for welcome user
+
+    if(pushToken===null){
+      console.log("you need to update pushToken")
+      const resultData1 =  await axios({
+        method: 'patch',
+        url: 'https://api.onetable.xyz/v1/table/me/profile',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        data :  {
+          "pushToken" : appContext.expoPushToken
+        }
+
+    })
+  }
     Alert.alert(nickname + "님 환영합니다!")
+
+
 
   }
 
