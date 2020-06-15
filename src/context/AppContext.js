@@ -8,6 +8,11 @@ export const AppProvider =({children}) =>{
     const [accessToken, setAccessToken] = useState('')
     const [refreshToken, setRefreshToken] = useState('')
 
+
+    const [expoPushToken, setExpoPushToken] = useState('')
+    const [isHungry, setIsHungry] = useState(false)
+
+
     //userData
     const [userID, setUserID] = useState()
     const [nickname, setNickname] = useState("")
@@ -49,6 +54,12 @@ export const AppProvider =({children}) =>{
           setAccessToken,
           refreshToken,
           setRefreshToken,
+
+          isHungry,
+          setIsHungry,
+
+          expoPushToken,
+          setExpoPushToken,
 
           userID,
           setUserID,
