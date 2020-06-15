@@ -43,7 +43,7 @@ export default function isPaidUserItem(props) {
 const styles = StyleSheet.create({
 
   listBox: {
-    width : 70,
+    width : 80,
     // backgroundColor: "#FFF5F5",
     borderRadius: 10,
     alignSelf : "center",
