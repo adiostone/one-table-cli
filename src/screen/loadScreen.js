@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext,useRef } from 'react'
-import { StyleSheet, Text, Alert,View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
+import { StyleSheet,Vibration, Text, Alert,View,Button, Image,TextInput,Dimensions ,ScrollView,TouchableOpacity,SafeAreaView} from 'react-native';
 import Constants from 'expo-constants';
 import { AppContext } from '../context/AppContext'
 import { SocketContext } from '../context/SocketContext'
@@ -10,7 +10,71 @@ import * as SecureStore from 'expo-secure-store';
 import axios from 'axios'
 
 
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+
 export default function loadScreen({navigation}) {
+
+
+  const [expoPushToken,setExpoPushToken] = useState()
+  const [notification,setNotification] = useState()
+
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+  },[]);
+
+  useEffect(() => {
+    Notifications.addListener(handleNotification);
+  });
+
+   function handleNotification(notification){
+    if(notification.data.operation==="acceptOrder"){
+
+    }
+    if(notification.data.operation==="refuseOrder"){
+      navigation.replace("main")
+    }
+    if(notification.data.operation==="startDelivery"){
+      appContext.setIsDelivered(true)      
+    }
+    if(notification.data.operation==="createParty"){
+      
+    }
+
+  };
+
+  async function registerForPushNotificationsAsync(){
+    // if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      console.log("existingStatus")
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+        console.log("finalStatus")
+      }
+      if (finalStatus !== 'granted') {
+        // alert('Failed to get push token for push notification!');
+        return;
+      }
+      let token = await Notifications.getExpoPushTokenAsync();
+      console.log(token)
+      setExpoPushToken(token);
+      appContext.setExpoPushToken(token)
+    // } else {
+    //   alert('Must use physical device for Push Notifications');
+    // }
+
+    if (Platform.OS === 'android') {
+      Notifications.createChannelAndroidAsync('default', {
+        name: 'default',
+        sound: true,
+        priority: 'max',
+        vibrate: [0, 250, 250, 250],
+      });
+    }
+  };
+
 
   const appContext = useContext(AppContext)
 
@@ -56,9 +120,28 @@ export default function loadScreen({navigation}) {
               console.log("load nickname and id")
               //set nickname and id
               const nickname =res.data.nickname      
-              const id =res.data.id      
+              const id =res.data.id     
+              const pushToken =res.data.pushToken    
+              const isHungry =res.data.isHungry  
+
+              appContext.setIsHungry(isHungry)    
               appContext.setNickname(nickname)   
               appContext.setUserID(id)   
+
+              if(pushToken===null){
+                console.log("you need to update pushToken")
+                const resultData1 =  await axios({
+                  method: 'patch',
+                  url: 'https://api.onetable.xyz/v1/table/me/profile',
+                  headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                  },
+                  data :  {
+                    "pushToken" : appContext.expoPushToken
+                  }
+
+              })
+            }
 
               await loadLocationData(); 
               console.log("connect Websocket")
@@ -110,9 +193,29 @@ export default function loadScreen({navigation}) {
                           console.log("load nickname and id")
                           //set nickname and id
                           const nickname =resultData.data.nickname    
-                          const id =resultData.data.id      
+                          const id =resultData.data.id  
+                          const pushToken =resultData.data.pushToken    
+                          const isHungry =resultData.data.isHungry 
+                          
+                          if(pushToken===null){
+                            console.log("you need to update pushToken")
+                            const resultData1 =  await axios({
+                              method: 'patch',
+                              url: 'https://api.onetable.xyz/v1/table/me/profile',
+                              headers: {
+                                Authorization: `Bearer ${accessToken}`,
+                              },
+                              data :  {
+                                "pushToken" : appContext.expoPushToken
+                              }
+
+                            })
+
+                          }
+    
                           appContext.setNickname(nickname)   
                           appContext.setUserID(id)   
+                          appContext.setIsHungry(isHungry)    
                           await loadLocationData(); 
 
                           appContext.setRefreshToken(refreshToken)
