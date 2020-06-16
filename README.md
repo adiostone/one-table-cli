@@ -29,7 +29,7 @@ Show the restaurants where is near your location
 
 # Make Party
 
-Make party with title , address , capactiy
+Make party with title, address, capactiy
 
 <img width="280" src="https://user-images.githubusercontent.com/38158709/84742311-3d5e7f80-afeb-11ea-8acf-95a290810719.png"></img>
 
@@ -37,11 +37,11 @@ Make party with title , address , capactiy
 
 There is a lot of things which you can do in party room
 
-All the things is transfer to party member using websocket , kind of live system
+All the things is transfer to party member using websocket, kind of live system
  
 # Menu List
 
-There is menuList you can add
+There is menu list you can add
 
 Menus are divided as private menu and public menu
 
@@ -49,21 +49,21 @@ Menus are divided as private menu and public menu
 
 # Host 
 
-If you are host , you can add, modify and delete public menu 
+If you are the host, you can add, modify and delete public menu 
 
 <div>
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742286-38013500-afeb-11ea-9f04-e328f46a5915.png"></img>
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742297-39caf880-afeb-11ea-9ce3-143f0775f7b5.png"></img>
 </div>
 
-If you are host , you can kick out party member by clicking X button above party member profile 
+If you are the host, you can kick out party member by clicking X button above party member profile 
 
 <div>
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742303-3b94bc00-afeb-11ea-92d8-7e2ec48af3f3.png"></img>
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742371-4bac9b80-afeb-11ea-9682-28419ef5dd63.png"></img>
 </div>
 
-If host is out , someone in party room replace host 
+If the host is out, someone in party room replaces the host 
 
 <img width="280" src="https://user-images.githubusercontent.com/38158709/84742317-3e8fac80-afeb-11ea-97af-9cf8d0c69256.png"></img>
 
@@ -139,7 +139,7 @@ We use KG Inosis module for supporting a lot of payment system
 
 # Payment Result
 
-If payment is completed , you can see Payment Completed  
+If payment is completed, you can see Payment Completed  
 
 <img width="280" src="https://user-images.githubusercontent.com/38158709/84742331-42233380-afeb-11ea-853a-963f689b06dd.png"></img>
 
@@ -171,7 +171,7 @@ There is Hungry mode for people who wanna get party information when it is creat
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742306-3cc5e900-afeb-11ea-9b24-c67fdc2ec960.png"></img>
 </div>
 
-If hungry mode is on , you can get party info by push notification when it is created
+If hungry mode is on, you can get party info by push notification when it is created
 
 <img width="280" src="https://user-images.githubusercontent.com/38158709/84742339-43546080-afeb-11ea-93b3-49d62b03c5ec.png"></img>
 
