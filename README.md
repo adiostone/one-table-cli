@@ -2,7 +2,7 @@
 
 # Sign In
 
-Users can regist and sign using their Google Account.
+Users can regist and sign in using their Google Account.
 For sign in, we use GoogleAuth 2.0 
 
 <img width="280" src="https://user-images.githubusercontent.com/38158709/84742302-3b94bc00-afeb-11ea-8ac2-0c8d1a808779.png"></img>
@@ -69,6 +69,8 @@ If host is out , someone in party room replace host
 
 # Party member(include host)
 
+# Add own menu
+
 You can add your own private menu
 
 <div>
@@ -76,16 +78,23 @@ You can add your own private menu
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742280-36d00800-afeb-11ea-815c-ca55531efb05.png"></img>
 </div>
 
+# Modify and delete own menu
+
 You can see your cart and also modify and delete your own private menu
+
 <img width="280" src="https://user-images.githubusercontent.com/38158709/84742297-39caf880-afeb-11ea-9ce3-143f0775f7b5.png"></img>
+
+# Chat
 
 Chat with other people
 
 Show the profile image if he or she is in party room
 
-If not , there are only nickname and chat information 
+If not, there are only nickname and chat information 
 
 <img width="280" src="https://user-images.githubusercontent.com/38158709/84742298-3a638f00-afeb-11ea-8988-9a30613449ad.png"></img>
+
+# Notify information
 
 Notify add, modify and delete public menu to party member
 
@@ -151,11 +160,29 @@ You can also chat with people.
 
 You can also see your final Cart
 
-<img width="280" src="https://user-images.githubusercontent.com/38158709/84742331-42233380-afeb-11ea-853a-963f689b06dd.png"></img>
+<img width="280" src="https://user-images.githubusercontent.com/38158709/84742299-3afc2580-afeb-11ea-993d-9a3d2a054970.png"></img>
+
+# Hungry Mode
+
+There is Hungry mode for people who wanna get party information when it is created 
+
+<div>
+    <img width="280" src="https://user-images.githubusercontent.com/38158709/84742305-3c2d5280-afeb-11ea-8f7b-8aff8d272b30.png"></img>
+    <img width="280" src="https://user-images.githubusercontent.com/38158709/84742306-3cc5e900-afeb-11ea-9b24-c67fdc2ec960.png"></img>
+</div>
+
+IF hungry mode is on , you can get party info when it is created
+
+<img width="280" src="https://user-images.githubusercontent.com/38158709/84742339-43546080-afeb-11ea-93b3-49d62b03c5ec.png"></img>
 
 
+# Push Notification
 
+# Order Accepted
 
+# Delivery Start
+
+# Cancel Order
 
 
 
