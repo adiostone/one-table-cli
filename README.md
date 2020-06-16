@@ -171,18 +171,40 @@ There is Hungry mode for people who wanna get party information when it is creat
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742306-3cc5e900-afeb-11ea-9b24-c67fdc2ec960.png"></img>
 </div>
 
-IF hungry mode is on , you can get party info when it is created
+If hungry mode is on , you can get party info by push notification when it is created
 
 <img width="280" src="https://user-images.githubusercontent.com/38158709/84742339-43546080-afeb-11ea-93b3-49d62b03c5ec.png"></img>
 
 
 # Push Notification
 
+App can get push notification from server when you need
+Order Accepted, Delivery Start, Order Canceled
+
 # Order Accepted
+
+When restaurant owner accept order, you get push notification
+
+<img width="280" src="https://user-images.githubusercontent.com/38158709/84742328-40f20680-afeb-11ea-9f9f-23a4d0bc0ba8.png"></img>
 
 # Delivery Start
 
-# Cancel Order
+When delivery start, you get push notification
 
+<div>
+    <img width="280" src="https://user-images.githubusercontent.com/38158709/84742305-3c2d5280-afeb-11ea-8f7b-8aff8d272b30.png"></img>
+    <img width="280" src="https://user-images.githubusercontent.com/38158709/84742306-3cc5e900-afeb-11ea-9b24-c67fdc2ec960.png"></img>
+</div>
+    
+After delivery start, party member can get out party
+
+# Order Canceled
+
+When restaurant owner cancel order, you get push notification and are get out of party automatically
+
+<div>
+    <img width="280" src="https://user-images.githubusercontent.com/38158709/84742294-39326200-afeb-11ea-8ae0-26656b42f9fb.png"></img>
+    <img width="280" src="https://user-images.githubusercontent.com/38158709/84742292-3899cb80-afeb-11ea-98fb-72beedd71d31.png"></img>
+</div>
 
 
