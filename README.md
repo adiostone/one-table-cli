@@ -189,15 +189,13 @@ When restaurant owner accept order, you get push notification
 
 # Delivery Start
 
-When delivery start, you get push notification
+When delivery start, you get push notification and all party member can get out party
 
 <div>
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742305-3c2d5280-afeb-11ea-8f7b-8aff8d272b30.png"></img>
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742306-3cc5e900-afeb-11ea-9b24-c67fdc2ec960.png"></img>
 </div>
     
-After delivery start, party member can get out party
-
 # Order Canceled
 
 When restaurant owner cancel order, you get push notification and are get out of party automatically
