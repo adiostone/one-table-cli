@@ -52,7 +52,7 @@ Menus are divided as private menu and public menu
 If you are the host, you can add, modify and delete public menu 
 
 <div>
-    <img width="280" src="https://user-images.githubusercontent.com/38158709/84742286-38013500-afeb-11ea-9f04-e328f46a5915.png"></img>
+    <img width="280" src="https://user-images.githubusercontent.com/38158709/85111496-62532c80-b24f-11ea-9a02-63346280dd3c.png"></img>
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742297-39caf880-afeb-11ea-9ce3-143f0775f7b5.png"></img>
 </div>
 
@@ -119,7 +119,7 @@ Check the bills and Confirm Order
 You need to write phone number and if you want, you can send request text
 
 <div>
-    <img width="280" src="https://user-images.githubusercontent.com/38158709/84742332-42bbca00-afeb-11ea-8a84-9aba0fe5054b.png"></img>
+    <img width="280" src="https://user-images.githubusercontent.com/38158709/85111513-6a12d100-b24f-11ea-93b5-1485d08458fa.png"></img>
     <img width="280" src="https://user-images.githubusercontent.com/38158709/84742335-43546080-afeb-11ea-802c-82bc62a4bd9a.png"></img>
 </div>
 
